@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  theater-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    container_name: theater-ui
+    restart: unless-stopped
