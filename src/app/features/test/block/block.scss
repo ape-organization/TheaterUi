@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  height: 0;
+  overflow: visible;
+}
+
+/* Wrapper handles positioning ONLY - no rotation */
+.block-wrapper {
+  position: absolute;
+  will-change: transform;
+}
+
+/* Inner div handles rotation only */
+.block {
+  transform-origin: left top;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.5rem 0;
+  border-radius: var(--radius-sm);
+}

@@ -1,0 +1,24 @@
+
+
+<div class="row" [class.vip-row]="type() === 'vip'" [class.regular-row]="type() === 'regular'">
+
+    <div class="row-label row-label-left">
+        {{ row().label }}
+    </div>
+
+    <div class="seats">
+
+        @for(seat of row().seats; track seat.id){
+
+            <app-test-seat
+                [seat]="seat"
+                [type]="type()"
+                [selectedSeatIds]="selectedSeatIds()"
+                (seatClick)="seatClick.emit($event)">
+            </app-test-seat>
+
+        }
+
+    </div>
+
+</div>

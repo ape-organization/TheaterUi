@@ -1,0 +1,174 @@
+<section class="event-page">
+  @if (isLoading()) {
+    <div class="loading-state">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  } @else if (event()) {
+    <!-- Hero Section -->
+    <div class="event-hero">
+      <div class="event-backdrop">
+        <img [src]="event()?.imageUrl" [alt]="event()?.title" class="event-backdrop-img" />
+        <div class="event-backdrop-overlay"></div>
+      </div>
+
+      <div class="event-hero-content cinema-container">
+        <div class="event-poster-wrapper">
+          <img [src]="event()?.imageUrl" [alt]="event()?.title" class="event-poster" />
+          <div class="event-poster-rating">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>4.8</span>
+          </div>
+        </div>
+
+        <div class="event-hero-info">
+          <span class="event-badge">{{ 'EVENT.BADGE' | translate }}</span>
+          <h1 class="event-title">{{ event()?.title }}</h1>
+          <p class="event-description">{{ event()?.description }}</p>
+
+          <div class="event-meta">
+            <div class="event-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span>{{ event()?.date }}</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>{{ event()?.time }}</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>{{ event()?.location }}</span>
+            </div>
+            <div class="event-meta-item price">
+              <span class="currency-icon">E£</span>
+              <span>{{ event()?.ticketPrice | currency:'EGP':'symbol':'1.0-0' }} {{ 'EVENT.PER_SEAT' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seat Selection Section -->
+    <section class="seat-section">
+      <div class="seat-section-header">
+        <div class="seat-section-title">
+          <h2>{{ 'EVENT.SELECT_SEATS' | translate }}</h2>
+          <p>{{ 'EVENT.SELECT_SEATS_DESC' | translate }}</p>
+        </div>
+        <div class="seat-section-actions">
+          <span class="selected-count">
+            <strong>{{ selectedSeats.length }}</strong> {{ 'EVENT.SEATS_SELECTED' | translate }}
+          </span>
+          @if (selectedSeats.length > 0) {
+            <span class="total-price">EGP {{ totalPrice | number }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- Book Now Button -->
+      @if (selectedSeats.length > 0 && !bookingSuccess) {
+        <div class="booking-bar">
+          <div class="booking-summary">
+            <span class="booking-seats-count">{{ selectedSeats.length }} seat(s) selected</span>
+            <span class="booking-total">Total: EGP {{ totalPrice | number }}</span>
+          </div>
+          <button type="button" class="btn-primary btn-book" (click)="openConfirmModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>{{ 'EVENT.CONTINUE_CHECKOUT' | translate }}</span>
+          </button>
+        </div>
+      }
+
+      <!-- Seat Map -->
+      @if (seatMap()) {
+        <app-theater-canvas (SelectedSeats)="receiveData($event)"></app-theater-canvas>
+      }
+
+      <!-- Booking Success Message -->
+      @if (bookingSuccess) {
+        <div class="booking-success-card">
+          <div class="success-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h3>{{ 'BOOKING_RESULT.SUCCESS_TITLE' | translate }}</h3>
+          <p class="booking-message">
+            {{ 'BOOKING_RESULT.SUCCESS_MESSAGE' | translate : { contact: bookingMessage } }}
+          </p>
+          <p class="booking-message seat-change-msg">
+            {{ 'BOOKING_RESULT.SEATS_CHANGED' | translate }}
+          </p>
+        </div>
+      }
+    </section>
+  }
+
+  <!-- ─── Confirmation Modal ─── -->
+  @if (showConfirmModal) {
+    <div class="modal-overlay" (click)="closeConfirmModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2 class="modal-title">{{ 'BOOKING_CONFIRM.TITLE' | translate }}</h2>
+
+        <div class="modal-body">
+          <div class="modal-row">
+            <span class="modal-label">{{ 'BOOKING_CONFIRM.SEATS' | translate }}</span>
+            <span class="modal-value">{{ selectedSeatNumbers.join(', ') }}</span>
+          </div>
+
+          <div class="modal-row">
+            <span class="modal-label">{{ 'BOOKING_CONFIRM.DATE' | translate }}</span>
+            <span class="modal-value">{{ event()?.date }} {{ event()?.time }}</span>
+          </div>
+
+          <div class="modal-row">
+            <span class="modal-label">{{ 'BOOKING_CONFIRM.TIME' | translate }}</span>
+            <span class="modal-value">{{ event()?.time }}</span>
+          </div>
+
+          <div class="modal-row total-row">
+            <span class="modal-label">{{ 'BOOKING_CONFIRM.TOTAL' | translate }}</span>
+            <span class="modal-value modal-price">EGP {{ modalTotalPrice | number }}</span>
+          </div>
+
+          <div class="admin-approval-notice">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span>{{ 'BOOKING_CONFIRM.ADMIN_APPROVAL' | translate }}</span>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeConfirmModal()" [disabled]="isBookingLoading()">
+            {{ 'BOOKING_CONFIRM.CANCEL' | translate }}
+          </button>
+          <button type="button" class="btn-primary" (click)="confirmBooking()" [disabled]="isBookingLoading()">
+            @if (isBookingLoading()) {
+              <span>{{ 'BOOKING_CONFIRM.PROCESSING' | translate }}</span>
+            } @else {
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>{{ 'BOOKING_CONFIRM.CONFIRM' | translate }}</span>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</section>

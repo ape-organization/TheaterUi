@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.row-label {
+  width: 1.8rem;
+  font-weight: 700;
+  color: var(--clr-text-secondary);
+  font-size: 0.85rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.row-label-left {
+  margin-right: 0.25rem;
+}
+
+.vip-row .row-label-left {
+  color: var(--clr-gold);
+  font-weight: 800;
+}
+
+.regular-row .row-label-left {
+  color: var(--clr-text-secondary);
+}
+
+.seats {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: nowrap;
+  flex: 1;
+  justify-content: center;
+}

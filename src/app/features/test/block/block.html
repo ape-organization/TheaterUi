@@ -1,0 +1,21 @@
+<div
+    class="block-wrapper"
+    [style.left.px]="block().translateX + translateOffset()"
+    [style.top.px]="block().translateY + translateOffset()">
+
+    <div
+        class="block"
+        [style.transform]="'rotate(' + block().rotation + 'deg)'">
+
+        @for (row of block().rows; track row.id) {
+            <app-row
+                [row]="row"
+                [type]="row.label === 'A' || row.label === 'B' || row.label === 'C' ? 'vip' : 'regular'"
+                [selectedSeatIds]="selectedSeatIds()"
+                (seatClick)="seatClick.emit($event)">
+            </app-row>
+        }
+
+    </div>
+
+</div>

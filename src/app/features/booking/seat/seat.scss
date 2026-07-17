@@ -1,0 +1,77 @@
+:host{
+
+    display:block;
+
+}
+
+.seat{
+
+    width:28px;
+
+    height:20px;
+
+    border:1px solid #444;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:9px;
+
+    font-weight:700;
+
+    border-radius:2px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    user-select:none;
+
+}
+
+.available{
+
+    background:white;
+
+    color:black;
+
+}
+
+.available:hover{
+
+    transform:scale(1.15);
+
+    background:#0d6efd;
+
+    color:white;
+
+}
+
+.selected{
+
+    background:#28a745;
+
+    color:white;
+
+}
+
+.reserved{
+
+    background:#dc3545;
+
+    color:white;
+
+    cursor:not-allowed;
+
+}
+
+.vip{
+
+    background:#f1b000;
+
+    color:black;
+
+}

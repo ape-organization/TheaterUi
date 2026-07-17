@@ -1,0 +1,228 @@
+/* ─── These styles are shared with login component ─── */
+.auth-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem 1rem;
+}
+
+.auth-bg-pattern {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(229, 9, 20, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(245, 197, 24, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, rgba(229, 9, 20, 0.03) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.auth-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 420px;
+  animation: slideUp 0.5s ease-out;
+}
+
+.auth-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.auth-brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  background: var(--gradient-primary);
+  color: #fff;
+  box-shadow: 0 8px 24px var(--clr-accent-glow);
+  margin-bottom: 0.25rem;
+}
+
+.auth-brand-name {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f0f0f5, #e50914);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.auth-card {
+  width: 100%;
+  background: var(--clr-bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  animation: scaleIn 0.4s ease-out 0.1s both;
+}
+
+.auth-card-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.auth-card-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  color: var(--clr-text-primary);
+}
+
+.auth-card-header p {
+  font-size: 0.9rem;
+  color: var(--clr-text-secondary);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.input-error {
+  font-size: 0.8rem;
+  color: var(--clr-error);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.auth-submit {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.auth-footer p {
+  font-size: 0.78rem;
+  color: var(--clr-text-muted);
+  line-height: 1.5;
+}
+
+.auth-footer a {
+  color: var(--clr-accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition);
+}
+
+.auth-footer a:hover {
+  color: var(--clr-accent-hover);
+  text-decoration: underline;
+}
+
+/* ─── Contact Info ─── */
+.contact-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--clr-text-primary);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  background: var(--clr-bg-elevated);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ─── OTP Specific Styles ─── */
+.back-link {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--clr-text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color var(--transition);
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-sm);
+  margin-left: -0.5rem;
+}
+
+.back-btn:hover {
+  color: var(--clr-accent);
+  background: var(--clr-accent-subtle);
+}
+
+.otp-input-wrapper {
+  position: relative;
+}
+
+.otp-input {
+  text-align: center;
+  font-size: 1.5rem !important;
+  letter-spacing: 0.5em;
+  padding: 1.25rem 1rem !important;
+  font-weight: 700;
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 1.5rem 1rem;
+    min-height: calc(100vh - 56px);
+  }
+
+  .auth-card {
+    padding: 1.5rem;
+  }
+
+  .auth-brand-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .auth-brand-name {
+    font-size: 1.6rem;
+  }
+
+  .otp-input {
+    font-size: 1.25rem !important;
+  }
+}

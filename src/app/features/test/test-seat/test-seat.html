@@ -1,0 +1,13 @@
+
+<button
+  type="button"
+  class="seat-btn"
+  [class.selected]="selectedSeatIds().includes(seat().id)"
+  [class.reserved]="seat().status === 'reserved'"
+  [class.vip-seat]="type() === 'vip'"
+  [disabled]="seat().status === 'reserved'"
+  (click)="seatClick.emit(seat())"
+  [attr.aria-label]="'Seat ' + seat().seatnumber + ', ' + seat().status"
+>
+  <span class="seat-number">{{ seat().seatnumber }}</span>
+</button>

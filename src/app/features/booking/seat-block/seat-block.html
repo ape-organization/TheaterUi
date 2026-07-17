@@ -1,0 +1,28 @@
+<div
+class="seat-block"
+
+[style.transform]="transform()">
+
+    @for(row of block().rows;track row.label){
+
+        <div class="row">
+
+            <div class="row-name">
+
+                {{row.label}}
+
+            </div>
+
+            @for(seat of row.seats;track seat.id){
+
+                <app-seat
+                [seat]="seat">
+                </app-seat>
+
+            }
+
+        </div>
+
+    }
+
+</div>

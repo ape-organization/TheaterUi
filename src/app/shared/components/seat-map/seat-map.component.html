@@ -1,0 +1,93 @@
+
+
+<section class="seat-map-shell">
+<!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <span class="legend-dot available"></span>
+      <span>{{ 'SEAT_MAP.AVAILABLE' | translate }}</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot selected"></span>
+      <span>{{ 'SEAT_MAP.SELECTED' | translate }}</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot reserved"></span>
+      <span>{{ 'SEAT_MAP.RESERVED' | translate }}</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot premium"></span>
+      <span>{{ 'SEAT_MAP.PREMIUM' | translate }}</span>
+    </div>
+  </div>
+
+  <!-- Theater label (المسرح) -->
+
+  <!-- Screen -->
+  <div class="screen-container">
+    <div class="screen-curve"></div>
+    <div class="screen-label">{{ 'SEAT_MAP.SCREEN' | translate }}</div>
+  </div>
+
+  
+
+  <!-- Seat Map -->
+  <div class="seat-map-scroll">
+    <div class="seat-map">
+      @for (section of theaterSections(); track section.name; let secIdx = $index) {
+        @if (secIdx > 0) {
+          <div class="section-divider">
+            <span class="divider-label">{{ section.name }}</span>
+          </div>
+        }
+
+        @for (tRow of section.rows; track $index; let rowIdx = $index) {
+          <div class="row" [class.vip-row]="tRow.type === 'vip'" [class.regular-row]="tRow.type === 'regular'">
+            <!-- Left label -->
+            <div class="row-label row-label-left">{{ tRow.label }}</div>
+
+            <div class="row-seats">
+              @for (seat of tRow.seats; track seat.id) {
+                <button
+                  type="button"
+                  class="seat-btn"
+                  [class.selected]="isSelected(seat.id)"
+                  [class.reserved]="isReserved(seat)"
+                  [class.vip-seat]="tRow.type === 'vip'"
+                  [disabled]="isReserved(seat)"
+                  (click)="toggleSeatSelection(seat)"
+                  [attr.aria-label]="'Seat ' + seat.seatNumber + ', ' + seat.status"
+                >
+                  <span class="seat-number">{{ seat.seatNumber.replace(tRow.label, '') }}</span>
+                </button>
+              }
+            </div>
+
+            <!-- Right label -->
+            <div class="row-label row-label-right">{{ tRow.name }}</div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  <!-- Selection Summary -->
+  @if (selectedSeatCount() > 0) {
+    <div class="selection-summary">
+      <div class="summary-left">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <div class="summary-text">
+          <span class="summary-count"><strong>{{ selectedSeatCount() }}</strong> {{ 'SEAT_MAP.SEATS_SELECTED' | translate }}</span>
+        </div>
+      </div>
+      <div class="summary-right">
+        <span class="summary-total-label">{{ 'SEAT_MAP.TOTAL' | translate }}</span>
+        <span class="summary-total">{{ selectedSeatTotal() | currency:'EGP':'symbol':'1.0-0' }}</span>
+      </div>
+    </div>
+  }
+</section>

@@ -1,0 +1,140 @@
+{
+  "BRAND": {
+    "NAME": "سين بوك",
+    "TAGLINE": "تجربة سينمائية فاخرة",
+    "DESC": "حجز سينما ممتاز"
+  },
+  "HEADER": {
+    "NOW_SHOWING": "الآن في الصالات"
+  },
+  "EVENT": {
+    "BADGE": "الآن في الصالات",
+    "PER_SEAT": "لكل مقعد",
+    "SELECT_SEATS": "اختر مقاعدك",
+    "SELECT_SEATS_DESC": "اختر مقاعدك المفضلة من الخريطة أدناه",
+    "SEATS_SELECTED": "مقعد (مقاعد) تم اختيارها",
+    "CONTINUE_CHECKOUT": "متابعة إلى الدفع"
+  },
+  "SEAT_MAP": {
+    "SCREEN": "المسرح",
+    "AVAILABLE": "متاح",
+    "SELECTED": "مختار",
+    "RESERVED": "محجوز",
+    "PREMIUM": "ممتاز",
+    "VIP": "VIP",
+    "REGULAR": "عادي",
+    "SEATS_SELECTED": "مقعد (مقاعد) تم اختيارها",
+    "TOTAL": "المجموع"
+  },
+  "BOOKING_CONFIRM": {
+    "TITLE": "تأكيد الحجز",
+    "SEATS": "المقاعد المختارة",
+    "DATE": "التاريخ",
+    "TIME": "الوقت",
+    "TOTAL": "المبلغ الإجمالي",
+    "ADMIN_APPROVAL": "هذا الحجز يحتاج إلى موافقة المشرف. يرجى التوجه للدفع في مكتب الكنيسة.",
+    "CONFIRM": "تأكيد الحجز",
+    "CANCEL": "إلغاء",
+    "PROCESSING": "جارٍ المعالجة..."
+  },
+  "BOOKING_RESULT": {
+    "SUCCESS_TITLE": "تم تقديم طلب الحجز!",
+    "SUCCESS_MESSAGE": "تم استلام حجزك وهو بانتظار موافقة المشرف. سيتم إرسال تأكيد إلى {{contact}} الخاص بك.",
+    "SEATS_CHANGED": "تم تغيير حالة المقاعد المختارة إلى محجوز."
+  },
+  "LOGIN": {
+    "ENTER_CONTACT":"ادخل بيانات الاتصالات",
+    "EMAIL":"ايميل",
+    "MOBILE":"موبيل",
+    "EMAIL_ADDRESS":"البريد الالكتروني",
+    "WELCOME_BACK": "مرحباً بعودتك",
+    "ENTER_PHONE": "أدخل رقم هاتفك للمتابعة",
+    "MOBILE_NUMBER": "رقم الهاتف",
+    "PHONE_ERROR": "يرجى إدخال رقم هاتف صحيح مكون من 9 أرقام",
+    "SEND_OTP": "إرسال رمز التحقق",
+    "SENDING_OTP": "جارٍ إرسال رمز التحقق...",
+    "TERMS": "بالمتابعة، أنت توافق على الشروط وسياسة الخصوصية"
+  },
+  "VERIFY_OTP": {
+    "BACK": "رجوع",
+    "VERIFY_TITLE": "تحقق من رمز OTP",
+    "VERIFY_DESC": "تم إرسال رمز مكون من 4 أرقام إلى هاتفك",
+    "OTP_LABEL": "كلمة المرور لمرة واحدة",
+    "OTP_PLACEHOLDER": "أدخل الرمز المكون من 4 أرقام",
+    "OTP_ERROR": "يرجى إدخال رمز صحيح مكون من 4 أرقام",
+    "VERIFYING": "جارٍ التحقق...",
+    "VERIFY_CONTINUE": "تحقق واستمر",
+    "RESEND": "لم تستلم الرمز؟ إعادة إرسال رمز التحقق"
+  },
+  "CHECKOUT": {
+    "STEP_SELECT": "اختيار المقاعد",
+    "STEP_PAYMENT": "الدفع",
+    "STEP_CONFIRMATION": "التأكيد",
+    "BOOKING_SUMMARY": "ملخص الحجز",
+    "SELECTED_SEATS": "المقاعد المختارة",
+    "NUMBER_OF_SEATS": "عدد المقاعد",
+    "TICKET_PRICE": "سعر التذكرة",
+    "EACH": "لكل واحدة",
+    "TOTAL_AMOUNT": "المبلغ الإجمالي",
+    "PAYMENT_DETAILS": "تفاصيل الدفع",
+    "CARDHOLDER_NAME": "اسم حامل البطاقة",
+    "CARDHOLDER_PLACEHOLDER": "جون دو",
+    "CARDHOLDER_ERROR": "اسم حامل البطاقة مطلوب",
+    "CARD_NUMBER": "رقم البطاقة",
+    "CARD_PLACEHOLDER": "1234 5678 9012 3456",
+    "CARD_ERROR": "أدخل رقم بطاقة صحيح مكون من 16 رقم",
+    "EXPIRY": "تاريخ الانتهاء",
+    "EXPIRY_PLACEHOLDER": "شهر/سنة",
+    "EXPIRY_ERROR": "تاريخ انتهاء غير صحيح",
+    "CVV": "CVV",
+    "CVV_PLACEHOLDER": "123",
+    "CVV_ERROR": "CVV غير صحيح",
+    "PROCESSING": "جارٍ معالجة الدفع...",
+    "PAY": "ادفع {{amount}}",
+    "SECURITY": "محمي بتشفير 256 بت"
+  },
+  "BOOKING_SUCCESS": {
+    "TITLE": "تم تأكيد الحجز!",
+    "SUBTITLE": "تم حجز تذاكرك بنجاح. تم إرسال التأكيد إلى هاتفك.",
+    "CONFIRMED": "مؤكد",
+    "MOVIE": "الفيلم",
+    "DATE": "التاريخ",
+    "TIME": "الوقت",
+    "BOOKING_ID": "رقم الحجز",
+    "SEATS": "المقاعد",
+    "LOCATION": "الموقع",
+    "DIGITAL_TICKET": "تذكرة رقمية",
+    "QR_DESC": "أظهر رمز QR هذا عند المدخل",
+    "BOOK_ANOTHER": "حجز فيلم آخر"
+  },
+  "ADMIN": {
+    "PANEL": "لوحة التحكم",
+    "LOGOUT": "تسجيل الخروج",
+    "TOTAL_BOOKINGS": "إجمالي الحجوزات",
+    "PENDING": "قيد الانتظار",
+    "CONFIRMED": "مؤكد",
+    "CANCELLED": "ملغي",
+    "ALL_RESERVATIONS": "جميع الحجوزات",
+    "REFRESH": "تحديث",
+    "LOADING": "جارٍ تحميل الحجوزات...",
+    "NO_RESERVATIONS": "لا توجد حجوزات بعد",
+    "NO_RESERVATIONS_DESC": "ستظهر الحجوزات هنا بمجرد قيام العملاء بالحجز.",
+    "BOOKING_ID": "رقم الحجز",
+    "CUSTOMER": "العميل",
+    "CONTACT": "جهة الاتصال",
+    "EVENT": "الحدث",
+    "SEATS": "المقاعد",
+    "AMOUNT": "المبلغ",
+    "DATE": "التاريخ",
+    "STATUS": "الحالة",
+    "ACTIONS": "الإجراءات",
+    "EMAIL": "بريد إلكتروني",
+    "PHONE": "هاتف",
+    "CONFIRM_BTN": "تأكيد",
+    "CANCEL_BTN": "إلغاء"
+  },
+  "LANG": {
+    "EN": "English",
+    "AR": "العربية"
+  }
+}

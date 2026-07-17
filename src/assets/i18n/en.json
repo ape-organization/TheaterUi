@@ -1,0 +1,140 @@
+{
+  "BRAND": {
+    "NAME": "CineBook",
+    "TAGLINE": "Premium Cinema Experience",
+    "DESC": "Premium Cinema Booking"
+  },
+  "HEADER": {
+    "NOW_SHOWING": "Now Showing"
+  },
+  "EVENT": {
+    "BADGE": "Now Showing",
+    "PER_SEAT": "per seat",
+    "SELECT_SEATS": "Select Your Seats",
+    "SELECT_SEATS_DESC": "Choose your preferred seats from the map below",
+    "SEATS_SELECTED": "seat(s) selected",
+    "CONTINUE_CHECKOUT": "Continue to Checkout"
+  },
+  "SEAT_MAP": {
+    "SCREEN": "Theater",
+    "AVAILABLE": "Available",
+    "SELECTED": "Selected",
+    "RESERVED": "Reserved",
+    "PREMIUM": "Premium",
+    "VIP": "VIP",
+    "REGULAR": "Regular",
+    "SEATS_SELECTED": "seat(s) selected",
+    "TOTAL": "Total"
+  },
+  "BOOKING_CONFIRM": {
+    "TITLE": "Confirm Your Booking",
+    "SEATS": "Selected Seats",
+    "DATE": "Date",
+    "TIME": "Time",
+    "TOTAL": "Total Amount",
+    "ADMIN_APPROVAL": "This booking requires admin approval. Please proceed to pay at your church office.",
+    "CONFIRM": "Confirm Booking",
+    "CANCEL": "Cancel",
+    "PROCESSING": "Processing..."
+  },
+  "BOOKING_RESULT": {
+    "SUCCESS_TITLE": "Booking Request Submitted!",
+    "SUCCESS_MESSAGE": "Your booking has been received and is pending admin approval. A confirmation will be sent to your {{contact}}.",
+    "SEATS_CHANGED": "Selected seats have been marked as reserved."
+  },
+  "LOGIN": {
+    "ENTER_CONTACT":"Enter Contact",
+    "EMAIL":"Email",
+    "MOBILE":"Mobile",
+    "EMAIL_ADDRESS":"Email Address",
+    "WELCOME_BACK": "Welcome Back",
+    "ENTER_PHONE": "Enter your mobile number to continue",
+    "MOBILE_NUMBER": "Mobile Number",
+    "PHONE_ERROR": "Please enter a valid 9-digit phone number",
+    "SEND_OTP": "Send OTP",
+    "SENDING_OTP": "Sending OTP...",
+    "TERMS": "By continuing, you agree to our Terms & Privacy Policy"
+  },
+  "VERIFY_OTP": {
+    "BACK": "Back",
+    "VERIFY_TITLE": "Verify OTP",
+    "VERIFY_DESC": "A 4-digit code has been sent to your phone",
+    "OTP_LABEL": "One-Time Password",
+    "OTP_PLACEHOLDER": "Enter 4-digit code",
+    "OTP_ERROR": "Please enter a valid 4-digit code",
+    "VERIFYING": "Verifying...",
+    "VERIFY_CONTINUE": "Verify & Continue",
+    "RESEND": "Didn't receive the code? Resend OTP"
+  },
+  "CHECKOUT": {
+    "STEP_SELECT": "Select Seats",
+    "STEP_PAYMENT": "Payment",
+    "STEP_CONFIRMATION": "Confirmation",
+    "BOOKING_SUMMARY": "Booking Summary",
+    "SELECTED_SEATS": "Selected Seats",
+    "NUMBER_OF_SEATS": "Number of Seats",
+    "TICKET_PRICE": "Ticket Price",
+    "EACH": "each",
+    "TOTAL_AMOUNT": "Total Amount",
+    "PAYMENT_DETAILS": "Payment Details",
+    "CARDHOLDER_NAME": "Cardholder Name",
+    "CARDHOLDER_PLACEHOLDER": "John Doe",
+    "CARDHOLDER_ERROR": "Cardholder name is required",
+    "CARD_NUMBER": "Card Number",
+    "CARD_PLACEHOLDER": "1234 5678 9012 3456",
+    "CARD_ERROR": "Enter a valid 16-digit card number",
+    "EXPIRY": "Expiry Date",
+    "EXPIRY_PLACEHOLDER": "MM/YY",
+    "EXPIRY_ERROR": "Invalid expiry",
+    "CVV": "CVV",
+    "CVV_PLACEHOLDER": "123",
+    "CVV_ERROR": "Invalid CVV",
+    "PROCESSING": "Processing Payment...",
+    "PAY": "Pay {{amount}}",
+    "SECURITY": "Secured with 256-bit encryption"
+  },
+  "BOOKING_SUCCESS": {
+    "TITLE": "Booking Confirmed!",
+    "SUBTITLE": "Your tickets have been booked successfully. A confirmation has been sent to your phone.",
+    "CONFIRMED": "Confirmed",
+    "MOVIE": "Movie",
+    "DATE": "Date",
+    "TIME": "Time",
+    "BOOKING_ID": "Booking ID",
+    "SEATS": "Seats",
+    "LOCATION": "Location",
+    "DIGITAL_TICKET": "Digital Ticket",
+    "QR_DESC": "Show this QR code at the entrance",
+    "BOOK_ANOTHER": "Book Another Movie"
+  },
+  "ADMIN": {
+    "PANEL": "Admin Panel",
+    "LOGOUT": "Logout",
+    "TOTAL_BOOKINGS": "Total Bookings",
+    "PENDING": "Pending",
+    "CONFIRMED": "Confirmed",
+    "CANCELLED": "Cancelled",
+    "ALL_RESERVATIONS": "All Reservations",
+    "REFRESH": "Refresh",
+    "LOADING": "Loading reservations...",
+    "NO_RESERVATIONS": "No reservations yet",
+    "NO_RESERVATIONS_DESC": "Bookings will appear here once customers make reservations.",
+    "BOOKING_ID": "Booking ID",
+    "CUSTOMER": "Customer",
+    "CONTACT": "Contact",
+    "EVENT": "Event",
+    "SEATS": "Seats",
+    "AMOUNT": "Amount",
+    "DATE": "Date",
+    "STATUS": "Status",
+    "ACTIONS": "Actions",
+    "EMAIL": "Email",
+    "PHONE": "Phone",
+    "CONFIRM_BTN": "Confirm",
+    "CANCEL_BTN": "Cancel"
+  },
+  "LANG": {
+    "EN": "English",
+    "AR": "العربية"
+  }
+}

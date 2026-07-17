@@ -1,0 +1,41 @@
+:host{
+
+    position:absolute;
+
+}
+
+.seat-block{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.row{
+
+    display:flex;
+
+    gap:3px;
+
+    margin-bottom:4px;
+
+}
+
+.row-name{
+
+    width:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#0b4ea2;
+
+    color:white;
+
+    font-weight:bold;
+
+    font-size:10px;
+
+}

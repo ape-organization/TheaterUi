@@ -1,0 +1,64 @@
+<div class="theater" [style.--seat-scale]="scale">
+
+    <!-- Legend -->
+    <div class="legend">
+        <div class="legend-item">
+            <span class="legend-dot available"></span>
+            <span>{{ 'SEAT_MAP.AVAILABLE' | translate }}</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot selected"></span>
+            <span>{{ 'SEAT_MAP.SELECTED' | translate }}</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot reserved"></span>
+            <span>{{ 'SEAT_MAP.RESERVED' | translate }}</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot premium"></span>
+            <span>{{ 'SEAT_MAP.PREMIUM' | translate }}</span>
+        </div>
+    </div>
+
+    <div class="layout" 
+         [style.transform]="'scale(' + scale + ')'"
+         [style.transform-origin]="scale > 1 ? 'center top' : 'left top'">
+
+        <div class="stage-wrapper">
+            <app-stage />
+        </div>
+
+        @for(block of blocks; track block.id){
+
+            <app-block
+                [block]="block"
+                [selectedSeatIds]="selectedSeatIds()"
+                [translateOffset]="translateOffset"
+                (seatClick)="toggleSeatSelection($event)">
+            </app-block>
+
+        }
+
+    </div>
+
+    <!-- Selection Summary -->
+    @if (selectedSeatCount() > 0) {
+        <div class="selection-summary">
+            <div class="summary-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <div class="summary-text">
+                    <span class="summary-count"><strong>{{ selectedSeatCount() }}</strong> {{ 'SEAT_MAP.SEATS_SELECTED' | translate }}</span>
+                </div>
+            </div>
+            <div class="summary-right">
+                <span class="summary-total-label">{{ 'SEAT_MAP.TOTAL' | translate }}</span>
+                <span class="summary-total">{{ selectedSeatTotal() | currency:'EGP':'symbol':'1.0-0' }}</span>
+            </div>
+        </div>
+    }
+
+</div>
