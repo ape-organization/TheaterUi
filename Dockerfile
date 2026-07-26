@@ -19,7 +19,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy built artifacts from the build stage
-COPY --from=build /app/dist/threater_seats_reservation /usr/share/nginx/html
+COPY --from=build /app/dist/threater_seats_reservation/browser/ /usr/share/nginx/html/
 
 # Copy custom nginx config if needed (optional)
 # COPY nginx.conf /etc/nginx/nginx.conf
