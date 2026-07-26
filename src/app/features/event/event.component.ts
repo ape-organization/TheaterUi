@@ -1,12 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
 import { EventService } from '../../core/services/event.service';
 import { BookingService } from '../../core/services/booking.service';
 import { AuthService } from '../../core/services/auth.service';
-import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
-import { SeatMapComponent } from '../../shared/components/seat-map/seat-map.component';
 import type { Seat } from '../../core/models/api.models';
 import { BookingRequest } from '../../core/models/api.models';
 import { TheaterCanvas } from '../test/theater-canvas/theater-canvas';
@@ -14,8 +12,7 @@ import { TheaterCanvas } from '../test/theater-canvas/theater-canvas';
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent, TranslatePipe,
-    TheaterCanvas],
+  imports: [CommonModule, FormsModule, TheaterCanvas],
   templateUrl: './event.component.html',
   styleUrl: './event.component.scss'
 })
@@ -43,6 +40,13 @@ export class EventComponent implements OnInit {
   /** The seat numbers for display in the modal */
   protected selectedSeatNumbers: string[] = [];
 
+  /** User info */
+  protected userName = '';
+  protected userChurch = '';
+
+  /** Whether the user info modal is shown (on first load) */
+  protected showUserInfoModal = true;
+
   ngOnInit(): void {
     const cachedEvent = this.eventService.selectedEvent();
     if (!cachedEvent) {
@@ -53,18 +57,27 @@ export class EventComponent implements OnInit {
             next: (seatMap) => {
               this.eventService.setSeatMap(seatMap);
             },
-            error: () => window.alert('Unable to load seating information.')
+            error: () => window.alert('تعذر تحميل معلومات المقاعد.')
           });
         },
-        error: () => window.alert('Unable to load the event right now.')
+        error: () => window.alert('تعذر تحميل الفعالية حالياً.')
       });
       return;
     }
 
     this.eventService.getSeatMap(1).subscribe({
       next: (seatMap) => this.eventService.setSeatMap(seatMap),
-      error: () => window.alert('Unable to load seating information.')
+      error: () => window.alert('تعذر تحميل معلومات المقاعد.')
     }); 
+  }
+
+  /** Save user info and close the modal */
+  saveUserInfo(): void {
+    if (!this.userName.trim() || !this.userChurch.trim()) {
+      window.alert('يرجى إدخال الاسم والكنيسة للمتابعة');
+      return;
+    }
+    this.showUserInfoModal = false;
   }
 
   /** Receives selected seats from theater-canvas child component */
@@ -101,7 +114,9 @@ export class EventComponent implements OnInit {
       eventId: this.event()?.id ?? 1,
       seatIds: this.selectedSeats.map((seat) => seat.id),
       contactMethod,
-      contactValue
+      contactValue,
+      name: this.userName,
+      church: this.userChurch
     };
 
     this.bookingService.createBooking(request).subscribe({
@@ -109,17 +124,13 @@ export class EventComponent implements OnInit {
         this.bookingService.setBookingSummary(response);
         this.showConfirmModal = false;
         this.bookingSuccess = true;
-
-        // Mark seats as reserved on the test layout (local state)
-        // The seat status will be updated via the seat map API in real scenario
-        const contactLabel = contactMethod === 'email' ? 'email' : 'phone';
         this.bookingMessage = contactValue;
 
         // Clear seat selection after successful booking
         this.selectedSeats = [];
         this.bookingService.clearSelection();
       },
-      error: () => window.alert('Booking could not be created.')
+      error: () => window.alert('لم يتم إنشاء الحجز.')
     });
   }
 

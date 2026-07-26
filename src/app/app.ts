@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
-import { TranslateService } from '@ngx-translate/core';
+import { FooterComponent } from './shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  constructor(private translate: TranslateService) {
-  translate.addLangs(['en', 'ar']);
-  translate.use('ar');
-}
+  constructor() {
+    document.documentElement.dir = 'rtl';
+    document.documentElement.lang = 'ar';
+  }
 }

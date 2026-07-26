@@ -2,14 +2,13 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-verify-otp',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, LoadingSpinnerComponent, TranslatePipe],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, LoadingSpinnerComponent],
   templateUrl: './verify-otp.component.html',
   styleUrl: './verify-otp.component.scss'
 })
@@ -20,7 +19,7 @@ export class VerifyOtpComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly form = this.fb.nonNullable.group({
-    otp: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]]
+    otp: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]]
   });
 
   readonly isLoading = this.authService.isLoading;
@@ -45,12 +44,14 @@ export class VerifyOtpComponent {
         this.authService.setAuthenticatedUser(response);
         if (response.role === 'admin') {
           this.router.navigate(['/admin']);
+        } else if (response.role === 'supervisor') {
+          this.router.navigate(['/supervisor']);
         } else {
           this.router.navigate(['/event']);
         }
       },
       error: () => {
-        window.alert('Invalid OTP. Please try again.');
+        window.alert('رمز التحقق غير صحيح. حاول مرة أخرى.');
       }
     });
   }

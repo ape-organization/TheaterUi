@@ -2,14 +2,13 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth.service';
 import { AllBookingResponse, UpdateBookingStatusRequest } from '../../core/models/api.models';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })
@@ -41,7 +40,7 @@ private cdr = inject(ChangeDetectorRef);
           this.cdr.detectChanges();
       },
       error: () => {
-        window.alert('Failed to load bookings.');
+        window.alert('فشل تحميل الحجوزات.');
         this.isLoading = false;
       }
     });
@@ -59,7 +58,7 @@ private cdr = inject(ChangeDetectorRef);
         this.updatingId = null;
       },
       error: () => {
-        window.alert('Failed to update booking status.');
+        window.alert('فشل تحديث حالة الحجز.');
         this.updatingId = null;
       }
     });

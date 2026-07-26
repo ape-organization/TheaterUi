@@ -3,12 +3,8 @@
   <header class="admin-header">
     <div class="admin-header-content">
       <div class="admin-brand">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-          <path d="M2 17l10 5 10-5"/>
-          <path d="M2 12l10 5 10-5"/>
-        </svg>
-        <h1>{{ 'ADMIN.PANEL' | translate }}</h1>
+        <img src="assets/logo.png" alt="الشعار" class="admin-logo" onerror="this.style.display='none'" />
+        <h1>لوحة التحكم</h1>
       </div>
       <div class="admin-header-right">
         <div class="admin-user-info">
@@ -16,7 +12,7 @@
             <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
-          <span>{{ currentUser?.email || currentUser?.phoneNumber }}</span>
+          <span>{{ currentUser?.name || currentUser?.email || currentUser?.phoneNumber }}</span>
         </div>
         <button class="btn-logout" (click)="logout()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -24,7 +20,7 @@
             <polyline points="16 17 21 12 16 7"/>
             <line x1="21" y1="12" x2="9" y2="12"/>
           </svg>
-          {{ 'ADMIN.LOGOUT' | translate }}
+          خروج
         </button>
       </div>
     </div>
@@ -44,7 +40,7 @@
           </div>
           <div class="stat-info">
             <span class="stat-value">{{ bookings.length }}</span>
-            <span class="stat-label">{{ 'ADMIN.TOTAL_BOOKINGS' | translate }}</span>
+            <span class="stat-label">إجمالي الحجوزات</span>
           </div>
         </div>
         <div class="stat-card">
@@ -56,7 +52,7 @@
           </div>
           <div class="stat-info">
             <span class="stat-value">{{ bookings.filter(b => b.status === 'pending').length }}</span>
-            <span class="stat-label">{{ 'ADMIN.PENDING' | translate }}</span>
+            <span class="stat-label">قيد الانتظار</span>
           </div>
         </div>
         <div class="stat-card">
@@ -68,7 +64,7 @@
           </div>
           <div class="stat-info">
             <span class="stat-value">{{ bookings.filter(b => b.status === 'confirmed').length }}</span>
-            <span class="stat-label">{{ 'ADMIN.CONFIRMED' | translate }}</span>
+            <span class="stat-label">مؤكد</span>
           </div>
         </div>
         <div class="stat-card">
@@ -81,7 +77,7 @@
           </div>
           <div class="stat-info">
             <span class="stat-value">{{ bookings.filter(b => b.status === 'cancelled').length }}</span>
-            <span class="stat-label">{{ 'ADMIN.CANCELLED' | translate }}</span>
+            <span class="stat-label">ملغي</span>
           </div>
         </div>
       </div>
@@ -89,20 +85,20 @@
       <!-- Bookings Table -->
       <div class="admin-card">
         <div class="admin-card-header">
-          <h2>{{ 'ADMIN.ALL_RESERVATIONS' | translate }}</h2>
+          <h2>جميع الحجوزات</h2>
           <button class="btn-refresh" (click)="loadBookings()" [disabled]="isLoading">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [class.spinning]="isLoading">
               <polyline points="23 4 23 10 17 10"/>
               <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
             </svg>
-            {{ 'ADMIN.REFRESH' | translate }}
+            تحديث
           </button>
         </div>
 
         @if (isLoading) {
           <div class="loading-state">
             <div class="spinner"></div>
-            <span>{{ 'ADMIN.LOADING' | translate }}</span>
+            <span>جاري التحميل...</span>
           </div>
         } @else if (bookings.length === 0) {
           <div class="empty-state">
@@ -111,23 +107,25 @@
               <line x1="3" y1="9" x2="21" y2="9"/>
               <line x1="9" y1="21" x2="9" y2="9"/>
             </svg>
-            <h3>{{ 'ADMIN.NO_RESERVATIONS' | translate }}</h3>
-            <p>{{ 'ADMIN.NO_RESERVATIONS_DESC' | translate }}</p>
+            <h3>لا توجد حجوزات</h3>
+            <p>لم يتم إنشاء أي حجوزات بعد</p>
           </div>
         } @else {
           <div class="table-wrapper">
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>{{ 'ADMIN.BOOKING_ID' | translate }}</th>
-                  <th>{{ 'ADMIN.CUSTOMER' | translate }}</th>
-                  <th>{{ 'ADMIN.CONTACT' | translate }}</th>
-                  <th>{{ 'ADMIN.EVENT' | translate }}</th>
-                  <th>{{ 'ADMIN.SEATS' | translate }}</th>
-                  <th>{{ 'ADMIN.AMOUNT' | translate }}</th>
-                  <th>{{ 'ADMIN.DATE' | translate }}</th>
-                  <th>{{ 'ADMIN.STATUS' | translate }}</th>
-                  <th>{{ 'ADMIN.ACTIONS' | translate }}</th>
+                  <th>رقم الحجز</th>
+                  <th>العميل</th>
+                  <th>الاسم</th>
+                  <th>الكنيسة</th>
+                  <th>جهة الاتصال</th>
+                  <th>الفعالية</th>
+                  <th>المقاعد</th>
+                  <th>المبلغ</th>
+                  <th>التاريخ</th>
+                  <th>الحالة</th>
+                  <th>إجراء</th>
                 </tr>
               </thead>
               <tbody>
@@ -137,14 +135,16 @@
                     <td>
                       <div class="customer-info">
                         <div class="customer-avatar">
-                          {{ booking.userContact.charAt(0).toUpperCase() }}
+                          {{ (booking.name || booking.userContact).charAt(0).toUpperCase() }}
                         </div>
-                        <span>{{ booking.userContact }}</span>
+                        <span>{{ booking.name || booking.userContact }}</span>
                       </div>
                     </td>
+                    <td>{{ booking.name || '—' }}</td>
+                    <td>{{ booking.church || '—' }}</td>
                     <td>
                       <span class="contact-badge" [class.contact-email]="booking.contactMethod === 'email'" [class.contact-phone]="booking.contactMethod === 'phone'">
-                        {{ booking.contactMethod === 'email' ? ('ADMIN.EMAIL' | translate) : ('ADMIN.PHONE' | translate) }}
+                        @if (booking.contactMethod === 'email') { بريد } @else { هاتف }
                       </span>
                     </td>
                     <td>{{ booking.eventTitle }}</td>
@@ -155,11 +155,13 @@
                         }
                       </div>
                     </td>
-                    <td class="amount">EGP {{ booking.totalAmount | number }}</td>
+                    <td class="amount">ج.م {{ booking.totalAmount | number }}</td>
                     <td class="date-cell">{{ booking.createdAt | date:'medium' }}</td>
                     <td>
                       <span class="status-badge" [class]="getStatusClass(booking.status)">
-                        {{ booking.status }}
+                        @if (booking.status === 'pending') { قيد الانتظار }
+                        @else if (booking.status === 'confirmed') { مؤكد }
+                        @else { ملغي }
                       </span>
                     </td>
                     <td class="actions-cell">
@@ -176,7 +178,7 @@
                                 <polyline points="20 6 9 17 4 12"/>
                               </svg>
                             }
-                            {{ 'ADMIN.CONFIRM_BTN' | translate }}
+                            تأكيد
                           </button>
                           <button 
                             class="btn-action btn-cancel" 
@@ -190,7 +192,7 @@
                                 <line x1="6" y1="6" x2="18" y2="18"/>
                               </svg>
                             }
-                            {{ 'ADMIN.CANCEL_BTN' | translate }}
+                            إلغاء
                           </button>
                         </div>
                       } @else {

@@ -2,8 +2,6 @@
   <div class="auth-bg-pattern"></div>
 
   <div class="auth-container">
-   
-
     <div class="auth-card">
       <div class="auth-card-header">
         <div class="back-link">
@@ -11,11 +9,11 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            {{ 'VERIFY_OTP.BACK' | translate }}
+            رجوع
           </a>
         </div>
-        <h2>{{ 'VERIFY_OTP.VERIFY_TITLE' | translate }}</h2>
-        <p>{{ 'VERIFY_OTP.VERIFY_DESC' | translate }}</p>
+        <h2>تأكيد رمز التحقق</h2>
+        <p>أدخل رمز التحقق المرسل إلى</p>
         <p class="contact-info">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             @if (method === 'email') {
@@ -31,7 +29,7 @@
 
       <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
         <div class="input-group">
-          <label for="otp" class="input-label">{{ 'VERIFY_OTP.OTP_LABEL' | translate }}</label>
+          <label for="otp" class="input-label">رمز التحقق</label>
           <div class="otp-input-wrapper">
             <input
               id="otp"
@@ -39,33 +37,33 @@
               formControlName="otp"
               class="cinema-input otp-input"
               [class.error]="form.controls.otp.invalid && form.controls.otp.touched"
-              placeholder="{{ 'VERIFY_OTP.OTP_PLACEHOLDER' | translate }}"
-              maxlength="4"
+              placeholder="أدخل الرمز"
+              maxlength="6"
               inputmode="numeric"
               pattern="[0-9]*"
             />
           </div>
           @if (form.controls.otp.invalid && form.controls.otp.touched) {
-            <span class="input-error">{{ 'VERIFY_OTP.OTP_ERROR' | translate }}</span>
+            <span class="input-error">يرجى إدخال رمز تحقق صحيح (6 أرقام)</span>
           }
         </div>
 
         <button type="submit" class="btn-primary auth-submit" [disabled]="isLoading()">
           @if (isLoading()) {
             <app-loading-spinner></app-loading-spinner>
-            <span>{{ 'VERIFY_OTP.VERIFYING' | translate }}</span>
+            <span>جاري التحقق...</span>
           } @else {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="9 11 12 14 22 4"/>
               <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
             </svg>
-            <span>{{ 'VERIFY_OTP.VERIFY_CONTINUE' | translate }}</span>
+            <span>تأكيد ومتابعة</span>
           }
         </button>
       </form>
 
       <div class="auth-footer">
-        <p>{{ 'VERIFY_OTP.RESEND' | translate }}</p>
+        <p>لم يصلك الرمز؟ حاول مرة أخرى</p>
       </div>
     </div>
   </div>

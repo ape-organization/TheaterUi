@@ -6,7 +6,7 @@
     <div class="success-animation">
       <div class="success-ring">
         <svg width="80" height="80" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(46, 212, 122, 0.15)" stroke-width="4"/>
+          <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(45, 122, 74, 0.15)" stroke-width="4"/>
           <circle cx="40" cy="40" r="36" fill="none" stroke="var(--clr-success)" stroke-width="4"
             stroke-dasharray="226" stroke-dashoffset="226"
             style="animation: successCircle 0.8s ease-out 0.3s forwards;"/>
@@ -21,8 +21,8 @@
 
     <!-- Success Content -->
     <div class="success-content">
-      <h1 class="success-title">{{ 'BOOKING_SUCCESS.TITLE' | translate }}</h1>
-      <p class="success-subtitle">{{ 'BOOKING_SUCCESS.SUBTITLE' | translate }}</p>
+      <h1 class="success-title">تم الحجز بنجاح!</h1>
+      <p class="success-subtitle">تم تأكيد حجز مقاعدك بنجاح</p>
     </div>
 
     <!-- Booking Details Card -->
@@ -34,40 +34,40 @@
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
             </svg>
           </div>
-          <span class="ticket-brand-name">{{ 'BRAND.NAME' | translate }}</span>
+          <span class="ticket-brand-name">حجز المسرح</span>
         </div>
-        <div class="ticket-status">{{ 'BOOKING_SUCCESS.CONFIRMED' | translate }}</div>
+        <div class="ticket-status">مؤكد</div>
       </div>
 
       <div class="ticket-body">
         <div class="ticket-info-grid">
           <div class="ticket-info-item full">
-            <span class="ticket-info-label">{{ 'BOOKING_SUCCESS.MOVIE' | translate }}</span>
+            <span class="ticket-info-label">الفعالية</span>
             <span class="ticket-info-value">{{ event()?.title }}</span>
           </div>
 
           <div class="ticket-info-item">
-            <span class="ticket-info-label">{{ 'BOOKING_SUCCESS.DATE' | translate }}</span>
+            <span class="ticket-info-label">التاريخ</span>
             <span class="ticket-info-value">{{ event()?.date }}</span>
           </div>
 
           <div class="ticket-info-item">
-            <span class="ticket-info-label">{{ 'BOOKING_SUCCESS.TIME' | translate }}</span>
+            <span class="ticket-info-label">الوقت</span>
             <span class="ticket-info-value">{{ event()?.time }}</span>
           </div>
 
           <div class="ticket-info-item">
-            <span class="ticket-info-label">{{ 'BOOKING_SUCCESS.BOOKING_ID' | translate }}</span>
+            <span class="ticket-info-label">رقم الحجز</span>
             <span class="ticket-info-value booking-id">{{ booking()?.bookingId }}</span>
           </div>
 
           <div class="ticket-info-item">
-            <span class="ticket-info-label">{{ 'BOOKING_SUCCESS.SEATS' | translate }}</span>
+            <span class="ticket-info-label">المقاعد</span>
             <span class="ticket-info-value seats">{{ booking()?.selectedSeats?.join(', ') }}</span>
           </div>
 
           <div class="ticket-info-item full">
-            <span class="ticket-info-label">{{ 'BOOKING_SUCCESS.LOCATION' | translate }}</span>
+            <span class="ticket-info-label">الموقع</span>
             <span class="ticket-info-value">{{ event()?.location }}</span>
           </div>
         </div>
@@ -94,8 +94,8 @@
           </div>
         </div>
         <div class="qr-info">
-          <span class="qr-label">{{ 'BOOKING_SUCCESS.DIGITAL_TICKET' | translate }}</span>
-          <span class="qr-desc">{{ 'BOOKING_SUCCESS.QR_DESC' | translate }}</span>
+          <span class="qr-label">تذكرة رقمية</span>
+          <span class="qr-desc">استخدم رمز QR للدخول إلى الفعالية</span>
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@
           <circle cx="8.5" cy="8.5" r="1.5"/>
           <polyline points="21 15 16 10 5 21"/>
         </svg>
-        <span>{{ 'BOOKING_SUCCESS.BOOK_ANOTHER' | translate }}</span>
+        <span>حجز آخر</span>
       </a>
     </div>
   </div>

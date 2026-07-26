@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
+import { supervisorGuard } from './core/guards/supervisor.guard';
 
 export const routes: Routes = [
   {
@@ -35,7 +36,21 @@ export const routes: Routes = [
   {
     path: 'admin',
     canActivate: [adminGuard],
-    loadComponent: () => import('./features/admin/admin.component').then((m) => m.AdminComponent)
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/admin/admin.component').then((m) => m.AdminComponent)
+      },
+      {
+        path: 'transfers',
+        loadComponent: () => import('./features/admin/transfers/transfers.component').then((m) => m.TransfersComponent)
+      }
+    ]
+  },
+  {
+    path: 'supervisor',
+    canActivate: [supervisorGuard],
+    loadComponent: () => import('./features/supervisor/supervisor.component').then((m) => m.SupervisorComponent)
   },
   {
     path: '',

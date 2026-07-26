@@ -16,9 +16,11 @@ export interface AuthResponse {
   email?: string;
   phoneNumber?: string;
   contactMethod: 'email' | 'phone';
-  role: 'admin' | 'user';
+  role: 'admin' | 'user' | 'supervisor';
   token: string;
   message: string;
+  name?: string;
+  church?: string;
 }
 
 export interface EventResponse {
@@ -66,6 +68,8 @@ export interface BookingRequest {
   seatIds: number[];
   contactMethod: 'email' | 'phone';
   contactValue: string;
+  name?: string;
+  church?: string;
 }
 
 export interface BookingResponse {
@@ -78,6 +82,8 @@ export interface BookingResponse {
   status: 'pending' | 'confirmed' | 'cancelled';
   contactMethod: 'email' | 'phone';
   contactValue: string;
+  name?: string;
+  church?: string;
 }
 
 export interface AllBookingResponse {
@@ -92,6 +98,8 @@ export interface AllBookingResponse {
   totalAmount: number;
   status: 'pending' | 'confirmed' | 'cancelled';
   createdAt: string;
+  name?: string;
+  church?: string;
 }
 
 export interface UpdateBookingStatusRequest {
@@ -131,4 +139,45 @@ export interface TheaterRow {
 export interface TheaterSection {
   name: string;
   rows: TheaterRow[];
+}
+
+// Supervisor / Money Transfer models
+export interface MoneyTransfer {
+  id: string;
+  amount: number;
+  fromAdminId: string;
+  fromAdminName: string;
+  toSupervisorId: string;
+  toSupervisorName: string;
+  status: 'pending' | 'confirmed' | 'cancelled';
+  createdAt: string;
+  confirmedAt?: string;
+  notes?: string;
+}
+
+export interface CreateMoneyTransferRequest {
+  amount: number;
+  toSupervisorId?: string;
+  toSupervisorName?: string;
+  notes?: string;
+}
+
+export interface UpdateMoneyTransferRequest {
+  status: 'confirmed' | 'cancelled';
+}
+
+export interface SupervisorTransfer {
+  id: string;
+  amount: number;
+  fromAdminName: string;
+  status: 'pending' | 'confirmed' | 'cancelled';
+  createdAt: string;
+  confirmedAt?: string;
+  notes?: string;
+}
+
+// User info for booking
+export interface UserInfo {
+  name: string;
+  church: string;
 }

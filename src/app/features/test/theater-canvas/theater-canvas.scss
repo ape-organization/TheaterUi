@@ -2,10 +2,9 @@
   display: block;
   position: relative;
   width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
   min-height: 100vh;
   background: var(--clr-bg-primary);
+  overflow: visible;
 }
 
 .theater {
@@ -27,9 +26,11 @@
   justify-content: center;
   gap: 1.25rem;
   padding: 0.75rem 1rem;
-  background: var(--clr-bg-elevated);
+  background: var(--clr-bg-card);
+  border: 1px solid rgba(107, 78, 58, 0.08);
   border-radius: var(--radius-md);
   margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .legend-item {
@@ -51,7 +52,7 @@
 
 .legend-dot.available {
   background: var(--clr-bg-hover);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(107, 78, 58, 0.15);
 }
 
 .legend-dot.selected {
@@ -60,14 +61,14 @@
 }
 
 .legend-dot.reserved {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(107, 78, 58, 0.08);
+  border: 1px solid rgba(107, 78, 58, 0.1);
   opacity: 0.4;
 }
 
 .legend-dot.premium {
   background: var(--clr-gold);
-  box-shadow: 0 0 8px rgba(245, 197, 24, 0.3);
+  box-shadow: 0 0 8px rgba(199, 149, 43, 0.3);
 }
 
 .layout {
@@ -75,7 +76,23 @@
   width: 1400px;
   height: 1200px;
   margin: 0 auto;
-  transform-origin: center top;
+  transform-origin: right top;
+}
+
+@media (max-width: 768px) {
+  :host {
+    min-height: auto;
+  }
+
+  .theater {
+    min-height: auto;
+    padding-bottom: 12rem;
+  }
+
+  .layout {
+    margin: 0 auto;
+    transform-origin: top center !important;
+  }
 }
 
 .stage-wrapper {
@@ -93,12 +110,71 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.25rem;
-  background: var(--clr-bg-elevated);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--clr-bg-card);
+  border: 1px solid rgba(107, 78, 58, 0.08);
   border-radius: var(--radius-md);
   margin-top: 10rem;
   animation: slideUp 0.3s ease-out;
   min-width: 400px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ─── Mobile Responsive ─── */
+@media (max-width: 768px) {
+  .selection-summary {
+    min-width: unset;
+    width: calc(100% - 1rem);
+    margin-top: 5rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .summary-left {
+    justify-content: center;
+  }
+
+  .summary-right {
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .summary-total {
+    font-size: 1.1rem;
+  }
+
+  .legend {
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .legend-item {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .legend {
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .legend-item {
+    font-size: 0.65rem;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .selection-summary {
+    margin-top: 3rem;
+    padding: 0.75rem;
+  }
 }
 
 .summary-left {

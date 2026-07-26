@@ -1,69 +1,51 @@
+:host {
+  display: block;
+}
+//  border-bottom: 1px solid rgba(107, 78, 58, 0.1);
+
 .cinema-header {
+  background: #ffffff;
   position: sticky;
+  padding: 2px;
   top: 0;
-  z-index: 100;
-  background: rgba(10, 10, 15, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  z-index: 1000;
+  box-shadow: 0 2px 12px rgba(107, 78, 58, 0.06);
 }
 
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1.5rem;
   height: 64px;
 }
 
 .brand {
-  display: flex;
-  align-items: center;
+  display: block;
+ // align-items: center;
   gap: 0.75rem;
   text-decoration: none;
-  color: inherit;
-  transition: opacity var(--transition);
+  color: var(--clr-text-primary);
 }
 
-.brand:hover {
-  opacity: 0.9;
-}
-
-.brand-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
+.brand-logo {
   height: 40px;
-  border-radius: var(--radius-md);
-  background: var(--gradient-primary);
-  color: #fff;
-  box-shadow: 0 4px 12px var(--clr-accent-glow);
+  width: auto;
+  object-fit: contain;
 }
 
 .brand-text {
-  display: flex;
-  flex-direction: column;
+ 
+   display: flex;
+  align-items: center;
+  justify-content: right;
 }
 
 .brand-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  color: var(--clr-brown);
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  background: linear-gradient(135deg, #f0f0f5, #e50914);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.2;
-}
-
-.brand-tagline {
-  font-size: 0.65rem;
-  color: var(--clr-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  -webkit-text-fill-color: var(--clr-text-muted);
 }
 
 .nav-links {
@@ -72,104 +54,63 @@
   gap: 0.5rem;
 }
 
-.lang-toggle {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  margin-left: 1rem;
-  padding-left: 1rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.lang-btn {
-  display: flex;
-  align-items: center;
-  padding: 0.35rem 0.65rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--clr-text-muted);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all var(--transition);
-  min-width: 46px;
-  justify-content: center;
-}
-
-.lang-btn:hover {
-  color: var(--clr-text-secondary);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.lang-btn.active {
-  color: #fff;
-  background: var(--gradient-primary);
-  border-color: transparent;
-  box-shadow: 0 2px 8px var(--clr-accent-glow);
-}
-
 .nav-link {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 1rem;
-  color: var(--clr-text-secondary);
+  border-radius: var(--radius-sm);
   text-decoration: none;
-  font-size: 0.875rem;
+  color: var(--clr-text-secondary);
+  font-size: 0.9rem;
   font-weight: 500;
-  border-radius: var(--radius-full);
   transition: all var(--transition);
-  border: 1px solid transparent;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
 }
 
 .nav-link:hover {
-  color: var(--clr-text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--clr-brown-subtle);
+  color: var(--clr-brown);
 }
 
 .nav-link.active {
-  color: var(--clr-accent);
-  background: var(--clr-accent-subtle);
-  border-color: rgba(229, 9, 20, 0.2);
+  background: var(--clr-gold-subtle);
+  color: var(--clr-gold);
 }
 
 .btn-logout-link {
-  cursor: pointer;
-  background: transparent;
-  font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 500;
+  color: var(--clr-error);
 }
 
 .btn-logout-link:hover {
-  color: var(--clr-error) !important;
-  background: rgba(229, 9, 20, 0.08) !important;
+  background: rgba(179, 58, 58, 0.08);
+  color: var(--clr-error);
 }
 
 .header-curtain {
   height: 3px;
-  background: linear-gradient(90deg, transparent, var(--clr-accent), transparent);
-  opacity: 0.6;
+  background: linear-gradient(90deg, var(--clr-gold), var(--clr-brown), var(--clr-gold));
 }
 
-/* ─── Mobile ─── */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .header-inner {
-    padding: 0.75rem 1rem;
+    height: 76px;
+    padding: 0 1rem;
   }
 
-  .brand-tagline {
-    display: none;
+  .brand-name {
+    font-size: 1rem;
+  }
+
+  .nav-link {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
   }
 
   .nav-link span {
     display: none;
-  }
-
-  .nav-link {
-    padding: 0.5rem;
   }
 }

@@ -1,19 +1,24 @@
 import { Component, inject, signal, computed, OnInit, OnDestroy, NgZone, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslatePipe } from '@ngx-translate/core';
 import { Stage } from '../stage/stage';
 import { Block } from '../block/block';
 import { LayoutService } from '../layout.service';
 import type { Seat } from '../test.data';
 
-/** Only start scaling when viewport is wider than this */
+/** Intrinsic layout width in pixels */
+const LAYOUT_WIDTH = 1400;
+/** Only start up-scaling when viewport is wider than this */
 const TRIGGER_WIDTH = 1800;
 /** Maximum scale to cap layout on ultra-wide screens */
 const MAX_SCALE = 1.3;
+/** Viewport width threshold at or below which mobile scaling applies */
+const MOBILE_BREAKPOINT = 768;
+/** Horizontal padding on mobile (each side) */
+const MOBILE_PADDING = 16;
 
 @Component({
   selector: 'app-theater-canvas',
-  imports: [CommonModule, TranslatePipe, Stage, Block],
+  imports: [CommonModule, Stage, Block],
   templateUrl: './theater-canvas.html',
   styleUrl: './theater-canvas.scss',
 })
@@ -37,10 +42,10 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     }, 0);
   });
 
-  /** Scale factor applied to the layout (>= 1, only grows on very wide screens) */
+  /** Scale factor applied to the layout */
   protected scale = 1;
 
-  /** Offset added to each block's x/y when scaled (100px per unit of scale above 1) */
+  /** Offset added to each block's x/y when up-scaled (100px per unit of scale above 1) */
   protected translateOffset = 0;
 
   private resizeHandler: (() => void) | null = null;
@@ -58,13 +63,23 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   }
 
   private updateScale(): void {
-    const viewportWidth = window.innerWidth;
-    // Only start scaling when viewport is wider than TRIGGER_WIDTH
-    const newScale = viewportWidth > TRIGGER_WIDTH
-      ? Math.min(viewportWidth / TRIGGER_WIDTH, MAX_SCALE)
-      : 1;
-    // When scaled, add 100px offset to each block's x/y for each unit of scale above 1
-    const newOffset = newScale > 1 ? (newScale - 1) * 100 : 0;
+    const vw = window.innerWidth;
+
+    let newScale: number;
+    let newOffset = 0;
+
+    if (vw > TRIGGER_WIDTH) {
+      // Ultra-wide: scale up proportionally, capped
+      newScale = Math.min(vw / TRIGGER_WIDTH, MAX_SCALE);
+      newOffset = (newScale - 1) * 100;
+    } else if (vw > MOBILE_BREAKPOINT) {
+      // Desktop / tablet: no scaling, layout fits natively
+      newScale = 1;
+    } else {
+      // Mobile: scale the whole layout to fit the viewport width
+      newScale = (vw - MOBILE_PADDING * 2) / LAYOUT_WIDTH;
+    }
+
     if (newScale !== this.scale || newOffset !== this.translateOffset) {
       this.ngZone.run(() => {
         this.scale = newScale;
