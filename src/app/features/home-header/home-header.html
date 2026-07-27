@@ -1,0 +1,47 @@
+  <div class="event-hero">
+      <div class="event-backdrop">
+        <img src="../../../assets/images/Poster.png" [alt]="event()?.title" class="event-backdrop-img" />
+        <div class="event-backdrop-overlay"></div>
+      </div>
+
+      <div class="event-hero-content cinema-container">
+        <div class="event-poster-wrapper">
+          <img src="../../../assets/images/OldPoster.jpg.jpeg" [alt]="event()?.title" class="event-poster" />
+        </div>
+
+        <div class="event-hero-info">
+          <span class="event-badge">فعالية</span>
+          <h1 class="event-title">{{ event()?.title }}</h1>
+          <p class="event-description">{{ event()?.description }}</p>
+
+          <div class="event-meta">
+            <div class="event-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span>{{ event()?.date }}</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>{{ event()?.time }}</span>
+            </div>
+            <div class="event-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>{{ event()?.location }}</span>
+            </div>
+            <div class="event-meta-item price">
+              <span class="currency-icon">ج.م</span>
+              <span>{{ event()?.ticketPrice | currency:'EGP':'symbol':'1.0-0' }} للمقعد</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 

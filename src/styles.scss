@@ -137,6 +137,83 @@ body {
   width: 100%;
 }
 
+@media (max-width: 1024px) {
+  .cinema-container {
+    max-width: 900px;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cinema-container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cinema-container {
+    max-width: 100%;
+    padding: 0 0.75rem;
+  }
+}
+
+/* ─── Responsive Visibility ─── */
+.hide-mobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.hide-tablet {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.hide-desktop {
+  @media (min-width: 1025px) {
+    display: none !important;
+  }
+}
+
+.show-mobile {
+  display: none !important;
+  @media (max-width: 768px) {
+    display: initial !important;
+  }
+}
+
+/* ─── Responsive Typography ─── */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* ─── Responsive Button Sizes ─── */
+@media (max-width: 768px) {
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.85rem;
+  }
+}
+
 .cinema-glass {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);

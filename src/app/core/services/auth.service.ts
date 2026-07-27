@@ -1,7 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, Observable } from 'rxjs';
-import { AuthResponse, LoginRequest, OtpVerifyRequest } from '../models/api.models';
+import { AuthOtpVerifyRequest, AuthRequest, AuthResponse, LoginRequest, OtpVerifyRequest } from '../models/api.models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,13 +15,15 @@ export class AuthService {
   login(contactMethod: 'email' | 'phone', contactValue: string): Observable<AuthResponse> {
     this.isLoading.set(true);
     const payload: LoginRequest = { contactMethod };
+    const body: AuthRequest = { phone: contactValue };
+
     if (contactMethod === 'email') {
       payload.email = contactValue;
     } else {
-      payload.phoneNumber = contactValue;
+      body.phone = contactValue;
     }
-
-    return this.http.post<AuthResponse>('/api/auth/login', payload).pipe(
+console.log( body);
+    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/request-otp`, body).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }
@@ -28,17 +31,34 @@ export class AuthService {
   verifyOtp(contactMethod: 'email' | 'phone', contactValue: string, otp: string): Observable<AuthResponse> {
     this.isLoading.set(true);
     const payload: OtpVerifyRequest = { contactMethod, otp };
+        const body: AuthOtpVerifyRequest = {
+          phone: contactValue,
+          otp: otp
+        };
+
     if (contactMethod === 'email') {
       payload.email = contactValue;
     } else {
-      payload.phoneNumber = contactValue;
+      body.phone = contactValue;
+      body.otp = otp;
     }
 
-    return this.http.post<AuthResponse>('/api/auth/verify-otp', payload).pipe(
+    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/verify-otp`, body).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }
+saveUserName(name: any): Observable<any> {
+    this.isLoading.set(true);
+        const body: any = {
+          name: name
+        };
 
+ 
+
+    return this.http.put<AuthResponse>(`${environment.apiUrl}/user/name`, body).pipe(
+      finalize(() => this.isLoading.set(false))
+    );
+  }
   setAuthenticatedUser(user: AuthResponse): void {
     this.currentUser.set(user);
     this.isAuthenticated.set(true);

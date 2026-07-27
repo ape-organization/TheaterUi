@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Seat } from '../test.data';
+import { Seat } from '../../../core/data/test.data';
 
 @Component({
   selector: 'app-test-seat',
@@ -11,7 +11,8 @@ import { Seat } from '../test.data';
 export class TestSeat {
   seat = input.required<Seat>();
   type = input<'vip' | 'regular'>('regular');
-  selectedSeatIds = input<number[]>([]);
+  selectedSeatIds = input<string[]>([]);
 
   seatClick = output<Seat>();
 }
+

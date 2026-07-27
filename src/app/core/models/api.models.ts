@@ -1,9 +1,76 @@
+
 export interface LoginRequest {
   email?: string;
   phoneNumber?: string;
   contactMethod: 'email' | 'phone';
 }
+export interface AuthRequest {
+  phone?: string;
+}
+export interface AuthOtpVerifyRequest {
+  
+  phone?: string;
+  otp: string;
+}
+export interface User {
+  id: number;
+  name: string;
+  phone: string;
+  firstLogin: boolean;
+}
+export interface AuthResponse {
+ 
+  "token": "string",
+  "firstLogin": true,
+  "role":string,
+  "user": User,
 
+  
+}
+export interface Seat
+{
+  
+      "id": string,
+      "label": string,
+      "status": string,
+      "price":number
+    
+}
+export interface SeatBlock{
+
+    id:string;
+
+    rows: Seat[][];
+
+    rotation:number;
+
+    translateX:number;
+
+    translateY:number;
+
+}
+export interface 	ReceriveSeatRequest
+{
+  "seatLabels":string[]
+}
+export interface 	ReceriveSeat
+{
+  
+  "id": number,
+  "status": string,
+  "expiresAt": string,
+  "createdAt": string,
+  "seats": Seat[],
+  "user":UserInfo
+
+}
+export interface SeatRecerived
+{
+  "id": number,
+    "label": string,
+    "status": string
+}
+////////////////////
 export interface OtpVerifyRequest {
   email?: string;
   phoneNumber?: string;
@@ -11,17 +78,6 @@ export interface OtpVerifyRequest {
   otp: string;
 }
 
-export interface AuthResponse {
-  userId: string;
-  email?: string;
-  phoneNumber?: string;
-  contactMethod: 'email' | 'phone';
-  role: 'admin' | 'user' | 'supervisor';
-  token: string;
-  message: string;
-  name?: string;
-  church?: string;
-}
 
 export interface EventResponse {
   id: number;
@@ -34,20 +90,20 @@ export interface EventResponse {
   imageUrl: string;
 }
 
-export interface Seat {
+/* export interface Seat {
   id: number;
   seatNumber: string;
   row: string;
   status: 'available' | 'reserved' | 'selected';
   price: number;
-}
+} */
 
 export interface SeatSection {
   name: string;
   seats: Seat[];
 }
 
-export interface SeatRow {
+ export interface SeatRow {
   name: string;
   sections?: SeatSection[];
   seats?: Seat[];
@@ -56,7 +112,7 @@ export interface SeatRow {
 export interface SeatMapResponse {
   eventId: number;
   rows: SeatRow[];
-}
+} 
 
 export interface BookingDraft {
   event: EventResponse;
@@ -116,19 +172,7 @@ export interface TheaterSeat {
   section: string;
   sectionIndex: number;
 }
-export interface SeatBlock{
 
-    id:string;
-
-    rows: Seat[][];
-
-    rotation:number;
-
-    translateX:number;
-
-    translateY:number;
-
-}
 export interface TheaterRow {
   name: string;
   label: string;

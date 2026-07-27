@@ -4,7 +4,7 @@
   <div class="auth-container">
     <!-- Branding -->
     <div class="auth-header">
-      <img src="assets/logo.png" alt="الشعار" class="auth-logo" onerror="this.style.display='none'" />
+      <img src="../../../../assets/images/logo.png" alt="الشعار" class="auth-logo" onerror="this.style.display='none'" />
       <h1 class="auth-title">حجز المسرح</h1>
       <p class="auth-subtitle">سجل الدخول لحجز مقاعدك</p>
     </div>
@@ -96,6 +96,9 @@
             </div>
             @if (phoneForm.controls.phoneNumber.invalid && phoneForm.controls.phoneNumber.touched) {
               <span class="input-error">يرجى إدخال رقم هاتف صحيح (11 أرقام)</span>
+            }
+             @if (error()) {
+              <span class="input-error">{{ errorMsg() }}</span>
             }
           </div>
 

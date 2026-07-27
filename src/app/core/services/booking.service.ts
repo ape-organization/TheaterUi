@@ -1,7 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, Observable } from 'rxjs';
-import { BookingRequest, BookingResponse, Seat } from '../models/api.models';
+import { BookingRequest, BookingResponse, ReceriveSeat, ReceriveSeatRequest, Seat } from '../models/api.models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
@@ -11,10 +12,10 @@ export class BookingService {
 
   constructor(private readonly http: HttpClient) {}
 
-  createBooking(request: BookingRequest): Observable<BookingResponse> {
+  createBooking(request: ReceriveSeatRequest): Observable<ReceriveSeat> {
     this.isLoading.set(true);
 
-    return this.http.post<BookingResponse>('/api/bookings', request).pipe(
+    return this.http.post<ReceriveSeat>(`${environment.apiUrl}/seats/reserve`, request).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }

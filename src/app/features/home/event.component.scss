@@ -1,0 +1,491 @@
+:host {
+  display: block;
+}
+
+.event-page {
+  min-height: 100vh;
+  background: var(--clr-bg-primary);
+}
+
+/* ─── Loading State ─── */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.loading-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  animation: float 2s ease-in-out infinite;
+}
+
+.loading-ring {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(107, 78, 58, 0.1);
+  border-top-color: var(--clr-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-content span {
+  color: var(--clr-text-muted);
+  font-size: 1rem;
+}
+
+
+
+
+/* ─── Seat Section ─── */
+.seat-section {
+  padding: 1.5rem 0 3rem;
+}
+
+.seat-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding: 0 1.5rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.seat-section-title h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--clr-brown);
+}
+
+.seat-section-title p {
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+}
+
+.seat-section-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.selected-count {
+  font-size: 0.9rem;
+  color: var(--clr-text-secondary);
+}
+
+.selected-count strong {
+  color: var(--clr-brown);
+  font-size: 1.1rem;
+}
+
+.total-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--clr-gold);
+}
+
+/* ─── Booking Bar ─── */
+.booking-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: var(--clr-bg-card);
+  border: 1px solid rgba(107, 78, 58, 0.1);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  box-shadow: var(--shadow-sm);
+}
+
+.booking-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.booking-seats-count {
+  font-size: 0.9rem;
+  color: var(--clr-text-secondary);
+}
+
+.booking-total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--clr-brown);
+}
+
+.btn-book {
+  padding: 0.75rem 2rem;
+}
+
+/* ─── Success Card ─── */
+.booking-success-card {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--clr-bg-card);
+  border: 1px solid rgba(45, 122, 74, 0.2);
+  border-radius: var(--radius-lg);
+  max-width: 500px;
+  margin: 2rem auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.success-icon {
+  color: var(--clr-success);
+  margin-bottom: 1rem;
+}
+
+.booking-success-card h3 {
+  font-size: 1.3rem;
+  color: var(--clr-success);
+  margin-bottom: 0.75rem;
+}
+
+.booking-message {
+  color: var(--clr-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.seat-change-msg {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--clr-text-muted);
+}
+
+
+
+  /* ─── Responsive ─── */
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .event-hero-content {
+    gap: 1.5rem;
+    padding: 1.5rem 1rem 1.5rem;
+  }
+
+  .event-poster-wrapper {
+    width: 180px;
+  }
+
+  .event-poster {
+    height: 260px;
+  }
+
+  .seat-section-header {
+    padding: 0 1rem;
+  }
+
+  .seat-section-title h2 {
+    font-size: 1.3rem;
+  }
+
+  .booking-bar {
+    padding: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .booking-total {
+    font-size: 1.1rem;
+  }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .event-hero {
+    min-height: auto;
+    padding-bottom: 1rem;
+  }
+
+  .event-hero-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    gap: 1rem;
+  }
+
+  .event-poster-wrapper {
+    width: 150px;
+    order: -1;
+  }
+
+  .event-poster {
+    height: 210px;
+  }
+
+  .event-hero-info {
+    padding-top: 0;
+  }
+
+  .event-title {
+    font-size: 1.4rem;
+  }
+
+  .event-description {
+    max-width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .event-meta {
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .event-meta-item {
+    font-size: 0.8rem;
+  }
+
+  .user-info-section {
+    padding: 1rem 0;
+  }
+
+  .user-info-card {
+    padding: 1rem;
+    margin: 0 1rem;
+  }
+
+  .user-info-fields {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .seat-section {
+    padding: 1rem 0 2rem;
+  }
+
+  .seat-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .seat-section-title h2 {
+    font-size: 1.2rem;
+  }
+
+  .seat-section-title p {
+    font-size: 0.8rem;
+  }
+
+  .seat-section-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .booking-bar {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+    margin: 0 1rem 1rem;
+    padding: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .booking-summary {
+    gap: 0.1rem;
+  }
+
+  .booking-seats-count {
+    font-size: 0.85rem;
+  }
+
+  .booking-total {
+    font-size: 1.1rem;
+  }
+
+  .btn-book {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+
+  .user-info-modal {
+    max-width: 95%;
+  }
+
+  .user-info-modal-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .booking-success-card {
+    padding: 2rem 1rem;
+    margin: 1.5rem 1rem;
+    max-width: calc(100% - 2rem);
+  }
+}
+
+@media (max-width: 480px) {
+  
+  .user-info-section {
+    padding: 0.75rem 0;
+  }
+
+  .user-info-card {
+    padding: 1rem 0.5rem;
+    margin: 0 0.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  .user-info-card h2 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .user-info-fields {
+    gap: 0.5rem;
+  }
+
+  .field-group {
+    gap: 0.3rem;
+  }
+
+  .field-group label {
+    font-size: 0.8rem;
+  }
+
+  .seat-section {
+    padding: 0.75rem 0 1.5rem;
+  }
+
+  .seat-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding: 0 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .seat-section-title h2 {
+    font-size: 1.1rem;
+  }
+
+  .seat-section-title p {
+    font-size: 0.75rem;
+    margin-top: 0.1rem;
+  }
+
+  .seat-section-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .selected-count {
+    font-size: 0.8rem;
+  }
+
+  .selected-count strong {
+    font-size: 1rem;
+  }
+
+  .total-price {
+    font-size: 1rem;
+  }
+
+  .booking-bar {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    margin: 0 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    max-width: calc(100% - 1rem);
+  }
+
+  .booking-summary {
+    width: 100%;
+  }
+
+  .booking-seats-count {
+    font-size: 0.8rem;
+  }
+
+  .booking-total {
+    font-size: 1rem;
+  }
+
+  .btn-book {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .user-info-modal {
+    max-width: 100%;
+  }
+
+  .user-info-modal-header {
+    margin-bottom: 1rem;
+  }
+
+  .modal-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.75rem;
+  }
+
+  .user-info-modal-header h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .user-info-modal-header p {
+    font-size: 0.8rem;
+  }
+
+  .user-info-modal-body {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .user-info-modal-body .field-group label {
+    font-size: 0.8rem;
+  }
+
+  .booking-success-card {
+    padding: 1.5rem 1rem;
+    margin: 1rem 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+
+  .booking-success-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .booking-message {
+    font-size: 0.85rem;
+  }
+
+  .seat-change-msg {
+    font-size: 0.75rem;
+  }
+}

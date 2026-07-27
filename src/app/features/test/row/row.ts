@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { SeatRow, Seat } from '../test.data';
+import { SeatRow, Seat } from '../../../core/data/test.data';
 import { TestSeat } from '../test-seat/test-seat';
 import { CommonModule } from '@angular/common';
 
@@ -13,7 +13,8 @@ import { CommonModule } from '@angular/common';
 export class Row {
   row = input.required<SeatRow>();
   type = input<'vip' | 'regular'>('regular');
-  selectedSeatIds = input<number[]>([]);
+  selectedSeatIds = input<string[]>([]);
 
   seatClick = output<Seat>();
 }
+

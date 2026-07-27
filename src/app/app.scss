@@ -19,7 +19,23 @@
   animation: fadeIn 0.4s ease-out;
 }
 
-@media (max-width: 640px) {
+/* Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page-content {
+    max-width: 100%;
+  }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .page-content {
+    padding: 0 0.5rem;
+    max-width: 100%;
+  }
+}
+
+/* Small Mobile (≤480px) */
+@media (max-width: 480px) {
   .page-content {
     padding: 0;
   }

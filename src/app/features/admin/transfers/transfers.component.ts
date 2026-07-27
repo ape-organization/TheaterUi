@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { MoneyTransfer, CreateMoneyTransferRequest } from '../../../core/models/api.models';
+import { environment } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-transfers',
@@ -330,7 +331,7 @@ export class TransfersComponent implements OnInit {
 
   loadTransfers(): void {
     this.isLoading = true;
-    this.http.get<MoneyTransfer[]>('/api/admin/transfers').subscribe({
+    this.http.get<MoneyTransfer[]>(`${environment.apiUrl}/api/v1/admin/transfers`).subscribe({
       next: (data) => {
         this.transfers = data;
         this.isLoading = false;
@@ -349,7 +350,7 @@ export class TransfersComponent implements OnInit {
     }
 
     this.isSubmitting = true;
-    this.http.post<MoneyTransfer>('/api/admin/transfers', this.newTransfer).subscribe({
+    this.http.post<MoneyTransfer>(`${environment.apiUrl}/api/v1/admin/transfers`, this.newTransfer).subscribe({
       next: () => {
         this.newTransfer = { amount: 0, toSupervisorName: '', notes: '' };
         this.isSubmitting = false;

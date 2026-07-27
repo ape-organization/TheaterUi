@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, Observable } from 'rxjs';
 import { EventResponse, SeatMapResponse } from '../models/api.models';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
@@ -14,15 +15,15 @@ export class EventService {
   getEvent(eventId: number): Observable<EventResponse> {
     this.isLoading.set(true);
 
-    return this.http.get<EventResponse>(`/api/events/${eventId}`).pipe(
+    return this.http.get<EventResponse>(`${environment.apiUrl}/api/v1/events/${eventId}`).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }
 
-  getSeatMap(eventId: number): Observable<SeatMapResponse> {
+  getRecivedSeat(): Observable<any> {
     this.isLoading.set(true);
 
-    return this.http.get<SeatMapResponse>(`/api/events/${eventId}/seats`).pipe(
+    return this.http.get<SeatMapResponse>(`${environment.apiUrl}/seats/reserved`).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }

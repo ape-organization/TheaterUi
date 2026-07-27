@@ -25,8 +25,8 @@ export const routes: Routes = [
  
   {
     path: 'event',
-    canActivate: [authGuard],
-    loadComponent: () => import('./features/event/event.component').then((m) => m.EventComponent)
+   canActivate: [authGuard],
+    loadComponent: () => import('./features/home/event.component').then((m) => m.EventComponent)
   },
   {
     path: 'booking-success',
@@ -39,7 +39,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () => import('./features/admin/admin.component').then((m) => m.AdminComponent)
+        loadComponent: () => import('./features/admin/admin/admin.component').then((m) => m.AdminComponent)
       },
       {
         path: 'transfers',

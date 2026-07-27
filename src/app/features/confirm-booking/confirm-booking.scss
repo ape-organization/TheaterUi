@@ -1,0 +1,230 @@
+/* ─── Modal Overlay ─── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: var(--clr-bg-card);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow-lg);
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--clr-brown);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.modal-body {
+  margin-bottom: 1.5rem;
+}
+
+.modal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(107, 78, 58, 0.06);
+}
+
+.modal-label {
+  font-size: 0.88rem;
+  color: var(--clr-text-muted);
+}
+
+.modal-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--clr-text-primary);
+  text-align: left;
+}
+
+.total-row {
+  border-bottom: none;
+  padding-top: 0.8rem;
+  margin-top: 0.4rem;
+  border-top: 2px solid var(--clr-gold-subtle);
+}
+
+.modal-price {
+  font-size: 1.2rem;
+  color: var(--clr-gold);
+}
+
+.admin-approval-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--clr-gold-subtle);
+  border-radius: var(--radius-sm);
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--clr-gold);
+}
+
+.admin-approval-notice svg {
+  flex-shrink: 0;
+}
+
+/* ─── Error Message ─── */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(179, 58, 58, 0.08);
+  border: 1px solid rgba(179, 58, 58, 0.2);
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: var(--clr-error);
+}
+
+.error-message svg {
+  flex-shrink: 0;
+}
+
+/* ─── Modal Actions ─── */
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.modal-actions .btn-primary,
+.modal-actions .btn-secondary {
+  flex: 1;
+}
+
+/* ─── Responsive ─── */
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .modal-content {
+    max-width: 420px;
+    padding: 1.75rem;
+  }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+    max-width: 95%;
+    border-radius: var(--radius-lg);
+  }
+
+  .modal-title {
+    font-size: 1.2rem;
+  }
+
+  .modal-body {
+    margin-bottom: 1rem;
+  }
+
+  .modal-row {
+    padding: 0.5rem 0;
+    font-size: 0.8rem;
+  }
+
+  .modal-label {
+    font-size: 0.8rem;
+  }
+
+  .modal-value {
+    font-size: 0.85rem;
+  }
+
+  .modal-price {
+    font-size: 1.1rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .modal-actions .btn-primary,
+  .modal-actions .btn-secondary {
+    flex: 1;
+    padding: 0.6rem 1rem;
+  }
+}
+
+/* Small Mobile (≤480px) */
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .modal-content {
+    padding: 1.25rem;
+    max-width: 100%;
+    border-radius: var(--radius-lg);
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal-body {
+    margin-bottom: 1rem;
+  }
+
+  .modal-row {
+    padding: 0.5rem 0;
+    font-size: 0.8rem;
+  }
+
+  .modal-label {
+    font-size: 0.8rem;
+  }
+
+  .modal-value {
+    font-size: 0.85rem;
+  }
+
+  .modal-price {
+    font-size: 1.1rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .modal-actions .btn-primary,
+  .modal-actions .btn-secondary {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .admin-approval-notice {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.75rem;
+    margin-top: 0.75rem;
+  }
+}

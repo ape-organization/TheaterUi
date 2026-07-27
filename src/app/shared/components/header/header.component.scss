@@ -95,9 +95,62 @@
   background: linear-gradient(90deg, var(--clr-gold), var(--clr-brown), var(--clr-gold));
 }
 
+.brand-description {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  margin-top: 0.1rem;
+  line-height: 1.3;
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .header-inner {
+    height: 64px;
+    padding: 0 1rem;
+  }
+
+  .brand-name {
+    font-size: 1.1rem;
+  }
+
+  .brand-description {
+    font-size: 0.7rem;
+  }
+
+  .nav-link {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-inner {
+    height: 56px;
+    padding: 0 0.5rem;
+  }
+
+  .brand-logo {
+    height: 32px;
+  }
+
+  .brand-name {
+    font-size: 0.85rem;
+  }
+
+  .nav-link {
+    padding: 0.3rem 0.4rem;
+    font-size: 0.7rem;
+    gap: 0.2rem;
+  }
+
+  .nav-link span {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .header-inner {
-    height: 76px;
+    height: 64px;
     padding: 0 1rem;
   }
 

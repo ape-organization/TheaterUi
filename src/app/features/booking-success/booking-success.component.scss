@@ -286,6 +286,35 @@
 }
 
 /* ─── Responsive ─── */
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .success-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .success-container {
+    max-width: 420px;
+  }
+
+  .success-title {
+    font-size: 1.8rem;
+  }
+
+  .ticket-header,
+  .ticket-body,
+  .ticket-tear,
+  .ticket-qr-section {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .ticket-info-grid {
+    gap: 0.85rem;
+  }
+}
+
+/* Small Mobile (≤480px) */
 @media (max-width: 480px) {
   .success-page {
     padding: 1.5rem 1rem;

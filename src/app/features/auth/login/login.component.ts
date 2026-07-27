@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
-
+import { UserInfo } from '../../../shared/components/user-info/user-info';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -16,7 +17,6 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-
   readonly activeTab = signal<'email' | 'phone'>('phone');
 
   readonly emailForm = this.fb.nonNullable.group({
@@ -28,12 +28,17 @@ export class LoginComponent {
   });
 
   readonly isLoading = this.authService.isLoading;
+  readonly error = signal(false);
+  readonly errorMsg = signal('');
 
   switchTab(tab: 'email' | 'phone'): void {
     this.activeTab.set(tab);
   }
 
+
+
   submit(): void {
+    this.error.set(false);    
     if (this.activeTab() === 'email') {
       if (this.emailForm.invalid) {
         this.emailForm.markAllAsTouched();
@@ -55,11 +60,14 @@ export class LoginComponent {
       }
       const phone = this.phoneForm.value.phoneNumber ?? '';
       this.authService.login('phone', phone).subscribe({
-        next: () => {
+        next: (res:any) => {
+          console.log(res)
           this.router.navigate(['/auth/verify'], { queryParams: { method: 'phone', contact: phone } });
         },
-        error: () => {
-          window.alert('تعذر إرسال رمز التحقق. حاول مرة أخرى.');
+        error: (res:any) => {
+          this.error.set(true);
+          this.errorMsg.set(res.message || 'تعذر إرسال رمز التحقق. حاول مرة أخرى.');
+         // window.alert('تعذر إرسال رمز التحقق. حاول مرة أخرى.');
         }
       });
     }

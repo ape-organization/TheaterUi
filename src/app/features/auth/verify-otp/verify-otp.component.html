@@ -46,6 +46,9 @@
           @if (form.controls.otp.invalid && form.controls.otp.touched) {
             <span class="input-error">يرجى إدخال رمز تحقق صحيح (6 أرقام)</span>
           }
+          @if (error()) {
+            <span class="input-error">{{ errorMsg() }}</span>
+          }
         </div>
 
         <button type="submit" class="btn-primary auth-submit" [disabled]="isLoading()">

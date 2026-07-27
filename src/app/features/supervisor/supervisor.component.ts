@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { SupervisorTransfer } from '../../core/models/api.models';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-supervisor',
@@ -16,7 +17,7 @@ import { SupervisorTransfer } from '../../core/models/api.models';
           <div class="header-content">
             <div>
               <h1>لوحة المشرف</h1>
-              <p>مرحباً {{ currentUser?.name || currentUser?.email || currentUser?.phoneNumber }}</p>
+              <p>مرحباً {{ currentUser?.user?.name ||  currentUser?.user?.phone }}</p>
             </div>
             <button class="btn-logout" (click)="logout()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -507,7 +508,7 @@ export class SupervisorComponent implements OnInit {
 
   loadTransfers(): void {
     this.isLoading = true;
-    this.http.get<SupervisorTransfer[]>('/api/supervisor/transfers').subscribe({
+    this.http.get<SupervisorTransfer[]>(`${environment.apiUrl}/api/v1/supervisor/transfers`).subscribe({
       next: (data) => {
         this.transfers = data;
         this.isLoading = false;
@@ -521,7 +522,7 @@ export class SupervisorComponent implements OnInit {
 
   confirmTransfer(id: string): void {
     this.updatingId = id;
-    this.http.put(`/api/supervisor/transfers/${id}`, { status: 'confirmed' }).subscribe({
+    this.http.put(`${environment.apiUrl}/api/v1/supervisor/transfers/${id}`, { status: 'confirmed' }).subscribe({
       next: () => {
         const transfer = this.transfers.find(t => t.id === id);
         if (transfer) transfer.status = 'confirmed';
@@ -536,7 +537,7 @@ export class SupervisorComponent implements OnInit {
 
   cancelTransfer(id: string): void {
     this.updatingId = id;
-    this.http.put(`/api/supervisor/transfers/${id}`, { status: 'cancelled' }).subscribe({
+    this.http.put(`${environment.apiUrl}/api/v1/supervisor/transfers/${id}`, { status: 'cancelled' }).subscribe({
       next: () => {
         const transfer = this.transfers.find(t => t.id === id);
         if (transfer) transfer.status = 'cancelled';

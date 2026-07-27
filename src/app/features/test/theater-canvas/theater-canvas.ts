@@ -1,20 +1,22 @@
-import { Component, inject, signal, computed, OnInit, OnDestroy, NgZone, output } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, OnDestroy, NgZone, output, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stage } from '../stage/stage';
 import { Block } from '../block/block';
 import { LayoutService } from '../layout.service';
-import type { Seat } from '../test.data';
+import type { Seat } from '../../../core/data/test.data';
 
-/** Intrinsic layout width in pixels */
-const LAYOUT_WIDTH = 1400;
-/** Only start up-scaling when viewport is wider than this */
-const TRIGGER_WIDTH = 1800;
-/** Maximum scale to cap layout on ultra-wide screens */
+/** Intrinsic layout width in pixels (matches SCSS .layout width) */
+const LAYOUT_WIDTH = 1350;
+/** Intrinsic layout height in pixels (matches SCSS .layout height) */
+const LAYOUT_HEIGHT = 1400;
+/** Viewport width where 1:1 scaling is applied (layout fits natively) */
+const NATURAL_BREAKPOINT = 1400;
+/** Maximum scale cap on ultra-wide screens */
 const MAX_SCALE = 1.3;
-/** Viewport width threshold at or below which mobile scaling applies */
-const MOBILE_BREAKPOINT = 768;
-/** Horizontal padding on mobile (each side) */
-const MOBILE_PADDING = 16;
+/** Minimum scale cap on very small screens */
+const MIN_SCALE = 0.3;
+/** Horizontal padding on larger screens (each side) */
+const DESKTOP_PADDING = 32;
 
 @Component({
   selector: 'app-theater-canvas',
@@ -25,10 +27,11 @@ const MOBILE_PADDING = 16;
 export class TheaterCanvas implements OnInit, OnDestroy {
   private layout = inject(LayoutService);
   private ngZone = inject(NgZone);
+  private hostEl = inject(ElementRef);
   SelectedSeats = output<any[]>();
   blocks = this.layout.generateTheater();
 
-  protected selectedSeatIds = signal<number[]>([]);
+  protected selectedSeatIds = signal<string[]>([]);
 
   /** Number of selected seats */
   protected selectedSeatCount = computed(() => this.selectedSeatIds().length);
@@ -45,47 +48,177 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   /** Scale factor applied to the layout */
   protected scale = 1;
 
-  /** Offset added to each block's x/y when up-scaled (100px per unit of scale above 1) */
+  /** Seat scale multiplier for CSS custom property */
+  protected seatScale = 1;
+
+  /** Offset added to each block's x/y when up-scaled */
   protected translateOffset = 0;
 
+  /** Whether the container needs horizontal scroll hints */
+  protected isOverflowing = false;
+
+  /** Viewport width state for breakpoint-aware rendering */
+  protected viewportWidth = 0;
+
+  /** Touch gesture tracking */
+  private touchStartX = 0;
+  private touchStartY = 0;
+  private touchScrollLeft = 0;
+  private touchScrollTop = 0;
+  private lastTouchDist = 0;
+  private pinchStartScale = 1;
+  private isPinching = false;
+
   private resizeHandler: (() => void) | null = null;
+  private resizeObserver: ResizeObserver | null = null;
 
   ngOnInit(): void {
     this.updateScale();
     this.resizeHandler = () => this.updateScale();
     window.addEventListener('resize', this.resizeHandler);
+
+    // Observe the host element for size changes
+    if (window.ResizeObserver) {
+      this.resizeObserver = new ResizeObserver(() => {
+        this.checkOverflow();
+      });
+      this.resizeObserver.observe(this.hostEl.nativeElement);
+    }
   }
 
   ngOnDestroy(): void {
     if (this.resizeHandler) {
       window.removeEventListener('resize', this.resizeHandler);
     }
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   private updateScale(): void {
     const vw = window.innerWidth;
+    this.viewportWidth = vw;
 
+    const availableWidth = vw - DESKTOP_PADDING * 2;
     let newScale: number;
     let newOffset = 0;
 
-    if (vw > TRIGGER_WIDTH) {
-      // Ultra-wide: scale up proportionally, capped
-      newScale = Math.min(vw / TRIGGER_WIDTH, MAX_SCALE);
-      newOffset = (newScale - 1) * 100;
-    } else if (vw > MOBILE_BREAKPOINT) {
-      // Desktop / tablet: no scaling, layout fits natively
+    if (vw <= 1024) {
+      // Mobile & Tablet: keep full 1:1 scale, no shrinking
+      // The layout will overflow horizontally and users scroll to see all seats
       newScale = 1;
+    } else if (vw <= NATURAL_BREAKPOINT) {
+      // Small desktop to natural: scale down proportionally if needed
+      newScale = Math.min(availableWidth / LAYOUT_WIDTH, 1);
+    } else if (vw <= 1920) {
+      // Desktop to full HD: slight up-scale
+      newScale = 1 + (vw - NATURAL_BREAKPOINT) / (1920 - NATURAL_BREAKPOINT) * (MAX_SCALE - 1);
     } else {
-      // Mobile: scale the whole layout to fit the viewport width
-      newScale = (vw - MOBILE_PADDING * 2) / LAYOUT_WIDTH;
+      // Ultra-wide: cap at max scale
+      newScale = MAX_SCALE;
     }
 
-    if (newScale !== this.scale || newOffset !== this.translateOffset) {
+    // Clamp scale
+    newScale = Math.max(Math.min(newScale, MAX_SCALE), MIN_SCALE);
+
+    // Calculate translate offset for up-scaled blocks (to prevent clipping)
+    if (newScale > 1) {
+      newOffset = (newScale - 1) * 80;
+    }
+
+    // Seat scale stays at 1 on mobile/tablet (full size), adapts on desktop+
+    const seatScale = vw <= 1024 ? 1 : Math.min(1, Math.max(0.55, newScale * 1.1));
+
+    if (
+      newScale !== this.scale ||
+      newOffset !== this.translateOffset ||
+      seatScale !== this.seatScale
+    ) {
       this.ngZone.run(() => {
         this.scale = newScale;
         this.translateOffset = newOffset;
+        this.seatScale = seatScale;
+        // Set CSS custom property for seat sizing
+        this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
       });
     }
+  }
+
+  private checkOverflow(): void {
+    const layoutContainer = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+    if (layoutContainer) {
+      this.isOverflowing = layoutContainer.scrollWidth > layoutContainer.clientWidth;
+    }
+  }
+
+  /** Handle window resize for overflow check */
+  @HostListener('window:resize')
+  onResize(): void {
+    this.checkOverflow();
+  }
+
+  // ─── Touch gesture handlers for horizontal scroll and pinch-to-zoom ───
+
+  onTouchStart(event: TouchEvent): void {
+    if (event.touches.length === 1) {
+      // Single finger: track for swipe scroll
+      this.isPinching = false;
+      this.touchStartX = event.touches[0].pageX;
+      this.touchStartY = event.touches[0].pageY;
+      const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement;
+      if (container) {
+        this.touchScrollLeft = container.scrollLeft;
+        this.touchScrollTop = container.scrollTop;
+      }
+    } else if (event.touches.length === 2) {
+      // Two fingers: pinch-to-zoom
+      this.isPinching = true;
+      const dx = event.touches[0].pageX - event.touches[1].pageX;
+      const dy = event.touches[0].pageY - event.touches[1].pageY;
+      this.lastTouchDist = Math.sqrt(dx * dx + dy * dy);
+      this.pinchStartScale = this.scale;
+    }
+  }
+
+  onTouchMove(event: TouchEvent): void {
+    if (this.isPinching && event.touches.length === 2) {
+      event.preventDefault();
+      const dx = event.touches[0].pageX - event.touches[1].pageX;
+      const dy = event.touches[0].pageY - event.touches[1].pageY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (this.lastTouchDist > 0) {
+        const pinchFactor = dist / this.lastTouchDist;
+        let newScale = this.pinchStartScale * pinchFactor;
+        newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
+        this.ngZone.run(() => {
+          this.scale = newScale;
+          const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
+          this.seatScale = seatScale;
+          this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
+        });
+      }
+      return;
+    }
+
+    if (event.touches.length !== 1 || this.isPinching) {
+      return;
+    }
+
+    // Single finger scroll (both directions)
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement;
+    if (!container) return;
+
+    const walkX = event.touches[0].pageX - this.touchStartX;
+    const walkY = event.touches[0].pageY - this.touchStartY;
+
+    // Scroll both horizontally and vertically
+    container.scrollLeft = this.touchScrollLeft - walkX;
+    container.scrollTop = this.touchScrollTop - walkY;
+  }
+
+  onTouchEnd(_event: TouchEvent): void {
+    this.isPinching = false;
+    this.lastTouchDist = 0;
   }
 
   toggleSeatSelection(seat: Seat): void {

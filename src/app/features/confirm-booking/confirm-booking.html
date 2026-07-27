@@ -1,0 +1,52 @@
+<div class="modal-overlay" (click)="closeConfirmModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2 class="modal-title">تأكيد الحجز</h2>
+
+    <div class="modal-body">
+      <div class="modal-row">
+        <span class="modal-label">الاسم</span>
+        <span class="modal-value">{{ userName }}</span>
+      </div>
+     
+      <div class="modal-row">
+        <span class="modal-label">المقاعد</span>
+        <span class="modal-value">{{ selectedSeatNumbers.join(', ') }}</span>
+      </div>
+  
+
+      <div class="modal-row total-row">
+        <span class="modal-label">الإجمالي</span>
+        <span class="modal-value modal-price">ج.م {{ modalTotalPrice | number }}</span>
+      </div>
+
+      <div class="admin-approval-notice">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span>الحجز بحاجة لموافقة الإدارة</span>
+      </div>
+    </div>
+
+    @if (error) {
+      <div class="error-message">
+        {{ errorMsg }}
+      </div>
+    }
+
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" (click)="closeConfirmModal()" [disabled]="isBookingLoading()">
+        إلغاء
+      </button>
+      <button type="button" class="btn-primary" (click)="confirmBooking()" [disabled]="isBookingLoading()">
+        @if (isBookingLoading()) {
+          <span>جاري المعالجة...</span>
+        } @else {
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>تأكيد الحجز</span>
+        }
+      </button>
+    </div>
+  </div>
+</div>

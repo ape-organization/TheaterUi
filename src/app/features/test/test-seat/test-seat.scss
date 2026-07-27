@@ -39,7 +39,7 @@
 }
 
 .seat-number {
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   font-weight: 600;
   color: var(--clr-text-secondary);
   line-height: 1;
@@ -116,18 +116,18 @@
   background: var(--clr-bg-card);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) and (min-width: 769px) {
   .seat-btn {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
   }
 
   .seat-number {
-    font-size: 0.5rem;
+    font-size: 0.45rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .seat-btn {
     width: 22px;
     height: 22px;
@@ -135,5 +135,16 @@
 
   .seat-number {
     font-size: 0.45rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .seat-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .seat-number {
+    font-size: 0.4rem;
   }
 }

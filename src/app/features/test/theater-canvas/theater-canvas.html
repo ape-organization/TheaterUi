@@ -20,25 +20,44 @@
         </div>
     </div>
 
-    <div class="layout" 
-         [style.transform]="'scale(' + scale + ')'"
-         [style.transform-origin]="scale > 1 ? 'center top' : 'right top'">
-
-        <div class="stage-wrapper">
-            <app-stage />
+    <!-- Scroll hint for narrow screens -->
+    @if (isOverflowing && viewportWidth <= 1024) {
+        <div class="scroll-hint">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+            </svg>
+            <span>اسحب لمشاهدة باقي المقاعد</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+            </svg>
         </div>
+    }
 
-        @for(block of blocks; track block.id){
+    <div class="layout-container"
+         [class.is-scrollable]="isOverflowing"
+         (touchstart)="onTouchStart($event)"
+         (touchmove)="onTouchMove($event)"
+         (touchend)="onTouchEnd($event)">
+        <div class="layout" 
+             [style.transform]="'scale(' + scale + ')'"
+             [style.transform-origin]="'center top'">
 
-            <app-block
-                [block]="block"
-                [selectedSeatIds]="selectedSeatIds()"
-                [translateOffset]="translateOffset"
-                (seatClick)="toggleSeatSelection($event)">
-            </app-block>
+            <div class="stage-wrapper">
+                <app-stage />
+            </div>
 
-        }
+            @for(block of blocks; track block.id){
 
+                <app-block
+                    [block]="block"
+                    [selectedSeatIds]="selectedSeatIds()"
+                    [translateOffset]="translateOffset"
+                    (seatClick)="toggleSeatSelection($event)">
+                </app-block>
+
+            }
+
+        </div>
     </div>
 
     <!-- Selection Summary -->

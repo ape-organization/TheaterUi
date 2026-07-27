@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { SeatBlock, Seat } from '../test.data';
+import { SeatBlock, Seat } from '../../../core/data/test.data';
 import { TestSeat } from '../test-seat/test-seat';
 import { Row } from '../row/row';
 import { CommonModule } from '@angular/common';
@@ -13,8 +13,9 @@ import { CommonModule } from '@angular/common';
 })
 export class Block {
   block = input.required<SeatBlock>();
-  selectedSeatIds = input<number[]>([]);
+  selectedSeatIds = input<string[]>([]);
   translateOffset = input<number>(0);
 
   seatClick = output<Seat>();
 }
+
