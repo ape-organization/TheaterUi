@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, Observable } from 'rxjs';
 import { EventResponse, SeatMapResponse } from '../models/api.models';
-import { environment } from '../../../environments/environment.prod';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
@@ -23,7 +23,7 @@ export class EventService {
   getRecivedSeat(): Observable<any> {
     this.isLoading.set(true);
 
-    return this.http.get<SeatMapResponse>(`${environment.apiUrl}/seats/reserved`).pipe(
+    return this.http.get<any>(`${environment.apiUrl}/seats/reserved`).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }

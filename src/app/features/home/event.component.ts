@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -14,14 +14,12 @@ import { ConfirmBooking } from '../confirm-booking/confirm-booking';
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [CommonModule, FormsModule,HomeHeader,ConfirmBooking,TheaterCanvas],
+  imports: [CommonModule, FormsModule, HomeHeader, ConfirmBooking, TheaterCanvas],
   templateUrl: './event.component.html',
   styleUrl: './event.component.scss'
 })
 export class EventComponent implements OnInit {
   private readonly eventService = inject(EventService);
-
-
 
   protected readonly seatMap = this.eventService.seatMap;
   protected readonly isLoading = this.eventService.isLoading;
@@ -42,21 +40,43 @@ export class EventComponent implements OnInit {
   /** The event data for the booking modal */
   protected eventData = this.eventService.selectedEvent;
 
-  ngOnInit(): void {
-  this.eventService.getRecivedSeat().subscribe({
-      next: (response) => {
-        console.log(response)
-      }})
-     
-  }
+  /**
+   * Seat IDs (labels) received from the server that are PENDING or CONFIRMED.
+   * These seats are locked — users cannot select them.
+   * The server returns objects like { id, label, status } where `label`
+   * (e.g. "STAGE-A14") matches the theater seat's `id`.
+   */
+  protected reservedSeatNumbers = signal<string[]>([]);
 
- 
+  /** Reference to the theater canvas so we can clear its selection */
+  @ViewChild(TheaterCanvas) theaterCanvas!: TheaterCanvas;
+
+  receivedSeats: any[] = [];
+
+  ngOnInit(): void {
+    this.eventService.getRecivedSeat().subscribe({
+      next: (response: any) => {
+        // Keep seats that are PENDING or CONFIRMED — both are locked for the user
+        this.receivedSeats = response.filter(
+          (x: any) => x.status === 'PENDING' || x.status === 'CONFIRMED'
+        );
+
+        // Extract the seat label (e.g. "STAGE-A14") which matches the
+        // theater seat's `id`, so the canvas can lock those seats
+        this.reservedSeatNumbers.set(
+          this.receivedSeats.map((x: any) => x['seatnumber'] ?? x['label'])
+        );
+      },
+      error: (err) => {
+        console.error('Failed to load reserved seats:', err);
+      }
+    });
+  }
 
   /** Receives selected seats from theater-canvas child component */
   receiveData(data: any[]): void {
-    console.log(data)
     this.selectedSeats = data;
-    this.selectedSeatNumbers = data.map(s => s['seatnumber']);
+    this.selectedSeatNumbers = data.map((s) => s['seatnumber']);
   }
 
   /** Open the confirmation modal */
@@ -64,7 +84,7 @@ export class EventComponent implements OnInit {
     if (!this.selectedSeats.length) {
       return;
     }
-    this.selectedSeatNumbers = this.selectedSeats.map(s => (s as any)['seatnumber']);
+    this.selectedSeatNumbers = this.selectedSeats.map((s) => (s as any)['seatnumber']);
     this.showConfirmModal = true;
   }
 
@@ -73,16 +93,16 @@ export class EventComponent implements OnInit {
     this.showConfirmModal = false;
   }
 
-  /** Handle successful booking */
+  /** Handle successful booking or cancel — close modal, clear selection, allow re-picking */
   onBookingConfirmed(): void {
     this.showConfirmModal = false;
     this.selectedSeats = [];
     this.selectedSeatNumbers = [];
-    this.bookingSuccess = true;
-    this.bookingMessage = 'رقم الهاتف المسجل';
+    this.bookingSuccess = false;
+    this.bookingMessage = '';
+    // Clear the theater canvas selection so the user can pick any other seats
+    this.theaterCanvas?.clearSelection();
   }
-
- 
 
   get totalPrice(): number {
     return (this.selectedSeats as Seat[]).reduce((sum: number, seat: Seat) => sum + seat.price, 0);

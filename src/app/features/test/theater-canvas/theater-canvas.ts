@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, OnInit, OnDestroy, NgZone, output, ElementRef, HostListener } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, OnDestroy, NgZone, output, ElementRef, HostListener, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stage } from '../stage/stage';
 import { Block } from '../block/block';
@@ -31,6 +31,31 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   SelectedSeats = output<any[]>();
   blocks = this.layout.generateTheater();
 
+  /**
+   * Seat IDs (labels from the server, e.g. "STAGE-A14") that are
+   * pending / reserved and must be locked.
+   * The server returns objects like { id, label, status } where `label`
+   * matches the theater seat's `id` (e.g. "STAGE-A14"), NOT its `seatnumber`
+   * (e.g. "A14").
+   */
+  reservedSeatNumbers = input<string[]>([]);
+
+  /** Blocks with reserved seats applied so the template can render locked seats */
+  displayBlocks = computed(() => {
+    const reserved = new Set(this.reservedSeatNumbers());
+    return this.blocks.map(block => ({
+      ...block,
+      rows: block.rows.map(row => ({
+        ...row,
+        seats: row.seats.map(seat =>
+          // Match against seat.id because the server label (e.g. "STAGE-A14")
+          // equals the seat's id, not its seatnumber (e.g. "A14")
+          reserved.has(seat.id) ? { ...seat, status: 'reserved' as const } : seat
+        )
+      }))
+    }));
+  });
+
   protected selectedSeatIds = signal<string[]>([]);
 
   /** Number of selected seats */
@@ -38,7 +63,7 @@ export class TheaterCanvas implements OnInit, OnDestroy {
 
   /** Total price of all selected seats */
   protected selectedSeatTotal = computed(() => {
-    const allSeats = this.blocks.flatMap(b => b.rows.flatMap(r => r.seats));
+    const allSeats = this.displayBlocks().flatMap(b => b.rows.flatMap(r => r.seats));
     return this.selectedSeatIds().reduce((total, seatId) => {
       const seat = allSeats.find(s => s.id === seatId);
       return total + (seat?.price ?? 0);
@@ -221,6 +246,12 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     this.lastTouchDist = 0;
   }
 
+  /** Clear the current seat selection (called by parent after booking/cancel) */
+  clearSelection(): void {
+    this.selectedSeatIds.set([]);
+    this.SelectedSeats.emit([]);
+  }
+
   toggleSeatSelection(seat: Seat): void {
     if (seat.status === 'reserved') {
       return;
@@ -232,7 +263,7 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     this.selectedSeatIds.set(next);
     // Emit the full seat objects to parent (uses setTimeout to let signal settle)
     setTimeout(() => {
-      const allSeats = this.blocks.flatMap(b => b.rows.flatMap(r => r.seats));
+      const allSeats = this.displayBlocks().flatMap(b => b.rows.flatMap(r => r.seats));
       const selected = allSeats.filter(s => this.selectedSeatIds().includes(s.id));
       this.SelectedSeats.emit(selected);
     });

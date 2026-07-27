@@ -46,7 +46,7 @@
                 <app-stage />
             </div>
 
-            @for(block of blocks; track block.id){
+            @for(block of displayBlocks(); track block.id){
 
                 <app-block
                     [block]="block"

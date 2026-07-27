@@ -118,7 +118,7 @@
                   <th>رقم الحجز</th>
                   <th>العميل</th>
                   <th>الاسم</th>
-                  <th>الكنيسة</th>
+                 
                   <th>جهة الاتصال</th>
                   <th>الفعالية</th>
                   <th>المقاعد</th>
@@ -141,7 +141,7 @@
                       </div>
                     </td>
                     <td>{{ booking.name || '—' }}</td>
-                    <td>{{ booking.church || '—' }}</td>
+                   
                     <td>
                       <span class="contact-badge" [class.contact-email]="booking.contactMethod === 'email'" [class.contact-phone]="booking.contactMethod === 'phone'">
                         @if (booking.contactMethod === 'email') { بريد } @else { هاتف }

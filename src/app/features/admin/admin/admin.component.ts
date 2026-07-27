@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../core/services/auth.service';
 import { AllBookingResponse, UpdateBookingStatusRequest } from '../../../core/models/api.models';
 import { environment } from '../../../../environments/environment.prod';
+import { AdminService } from '../../../core/services/admin.service';
 
 @Component({
   selector: 'app-admin',
@@ -16,6 +17,8 @@ import { environment } from '../../../../environments/environment.prod';
 export class AdminComponent implements OnInit {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
+    private readonly adminService = inject(AdminService);
+
   private readonly router = inject(Router);
 
   bookings: AllBookingResponse[] = [];
@@ -32,7 +35,7 @@ export class AdminComponent implements OnInit {
 private cdr = inject(ChangeDetectorRef);
   loadBookings(): void {
     this.isLoading = true;
-    this.http.get<AllBookingResponse[]>(`${environment.apiUrl}/api/v1/admin/bookings`).subscribe({
+    this.adminService.getAllRecerivation().subscribe({
       next: (data) => {
         console.log(data)
         this.bookings = data;

@@ -48,7 +48,10 @@
       <!-- Seat Map -->
 
       <!-- @if (seatMap()) { -->
-               <app-theater-canvas (SelectedSeats)="receiveData($event)"></app-theater-canvas>
+               <app-theater-canvas
+                 [reservedSeatNumbers]="reservedSeatNumbers()"
+                 (SelectedSeats)="receiveData($event)">
+               </app-theater-canvas>
 
       <!--  <div style="width: 100px; height: 100px;">
         <app-theater-canvas (SelectedSeats)="receiveData($event)"></app-theater-canvas>
