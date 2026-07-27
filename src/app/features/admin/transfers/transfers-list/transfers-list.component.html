@@ -1,0 +1,50 @@
+<div class="card">
+  <h2>جميع التحويلات</h2>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>جاري التحميل...</span>
+    </div>
+  } @else if (transfers.length === 0) {
+    <div class="empty-state">
+      <p>لا توجد تحويلات بعد</p>
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <table class="transfers-table">
+        <thead>
+          <tr>
+            <th>المعرف</th>
+            <th>المبلغ</th>
+            <th>المشرف</th>
+            <th>ملاحظات</th>
+            <th>التاريخ</th>
+            <th>الحالة</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (transfer of transfers; track transfer.id) {
+            <tr>
+              <td class="id-cell">{{ transfer.id }}</td>
+              <td class="amount-cell">EGP {{ transfer.amount | number }}</td>
+              <td>{{ transfer.toSupervisorName }}</td>
+              <td>{{ transfer.notes || '—' }}</td>
+              <td class="date-cell">{{ transfer.createdAt | date:'medium' }}</td>
+              <td>
+                <span class="status-badge"
+                      [class.pending]="transfer.status === 'pending'"
+                      [class.confirmed]="transfer.status === 'confirmed'"
+                      [class.cancelled]="transfer.status === 'cancelled'">
+                  @if (transfer.status === 'pending') { قيد الانتظار }
+                  @else if (transfer.status === 'confirmed') { تم الاستلام }
+                  @else { ملغي }
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

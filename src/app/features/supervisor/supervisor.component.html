@@ -1,0 +1,18 @@
+<div class="supervisor-page">
+  <div class="supervisor-container">
+    <!-- Header -->
+    <app-supervisor-header></app-supervisor-header>
+
+    <!-- Stats -->
+    <app-supervisor-stats [transfers]="transfers"></app-supervisor-stats>
+
+    <!-- Transfers Table -->
+    <app-supervisor-transfers-table
+      [transfers]="transfers"
+      [isLoading]="isLoading"
+      [updatingId]="updatingId"
+      (confirm)="confirmTransfer($event)"
+      (cancel)="cancelTransfer($event)">
+    </app-supervisor-transfers-table>
+  </div>
+</div>

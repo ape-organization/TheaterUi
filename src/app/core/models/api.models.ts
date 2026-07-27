@@ -152,7 +152,7 @@ export interface AllBookingResponse {
   eventTime: string;
   selectedSeats: string[];
   totalAmount: number;
-  status: 'pending' | 'confirmed' | 'cancelled';
+  status: 'PENDING' | 'CONFIRMED' ;
   createdAt: string;
   name?: string;
   church?: string;
@@ -224,4 +224,20 @@ export interface SupervisorTransfer {
 export interface UserInfo {
   name: string;
   church: string;
+}
+
+// Booking status type
+export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED';
+
+// User's booking (reservation) with optional event info
+export interface UserBooking {
+  id: number;
+  status: string;
+  expiresAt: string;
+  createdAt: string;
+  seats: Seat[];
+  user: UserInfo;
+  eventTitle?: string;
+  eventDate?: string;
+  eventTime?: string;
 }

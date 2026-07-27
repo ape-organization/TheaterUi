@@ -1,0 +1,85 @@
+<div class="card">
+  <h2>التحويلات الواردة</h2>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>جاري التحميل...</span>
+    </div>
+  } @else if (transfers.length === 0) {
+    <div class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="1" x2="12" y2="23"/>
+        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+      </svg>
+      <h3>لا توجد تحويلات</h3>
+      <p>لم يتم إرسال أي تحويلات إليك بعد</p>
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <table class="transfers-table">
+        <thead>
+          <tr>
+            <th>المعرف</th>
+            <th>من</th>
+            <th>المبلغ</th>
+            <th>ملاحظات</th>
+            <th>التاريخ</th>
+            <th>الحالة</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (transfer of transfers; track transfer.id) {
+            <tr>
+              <td class="id-cell">{{ transfer.id }}</td>
+              <td>{{ transfer.fromAdminName }}</td>
+              <td class="amount-cell">EGP {{ transfer.amount | number }}</td>
+              <td>{{ transfer.notes || '—' }}</td>
+              <td class="date-cell">{{ transfer.createdAt | date:'medium' }}</td>
+              <td>
+                <span class="status-badge"
+                      [class.pending]="transfer.status === 'pending'"
+                      [class.confirmed]="transfer.status === 'confirmed'"
+                      [class.cancelled]="transfer.status === 'cancelled'">
+                  @if (transfer.status === 'pending') { قيد الانتظار }
+                  @else if (transfer.status === 'confirmed') { تم الاستلام }
+                  @else { ملغي }
+                </span>
+              </td>
+              <td>
+                @if (transfer.status === 'pending') {
+                  <div class="action-buttons">
+                    <button class="btn-confirm" (click)="onConfirm(transfer.id)" [disabled]="updatingId === transfer.id">
+                      @if (updatingId === transfer.id) {
+                        <div class="btn-spinner"></div>
+                      } @else {
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                      }
+                      تأكيد الاستلام
+                    </button>
+                    <button class="btn-cancel" (click)="onCancel(transfer.id)" [disabled]="updatingId === transfer.id">
+                      @if (updatingId === transfer.id) {
+                        <div class="btn-spinner"></div>
+                      } @else {
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"/>
+                          <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                      }
+                      رفض
+                    </button>
+                  </div>
+                } @else {
+                  <span class="no-action">—</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

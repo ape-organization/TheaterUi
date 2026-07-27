@@ -1,5 +1,6 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ReceriveSeat, ReceriveSeatRequest, Seat, EventResponse } from '../../core/models/api.models';
 import { AuthService } from '../../core/services/auth.service';
 import { BookingService } from '../../core/services/booking.service';
@@ -13,6 +14,7 @@ import { BookingService } from '../../core/services/booking.service';
 export class ConfirmBooking {
   private readonly authService = inject(AuthService);
   private readonly bookingService = inject(BookingService);
+  private readonly router = inject(Router);
 
   /** Input: selected seats from parent */
   selectedSeats = input<Seat[]>([]);
@@ -21,8 +23,10 @@ export class ConfirmBooking {
 
   /** Output: emitted when modal should close */
   closeModal = output<void>();
-  /** Output: emitted when booking is confirmed successfully */
-  bookingConfirmed = output<void>();
+  /** Output: emitted when booking is confirmed successfully.
+   *  Carries the seat labels (ids) that were just booked so the parent
+   *  can lock them in the theater canvas immediately. */
+  bookingConfirmed = output<string[]>();
 
   error = false;
   errorMsg = '';
@@ -46,14 +50,11 @@ export class ConfirmBooking {
     return this.currentUser()?.user?.name ?? '';
   }
 
-
-
-  /** Close the confirmation modal */
+  /** Close the confirmation modal (cancel) — no seats are locked */
   closeConfirmModal(): void {
-    
-        this.isBookingLoading.set(false);
-        this.bookingService.clearSelection();
-        this.bookingConfirmed.emit();
+    this.isBookingLoading.set(false);
+    this.bookingService.clearSelection();
+    this.bookingConfirmed.emit([]);
   }
 
   /** Confirm and submit the booking */
@@ -68,16 +69,21 @@ export class ConfirmBooking {
 
     // Extract seat labels for the API request
     const seatLabels = seats.map(s => (s as any)['id'] ?? s.label ?? '');
-    console.log(seats)
-    console.log((seatLabels))
-    const request: ReceriveSeatRequest = { "seatLabels":seatLabels };
-console.log(request)
+    console.log(seats);
+    console.log(seatLabels);
+    const request: ReceriveSeatRequest = { "seatLabels": seatLabels };
+    console.log(request);
     this.bookingService.createBooking(request).subscribe({
       next: (response) => {
         console.log('Booking response:', response);
         this.isBookingLoading.set(false);
         this.bookingService.clearSelection();
-        this.bookingConfirmed.emit();
+        // Store the booking response so the ticket page can display it
+        this.bookingService.setBookingResponse(response);
+        // Emit the booked seat labels so the parent can lock them in the theater
+        this.bookingConfirmed.emit(seatLabels);
+        // Navigate to the ticket page
+        this.router.navigate(['/ticket']);
       },
       error: (err) => {
         console.error('Booking error:', err);

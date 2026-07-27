@@ -86,7 +86,7 @@
       [selectedSeats]="selectedSeats"
       [event]="eventData()"
       (closeModal)="closeConfirmModal()"
-      (bookingConfirmed)="onBookingConfirmed()"
+      (bookingConfirmed)="onBookingConfirmed($event)"
     />
   }
 </section>

@@ -54,6 +54,11 @@ export class EventComponent implements OnInit {
   receivedSeats: any[] = [];
 
   ngOnInit(): void {
+    this.getReceivedSeats();
+  }
+
+  getReceivedSeats()
+  {
     this.eventService.getRecivedSeat().subscribe({
       next: (response: any) => {
         // Keep seats that are PENDING or CONFIRMED — both are locked for the user
@@ -72,7 +77,6 @@ export class EventComponent implements OnInit {
       }
     });
   }
-
   /** Receives selected seats from theater-canvas child component */
   receiveData(data: any[]): void {
     this.selectedSeats = data;
@@ -86,15 +90,25 @@ export class EventComponent implements OnInit {
     }
     this.selectedSeatNumbers = this.selectedSeats.map((s) => (s as any)['seatnumber']);
     this.showConfirmModal = true;
+    console.log(this.selectedSeatNumbers);
   }
 
   /** Close the confirmation modal */
   closeConfirmModal(): void {
     this.showConfirmModal = false;
+    console.log(this.selectedSeatNumbers);
   }
 
-  /** Handle successful booking or cancel — close modal, clear selection, allow re-picking */
-  onBookingConfirmed(): void {
+  /** Handle successful booking or cancel — close modal, clear selection, allow re-picking.
+   *  When seatLabels are provided (from a confirmed booking), the newly booked
+   *  seats are immediately locked in the theater canvas. */
+  onBookingConfirmed(seatLabels: string[]): void {
+    // Lock the newly booked seats so they can't be selected again
+    if (seatLabels.length > 0) {
+      this.reservedSeatNumbers.update(current =>
+        [...new Set([...current, ...seatLabels])]
+      );
+    }
     this.showConfirmModal = false;
     this.selectedSeats = [];
     this.selectedSeatNumbers = [];

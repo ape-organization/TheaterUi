@@ -1,0 +1,41 @@
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-header h1 {
+  font-size: 1.8rem;
+  color: var(--clr-brown);
+  font-weight: 700;
+}
+
+.page-header p {
+  color: var(--clr-text-muted);
+  margin-top: 0.3rem;
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(107, 78, 58, 0.15);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--clr-text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-primary);
+}
+
+.btn-logout:hover {
+  background: rgba(179, 58, 58, 0.08);
+  border-color: var(--clr-error);
+  color: var(--clr-error);
+}

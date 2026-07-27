@@ -1,0 +1,329 @@
+.ticket-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: var(--clr-bg-primary);
+}
+
+.ticket-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 480px;
+  animation: slideUp 0.6s ease-out;
+}
+
+/* ─── Logo ─── */
+.ticket-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-image {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(107, 78, 58, 0.15));
+}
+
+/* ─── Ticket Card ─── */
+.ticket-card {
+  width: 100%;
+  background: var(--clr-bg-card);
+  border: 1px solid rgba(107, 78, 58, 0.08);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  animation: scaleIn 0.5s ease-out 0.2s both;
+}
+
+/* ─── Status Bar ─── */
+.ticket-status-bar {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  background: rgba(107, 78, 58, 0.04);
+  border-bottom: 1px solid rgba(107, 78, 58, 0.06);
+}
+
+.status-badge {
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid;
+}
+
+.status-pending {
+  background: rgba(199, 149, 43, 0.12);
+  color: var(--clr-warning);
+  border-color: rgba(199, 149, 43, 0.25);
+}
+
+.status-confirmed {
+  background: rgba(45, 122, 74, 0.12);
+  color: var(--clr-success);
+  border-color: rgba(45, 122, 74, 0.25);
+}
+
+/* ─── Ticket Header ─── */
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(107, 78, 58, 0.06);
+}
+
+.ticket-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--clr-text-primary);
+}
+
+.ticket-id {
+  text-align: right;
+}
+
+.ticket-id-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clr-text-muted);
+  font-weight: 600;
+}
+
+.ticket-id-value {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--clr-accent);
+}
+
+/* ─── Ticket Body ─── */
+.ticket-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.ticket-info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.ticket-info-row:last-child {
+  margin-bottom: 0;
+}
+
+.ticket-info-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clr-text-muted);
+  font-weight: 600;
+}
+
+.ticket-info-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--clr-text-primary);
+}
+
+.expiry-time {
+  color: var(--clr-warning);
+  font-family: 'Courier New', monospace;
+}
+
+/* ─── Seats Chips ─── */
+.seats-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.seat-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 28px;
+  padding: 0 0.6rem;
+  background: var(--clr-gold-subtle);
+  color: var(--clr-gold);
+  border: 1px solid var(--clr-gold-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ─── Payment Notice ─── */
+.payment-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: rgba(199, 149, 43, 0.06);
+  border-top: 1px solid rgba(107, 78, 58, 0.06);
+}
+
+.notice-icon {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  color: var(--clr-warning);
+}
+
+.notice-text {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--clr-text-secondary);
+}
+
+.notice-text strong {
+  color: var(--clr-text-primary);
+}
+
+/* ─── Ticket Tear-off ─── */
+.ticket-tear {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  height: 2px;
+}
+
+.tear-line {
+  flex: 1;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(107, 78, 58, 0.08),
+    rgba(107, 78, 58, 0.08) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.tear-hole {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--clr-bg-primary);
+  border: 2px solid rgba(107, 78, 58, 0.06);
+  z-index: 1;
+}
+
+.tear-hole.left {
+  left: -10px;
+}
+
+.tear-hole.right {
+  right: -10px;
+}
+
+/* ─── Actions ─── */
+.ticket-actions {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* ─── No Booking State ─── */
+.no-booking {
+  text-align: center;
+  padding: 2rem;
+  background: var(--clr-bg-card);
+  border: 1px solid rgba(107, 78, 58, 0.08);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  animation: scaleIn 0.5s ease-out 0.2s both;
+}
+
+.no-booking-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  border-radius: var(--radius-full);
+  background: rgba(107, 78, 58, 0.06);
+  color: var(--clr-text-muted);
+}
+
+.no-booking h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--clr-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.no-booking p {
+  font-size: 0.9rem;
+  color: var(--clr-text-secondary);
+  margin-bottom: 1.5rem;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .ticket-page {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .ticket-container {
+    max-width: 100%;
+    gap: 1rem;
+  }
+
+  .ticket-header,
+  .ticket-body,
+  .payment-notice,
+  .ticket-tear,
+  .ticket-actions {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .seats-chips {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .ticket-page {
+    padding: 1rem 0.5rem;
+  }
+
+  .logo-image {
+    height: 44px;
+  }
+
+  .ticket-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .ticket-title {
+    font-size: 1rem;
+  }
+}

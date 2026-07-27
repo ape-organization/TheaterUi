@@ -1,59 +1,49 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../../core/services/auth.service';
-import { AllBookingResponse, UpdateBookingStatusRequest } from '../../../core/models/api.models';
-import { environment } from '../../../../environments/environment.prod';
 import { AdminService } from '../../../core/services/admin.service';
+import { AllBookingResponse } from '../../../core/models/api.models';
+import { AdminHeaderComponent } from '../admin-header/admin-header.component';
+import { AdminStatsComponent } from '../admin-stats/admin-stats.component';
+import { AdminBookingsTableComponent } from '../admin-bookings-table/admin-bookings-table.component';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AdminStatsComponent, AdminBookingsTableComponent],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })
 export class AdminComponent implements OnInit {
-  private readonly http = inject(HttpClient);
-  private readonly authService = inject(AuthService);
-    private readonly adminService = inject(AdminService);
-
-  private readonly router = inject(Router);
+  private readonly adminService = inject(AdminService);
 
   bookings: AllBookingResponse[] = [];
   isLoading = true;
   updatingId: string | null = null;
-
-  get currentUser() {
-    return this.authService.currentUser();
-  }
-
+error=signal(false)
+errorMsg=signal("")
   ngOnInit(): void {
     this.loadBookings();
   }
-private cdr = inject(ChangeDetectorRef);
+
   loadBookings(): void {
     this.isLoading = true;
     this.adminService.getAllRecerivation().subscribe({
       next: (data) => {
-        console.log(data)
         this.bookings = data;
-        console.log(this.bookings.length)
         this.isLoading = false;
-          this.cdr.detectChanges();
       },
       error: () => {
-        window.alert('فشل تحميل الحجوزات.');
+      //  window.alert('فشل تحميل الحجوزات.');
+      this.error.set(true)
+      this.errorMsg.set('فشل تحميل الحجوزات.')
         this.isLoading = false;
       }
     });
-    console.log(this.bookings.length)
   }
 
-  updateStatus(bookingId: string, status: 'confirmed' | 'cancelled'): void {
+  updateStatus(bookingId: string, status: 'CONFIRMED' ): void {
     this.updatingId = bookingId;
-    this.http.put(`${environment.apiUrl}/api/v1/admin/bookings/${bookingId}`, { status } as UpdateBookingStatusRequest).subscribe({
+    this.adminService.updateReservationStatus(bookingId, status).subscribe({
       next: () => {
         const booking = this.bookings.find((b) => b.bookingId === bookingId);
         if (booking) {
@@ -62,22 +52,11 @@ private cdr = inject(ChangeDetectorRef);
         this.updatingId = null;
       },
       error: () => {
-        window.alert('فشل تحديث حالة الحجز.');
+      //  window.alert('فشل تحديث حالة الحجز.');
+        this.error.set(true)
+      this.errorMsg.set('فشل تحديث حالة الحجز.')
         this.updatingId = null;
       }
     });
-  }
-
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'confirmed': return 'status-confirmed';
-      case 'cancelled': return 'status-cancelled';
-      default: return 'status-pending';
-    }
-  }
-
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/auth/login']);
   }
 }

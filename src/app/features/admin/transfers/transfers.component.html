@@ -1,0 +1,18 @@
+<div class="transfers-page">
+  <div class="transfers-container">
+    <!-- Header -->
+    <app-transfers-header></app-transfers-header>
+
+    <!-- Create Transfer Form -->
+    <app-create-transfer-form
+      [isSubmitting]="isSubmitting"
+      (submit)="createTransfer($event)">
+    </app-create-transfer-form>
+
+    <!-- Transfers List -->
+    <app-transfers-list
+      [transfers]="transfers"
+      [isLoading]="isLoading">
+    </app-transfers-list>
+  </div>
+</div>

@@ -1,0 +1,172 @@
+<section class="reservations-page">
+  <div class="reservations-container">
+
+    <!-- Logo -->
+    <div class="reservations-logo">
+      <img src="../../../assets/images/logo.png" alt="شعار المشروع" class="logo-image" onerror="this.style.display='none'" />
+    </div>
+
+    <!-- Page Title -->
+    <div class="reservations-header">
+      <h1 class="page-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="8" y1="13" x2="16" y2="13"/>
+          <line x1="8" y1="17" x2="16" y2="17"/>
+        </svg>
+        <span>حجوزاتي</span>
+      </h1>
+      <p class="page-subtitle">عرض وإدارة جميع حجوزاتك</p>
+    </div>
+
+    <!-- Loading State -->
+    @if (isLoading()) {
+      <div class="loading-state">
+        <div class="loading-content">
+          <img src="../../../assets/images/logo.png" alt="الشعار" class="loading-logo" onerror="this.style.display='none'" />
+          <div class="loading-ring"></div>
+          <span>جاري تحميل الحجوزات...</span>
+        </div>
+      </div>
+    }
+
+    <!-- Error State -->
+    @if (errorMsg()) {
+      <div class="error-card">
+        <div class="error-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <h3>حدث خطأ</h3>
+        <p>{{ errorMsg() }}</p>
+        <button type="button" class="btn-secondary btn-retry" (click)="refresh()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 12h16"/>
+            <polyline points="12 6 18 12 12 18"/>
+          </svg>
+          <span>إعادة المحاولة</span>
+        </button>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!isLoading() && !errorMsg() && (bookings()?.length === 0)) {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M7 7h10v10H7z"/>
+          </svg>
+        </div>
+        <h3>لا توجد حجوزات</h3>
+        <p>لم يتم العثور على أي حجوزات حتى الآن. ابدأ بحجز مقعد جديد.</p>
+        <a routerLink="/event" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <polyline points="19 12 12 19 5 12"/>
+          </svg>
+          <span>حجز مقعد الآن</span>
+        </a>
+      </div>
+    }
+
+    <!-- Reservations List -->
+    @if (!isLoading() && !errorMsg() && bookings() && bookings()!.length > 0) {
+      <div class="reservations-list">
+        <div class="list-summary">
+          <span class="total-count">{{ bookings()!.length }} حجز</span>
+        </div>
+
+        <div class="reservation-grid">
+          @for (booking of bookings(); track booking.id) {
+            <div class="reservation-card"
+                 [class.reservation-expired]="isExpired(booking)"
+                 (click)="viewTicket(booking)">
+
+              <!-- Status Badge -->
+              <div class="reservation-status-bar">
+                <span class="status-badge"
+                      [class.status-pending]="booking.status === 'PENDING'"
+                      [class.status-confirmed]="booking.status === 'CONFIRMED'"
+                      [class.status-cancelled]="booking.status === 'CANCELLED'"
+                      [class.status-expired]="isExpired(booking)">
+                  @if (isExpired(booking) && booking.status !== 'CANCELLED') {
+                    منتهي
+                  } @else if (booking.status === 'PENDING') {
+                    معلق
+                  } @else if (booking.status === 'CONFIRMED') {
+                    مؤكد
+                  } @else {
+                    {{ booking.status }}
+                  }
+                </span>
+              </div>
+
+              <!-- Card Body -->
+              <div class="reservation-body">
+
+                <!-- Booking ID -->
+                <div class="reservation-id-row">
+                  <span class="id-label">رقم الحجز</span>
+                  <span class="id-value">#{{ booking.id }}</span>
+                </div>
+
+                <!-- Event Title -->
+                <div class="reservation-event" *ngIf="booking.eventTitle">
+                  <span class="event-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                      <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                  </span>
+                  <span class="event-title" title="{{ booking.eventTitle }}">{{ booking.eventTitle }}</span>
+                </div>
+
+                <!-- Seats -->
+                <div class="reservation-seats">
+                  <span class="seats-label">المقاعد ({{ getSeatsCount(booking) }})</span>
+                  <div class="seats-chips">
+                    <span class="seat-chip" *ngFor="let seat of booking.seats; let i = index"
+                          [class.seat-expired]="isExpired(booking)">
+                      {{ seat.id }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- User Info -->
+                <div class="reservation-user" *ngIf="booking.user.name">
+                  <span class="user-name">{{ booking.user.name }}</span>
+                  <span class="user-church" *ngIf="booking.user.church">{{ booking.user.church }}</span>
+                </div>
+
+                <!-- Dates -->
+                <div class="reservation-dates">
+                  <div class="date-row">
+                    <span class="date-label">تاريخ الحجز</span>
+                    <span class="date-value">{{ formatDate(booking.createdAt) }}</span>
+                  </div>
+                  <div class="date-row" *ngIf="booking.expiresAt">
+                    <span class="date-label">موعد الانتهاء</span>
+                    <span class="date-value expiry-time" [class.expired]="isExpired(booking)">
+                      {{ formatDate(booking.expiresAt) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- View Ticket Button -->
+              <div class="reservation-actions">
+                <span class="view-ticket-hint">اضغط لعرض التذكرة</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+  </div>
+</section>

@@ -22,16 +22,31 @@ export const routes: Routes = [
       }
     ]
   },
- 
+
   {
     path: 'event',
-   canActivate: [authGuard],
+    canActivate: [authGuard],
     loadComponent: () => import('./features/home/event.component').then((m) => m.EventComponent)
   },
   {
     path: 'booking-success',
     canActivate: [authGuard],
     loadComponent: () => import('./features/booking-success/booking-success.component').then((m) => m.BookingSuccessComponent)
+  },
+  {
+    path: 'ticket',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/ticket/ticket.component').then((m) => m.TicketComponent)
+  },
+  {
+    path: 'ticket/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/ticket/ticket.component').then((m) => m.TicketComponent)
+  },
+  {
+    path: 'my-reservations',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/my-reservations/my-reservations.component').then((m) => m.MyReservationsComponent)
   },
   {
     path: 'admin',
@@ -54,7 +69,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/event',
+    redirectTo: '/supervisor',
     pathMatch: 'full'
   }
 ];
