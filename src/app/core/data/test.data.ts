@@ -23,6 +23,7 @@ export interface SeatBlock {
   translateX: number;
   translateY: number;
   rotation: number;
+  label: string;
 }
 
 export interface Theater {

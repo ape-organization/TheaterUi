@@ -33,6 +33,26 @@
         </div>
     }
 
+    <!-- Seat Type Tabs -->
+    <div class="seat-tabs">
+        <button
+            type="button"
+            class="tab-btn"
+            [class.active]="activeTab() === 'STAGE'"
+            (click)="switchTab('STAGE')">
+            <span class="tab-icon">🎭</span>
+            <span class="tab-label">Stage</span>
+        </button>
+        <button
+            type="button"
+            class="tab-btn"
+            [class.active]="activeTab() === 'BAL'"
+            (click)="switchTab('BAL')">
+            <span class="tab-icon">🏛️</span>
+            <span class="tab-label">Balcony</span>
+        </button>
+    </div>
+
     <div class="layout-container"
          [class.is-scrollable]="isOverflowing"
          (touchstart)="onTouchStart($event)"
@@ -46,7 +66,7 @@
                 <app-stage />
             </div>
 
-            @for(block of displayBlocks(); track block.id){
+            @for(block of filteredBlocks(); track block.id){
 
                 <app-block
                     [block]="block"

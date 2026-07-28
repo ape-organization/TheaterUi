@@ -151,6 +151,7 @@ export class LayoutService {
       translateX,
       translateY,
       rotation,
+      label,
       rows: rows.map(row => ({
         id: (label + row.label),
         label: row.label,
@@ -200,22 +201,22 @@ export class LayoutService {
 
   //////level four
   private generateTopLeftLevelFour(): SeatBlock {
-    return this.makeBlock(401, 20, 900, 0, this.LeftBottomseatRowsLevelFour,"BAL-");
+    return this.makeBlock(401, 20, 150, 0, this.LeftBottomseatRowsLevelFour,"BAL-");
   }
 
   private generateTopCenterLevelFour(): SeatBlock {
-    return this.makeBlock(402, 550, 900, 0, this.CenterBottomseatRowsLevelFour,"BAL-");
+    return this.makeBlock(402, 550, 150, 0, this.CenterBottomseatRowsLevelFour,"BAL-");
   }
 
   private generateTopRightLevelFour(): SeatBlock {
-    return this.makeBlock(403, 850, 900, 0, this.RightBootomseatRowsLevelFour,"BAL-");
+    return this.makeBlock(403, 850, 150, 0, this.RightBootomseatRowsLevelFour,"BAL-"); // 900 y
   }
   private generateLeftBottomLevelFive(): SeatBlock {
-    return this.makeBlock(501, 20, 1025, 0, this.LeftBottomRows,"BAL-");
+    return this.makeBlock(501, 20, 350, 0, this.LeftBottomRows,"BAL-"); //1025   y
   }
 
   private generateRightBottomLevelFive(): SeatBlock {
-    return this.makeBlock(502, 750, 1025, 0, this.RightBottomRows,"BAL-");
+    return this.makeBlock(502, 750, 350, 0, this.RightBottomRows,"BAL-");
   }
 
 

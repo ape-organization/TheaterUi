@@ -11,7 +11,7 @@
 }
 
 .modal-content {
-  background: var(--clr-bg-card);
+  background: var(--clr-bg-auth-card);
   border-radius: var(--radius-xl);
   padding: 2rem;
   width: 100%;
@@ -47,7 +47,7 @@
 
 .modal-label {
   font-size: 0.88rem;
-  color: var(--clr-text-muted);
+  color: black;
 }
 
 .modal-value {

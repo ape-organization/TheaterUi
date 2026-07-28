@@ -94,7 +94,7 @@
 .error-card {
   text-align: center;
   padding: 2.5rem;
-  background: var(--clr-bg-card);
+  background: var(--clr-bg-auth-card);
   border: 1px solid rgba(179, 58, 58, 0.2);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
@@ -136,7 +136,7 @@
 .empty-state {
   text-align: center;
   padding: 3rem 2rem;
-  background: var(--clr-bg-card);
+  background: var(--clr-bg-auth-card);
   border: 1px solid rgba(107, 78, 58, 0.08);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
@@ -201,7 +201,7 @@
 
 /* ─── Reservation Card ─── */
 .reservation-card {
-  background: var(--clr-bg-card);
+  background: var(--clr-bg-auth-card);
   border: 1px solid rgba(107, 78, 58, 0.08);
   border-radius: var(--radius-lg);
   overflow: hidden;

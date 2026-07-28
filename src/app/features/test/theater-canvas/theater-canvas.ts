@@ -31,8 +31,10 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   SelectedSeats = output<any[]>();
   blocks = this.layout.generateTheater();
 
-  
   reservedSeatNumbers = input<string[]>([]);
+
+  /** Active tab: 'STAGE' (default) or 'BAL' */
+  protected activeTab = signal<'STAGE' | 'BAL'>('STAGE');
 
   /** Blocks with reserved seats applied so the template can render locked seats */
   displayBlocks = computed(() => {
@@ -50,12 +52,20 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     }));
   });
 
+  /** Blocks filtered by the active tab (STAGE or BAL) */
+  filteredBlocks = computed(() => {
+    const tab = this.activeTab();
+    return this.displayBlocks().filter(block =>
+      tab === 'STAGE' ? block.label.startsWith('STAGE') : block.label.startsWith('BAL')
+    );
+  });
+
   protected selectedSeatIds = signal<string[]>([]);
 
   /** Number of selected seats */
   protected selectedSeatCount = computed(() => this.selectedSeatIds().length);
 
-  /** Total price of all selected seats */
+  /** Total price of all selected seats (uses ALL blocks, not just the active tab) */
   protected selectedSeatTotal = computed(() => {
     const allSeats = this.displayBlocks().flatMap(b => b.rows.flatMap(r => r.seats));
     return this.selectedSeatIds().reduce((total, seatId) => {
@@ -63,6 +73,11 @@ export class TheaterCanvas implements OnInit, OnDestroy {
       return total + (seat?.price ?? 0);
     }, 0);
   });
+
+  /** Switch the active tab */
+  switchTab(tab: 'STAGE' | 'BAL'): void {
+    this.activeTab.set(tab);
+  }
 
   /** Scale factor applied to the layout */
   protected scale = 1;
