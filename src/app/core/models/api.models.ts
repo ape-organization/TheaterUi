@@ -17,6 +17,7 @@ export interface User {
   name: string;
   phone: string;
   firstLogin: boolean;
+  role:string;
 }
 export interface AuthResponse {
  
