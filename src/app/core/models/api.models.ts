@@ -214,7 +214,7 @@ export interface SupervisorTransfer {
   id: string;
   amount: number;
   fromAdminName: string;
-  status: 'pending' | 'confirmed' | 'cancelled';
+  status: 'PENDING' | 'CONFIRMED' ;
   createdAt: string;
   confirmedAt?: string;
   notes?: string;

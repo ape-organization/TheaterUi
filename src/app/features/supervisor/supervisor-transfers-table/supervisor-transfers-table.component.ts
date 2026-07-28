@@ -17,11 +17,11 @@ export class SupervisorTransfersTableComponent {
   @Output() confirm = new EventEmitter<string>();
   @Output() cancel = new EventEmitter<string>();
 
-  onConfirm(id: string): void {
+  onConfirm(id: any): void {
     this.confirm.emit(id);
   }
 
-  onCancel(id: string): void {
+  onCancel(id: any): void {
     this.cancel.emit(id);
   }
 }

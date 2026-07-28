@@ -13,16 +13,16 @@ export class SupervisorStatsComponent {
   @Input() transfers: SupervisorTransfer[] = [];
 
   get pendingCount(): number {
-    return this.transfers.filter(t => t.status === 'pending').length;
+    return this.transfers.filter(t => t.status === 'PENDING').length;
   }
 
   get confirmedCount(): number {
-    return this.transfers.filter(t => t.status === 'confirmed').length;
+    return this.transfers.filter(t => t.status === 'CONFIRMED').length;
   }
 
   get totalAmount(): number {
     return this.transfers
-      .filter(t => t.status === 'confirmed')
+      .filter(t => t.status === 'CONFIRMED')
       .reduce((sum, t) => sum + t.amount, 0);
   }
 }

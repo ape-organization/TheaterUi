@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MoneyTransfer } from '../../../core/models/api.models';
+import { MoneyTransfer } from '../../../../core/models/api.models';
 
 @Component({
   selector: 'app-transfers-list',

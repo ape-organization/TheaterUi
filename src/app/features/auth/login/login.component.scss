@@ -54,7 +54,8 @@
 }
 
 .auth-card {
-  background: var(--clr-bg-card);
+
+  background: var(--clr-bg-auth-card);
   border: 1px solid rgba(107, 78, 58, 0.08);
   border-radius: var(--radius-xl);
   padding: 2rem;
@@ -96,7 +97,7 @@
   padding: 0.65rem;
   border: none;
   border-radius: var(--radius-sm);
-  background: transparent;
+  //background: transparent;
   color: var(--clr-text-muted);
   font-size: 0.85rem;
   font-weight: 500;
@@ -106,7 +107,7 @@
 }
 
 .auth-tab.active {
-  background: var(--clr-bg-card);
+  background: var(--clr-bg-auth-card);
   color: var(--clr-brown);
   box-shadow: var(--shadow-sm);
 }

@@ -39,16 +39,16 @@
               <td class="date-cell">{{ transfer.createdAt | date:'medium' }}</td>
               <td>
                 <span class="status-badge"
-                      [class.pending]="transfer.status === 'pending'"
-                      [class.confirmed]="transfer.status === 'confirmed'"
-                      [class.cancelled]="transfer.status === 'cancelled'">
-                  @if (transfer.status === 'pending') { قيد الانتظار }
-                  @else if (transfer.status === 'confirmed') { تم الاستلام }
-                  @else { ملغي }
+                      [class.pending]="transfer.status === 'PENDING'"
+                      [class.confirmed]="transfer.status === 'CONFIRMED'"
+                      >
+                  @if (transfer.status === 'PENDING') { قيد الانتظار }
+                  @else if (transfer.status === 'CONFIRMED') { تم الاستلام }
+                 
                 </span>
               </td>
               <td>
-                @if (transfer.status === 'pending') {
+                @if (transfer.status === 'PENDING') {
                   <div class="action-buttons">
                     <button class="btn-confirm" (click)="onConfirm(transfer.id)" [disabled]="updatingId === transfer.id">
                       @if (updatingId === transfer.id) {
@@ -60,17 +60,7 @@
                       }
                       تأكيد الاستلام
                     </button>
-                    <button class="btn-cancel" (click)="onCancel(transfer.id)" [disabled]="updatingId === transfer.id">
-                      @if (updatingId === transfer.id) {
-                        <div class="btn-spinner"></div>
-                      } @else {
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <line x1="18" y1="6" x2="6" y2="18"/>
-                          <line x1="6" y1="6" x2="18" y2="18"/>
-                        </svg>
-                      }
-                      رفض
-                    </button>
+                  
                   </div>
                 } @else {
                   <span class="no-action">—</span>

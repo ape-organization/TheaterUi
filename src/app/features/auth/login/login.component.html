@@ -5,7 +5,7 @@
     <!-- Branding -->
     <div class="auth-header">
       <img src="../../../../assets/images/logo.png" alt="الشعار" class="auth-logo" onerror="this.style.display='none'" />
-      <h1 class="auth-title">حجز المسرح</h1>
+      <h1 class="auth-title">الصارخ</h1>
       <p class="auth-subtitle">سجل الدخول لحجز مقاعدك</p>
     </div>
 
@@ -29,53 +29,10 @@
           </svg>
           <span>رقم الهاتف</span>
         </button>
-         <button 
-          type="button" 
-          class="auth-tab" 
-          [class.active]="activeTab() === 'email'"
-          (click)="switchTab('email')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-          <span>البريد الإلكتروني</span>
-        </button>
+        
       </div>
 
-      <!-- Email Form -->
-      @if (activeTab() === 'email') {
-        <form [formGroup]="emailForm" (ngSubmit)="submit()" class="auth-form">
-          <div class="input-group">
-            <label for="email" class="input-label">البريد الإلكتروني</label>
-            <div class="input-wrapper">
-              <input
-                id="email"
-                type="email"
-                formControlName="email"
-                class="cinema-input"
-                [class.error]="emailForm.controls.email.invalid && emailForm.controls.email.touched"
-                placeholder="user@example.com"
-              />
-            </div>
-            @if (emailForm.controls.email.invalid && emailForm.controls.email.touched) {
-              <span class="input-error">يرجى إدخال بريد إلكتروني صحيح</span>
-            }
-          </div>
-
-          <button type="submit" class="btn-primary auth-submit" [disabled]="isLoading()">
-            @if (isLoading()) {
-              <app-loading-spinner></app-loading-spinner>
-              <span>جاري الإرسال...</span>
-            } @else {
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 2L11 13"/>
-                <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
-              </svg>
-              <span>إرسال رمز التحقق</span>
-            }
-          </button>
-        </form>
-      }
+     
 
       <!-- Phone Form -->
       @if (activeTab() === 'phone') {

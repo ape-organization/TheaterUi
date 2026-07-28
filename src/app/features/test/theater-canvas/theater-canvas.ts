@@ -31,13 +31,7 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   SelectedSeats = output<any[]>();
   blocks = this.layout.generateTheater();
 
-  /**
-   * Seat IDs (labels from the server, e.g. "STAGE-A14") that are
-   * pending / reserved and must be locked.
-   * The server returns objects like { id, label, status } where `label`
-   * matches the theater seat's `id` (e.g. "STAGE-A14"), NOT its `seatnumber`
-   * (e.g. "A14").
-   */
+  
   reservedSeatNumbers = input<string[]>([]);
 
   /** Blocks with reserved seats applied so the template can render locked seats */

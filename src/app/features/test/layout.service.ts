@@ -169,7 +169,7 @@ export class LayoutService {
   }
 
   private generateTopRightLevelOne(): SeatBlock {
-    return this.makeBlock(103, 950, 100, -20, this.RightTopseatRowsLevelOne,"STAGE-");
+    return this.makeBlock(103, 900, 100, -20, this.RightTopseatRowsLevelOne,"STAGE-");
   }
 
   //////level two
@@ -182,7 +182,7 @@ export class LayoutService {
   }
 
   private generateTopRightLevelTwo(): SeatBlock {
-    return this.makeBlock(203, 900, 450, -15, this.RightTopseatRowsLevelTwo,"STAGE-");
+    return this.makeBlock(203, 850, 450, -15, this.RightTopseatRowsLevelTwo,"STAGE-");
   }
 
   //////level three
@@ -195,27 +195,27 @@ export class LayoutService {
   }
 
   private generateTopRightLevelThree(): SeatBlock {
-    return this.makeBlock(303, 1000, 800, -15, this.RightTopseatRowsLevelThree,"STAGE-");
+    return this.makeBlock(303, 950, 800, -15, this.RightTopseatRowsLevelThree,"STAGE-");
   }
 
   //////level four
   private generateTopLeftLevelFour(): SeatBlock {
-    return this.makeBlock(401, 20, 900, 0, this.LeftBottomseatRowsLevelFour,"BALCONY-");
+    return this.makeBlock(401, 20, 900, 0, this.LeftBottomseatRowsLevelFour,"BAL-");
   }
 
   private generateTopCenterLevelFour(): SeatBlock {
-    return this.makeBlock(402, 500, 900, 0, this.CenterBottomseatRowsLevelFour,"BALCONY-");
+    return this.makeBlock(402, 550, 900, 0, this.CenterBottomseatRowsLevelFour,"BAL-");
   }
 
   private generateTopRightLevelFour(): SeatBlock {
-    return this.makeBlock(403, 850, 900, 0, this.RightBootomseatRowsLevelFour,"BALCONY-");
+    return this.makeBlock(403, 850, 900, 0, this.RightBootomseatRowsLevelFour,"BAL-");
   }
   private generateLeftBottomLevelFive(): SeatBlock {
-    return this.makeBlock(501, 20, 1025, 0, this.LeftBottomRows,"BALCONY-");
+    return this.makeBlock(501, 20, 1025, 0, this.LeftBottomRows,"BAL-");
   }
 
   private generateRightBottomLevelFive(): SeatBlock {
-    return this.makeBlock(502, 800, 1025, 0, this.RightBottomRows,"BALCONY-");
+    return this.makeBlock(502, 750, 1025, 0, this.RightBottomRows,"BAL-");
   }
 
 

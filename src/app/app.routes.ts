@@ -69,7 +69,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/supervisor',
+    redirectTo: '/event',
     pathMatch: 'full'
   }
 ];

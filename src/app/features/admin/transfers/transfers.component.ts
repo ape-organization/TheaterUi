@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MoneyTransfer, CreateMoneyTransferRequest } from '../../../core/models/api.models';
-import { A } from '../../../core/services/admin.service';
+import { AdminService } from '../../../core/services/admin.service';
 import { TransfersHeaderComponent } from './transfers-header/transfers-header.component';
 import { CreateTransferFormComponent } from './create-transfer-form/create-transfer-form.component';
 import { TransfersListComponent } from './transfers-list/transfers-list.component';

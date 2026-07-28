@@ -19,31 +19,10 @@
           <h2>اختر مقاعدك</h2>
           <p>اختر المقاعد المفضلة لديك من خريطة المسرح</p>
         </div>
-        <div class="seat-section-actions">
-          <span class="selected-count">
-            <strong>{{ selectedSeats.length }}</strong> مقاعد مختارة
-          </span>
-          @if (selectedSeats.length > 0) {
-            <span class="total-price">ج.م {{ totalPrice | number }}</span>
-          }
-        </div>
+      
       </div>
 
-      <!-- Book Now Button -->
-      @if (selectedSeats.length > 0 && !bookingSuccess) {
-        <div class="booking-bar">
-          <div class="booking-summary">
-            <span class="booking-seats-count">{{ selectedSeats.length }} مقعد مختار</span>
-            <span class="booking-total">الإجمالي: ج.م {{ totalPrice | number }}</span>
-          </div>
-          <button type="button" class="btn-primary btn-book" (click)="openConfirmModal()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            <span>متابعة الحجز</span>
-          </button>
-        </div>
-      }
+      
 
       <!-- Seat Map -->
 
@@ -58,9 +37,23 @@
 
        </div> -->
      <!--  } -->
-
+<!-- Book Now Button -->
+      @if (selectedSeats.length > 0 && !bookingSuccess) {
+        <div class="booking-bar">
+          <div class="booking-summary">
+            <span class="booking-seats-count">{{ selectedSeats.length }} مقعد مختار</span>
+            <span class="booking-total">الإجمالي: ج.م {{ totalPrice | number }}</span>
+          </div>
+          <button type="button" class="btn-primary btn-book" (click)="openConfirmModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>متابعة الحجز</span>
+          </button>
+        </div>
+      }
       <!-- Booking Success Message -->
-      @if (bookingSuccess) {
+    <!--   @if (bookingSuccess) {
         <div class="booking-success-card">
           <div class="success-icon">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -76,7 +69,7 @@
             يمكنك تغيير المقاعد لاحقاً من لوحة الإدارة
           </p>
         </div>
-      }
+      } -->
     </section>
   }
 

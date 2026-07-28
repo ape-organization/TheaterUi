@@ -61,8 +61,8 @@ private readonly dialog = inject(MatDialog);
         } else if (response.role === 'supervisor') {
           this.router.navigate(['/supervisor']);
         } else { */
-          //    this.router.navigate(['/event']);
-this.router.navigate(['/admin']);
+             this.router.navigate(['/event']);
+//this.router.navigate(['/admin']);
         //}
         }
       },
@@ -85,20 +85,25 @@ this.router.navigate(['/admin']);
 response.user.name =result. userName;
   this.authService.setAuthenticatedUser(response);
 //this.router.navigate(['/admin']);
-this.router.navigate(['/supervisor']);
+//this.router.navigate(['/supervisor']);
        /*  if (response.role === 'admin') {
           this.router.navigate(['/admin']);
         } else if (response.role === 'supervisor') {
           this.router.navigate(['/supervisor']);
         } else { */
-              // this.router.navigate(['/event']);
+               this.router.navigate(['/event']);
 
         //}
         }
 
         },
       error: (res:any) => {
+        console.log(res)
           this.error.set(true);
+        
+          if (res.message?.includes("https"))
+                    this.errorMsg.set('تعذر تسجيل البيانات. حاول مرة أخرى.');
+else
         this.errorMsg.set(res.message || 'تعذر تسجيل البيانات. حاول مرة أخرى.');
       }})
   

@@ -9,7 +9,7 @@ import { SupervisorTransfersTableComponent } from './supervisor-transfers-table/
 @Component({
   selector: 'app-supervisor',
   standalone: true,
-  imports: [CommonModule, SupervisorHeaderComponent, SupervisorStatsComponent, SupervisorTransfersTableComponent],
+  imports: [CommonModule, SupervisorStatsComponent, SupervisorTransfersTableComponent],
   templateUrl: './supervisor.component.html',
   styleUrl: './supervisor.component.scss'
 })
@@ -19,7 +19,8 @@ export class SupervisorComponent implements OnInit {
   transfers: SupervisorTransfer[] = [];
   isLoading = true;
   updatingId: string | null = null;
-
+error=false
+errorMsg=""
   ngOnInit(): void {
     this.loadTransfers();
   }
@@ -32,18 +33,20 @@ export class SupervisorComponent implements OnInit {
         this.isLoading = false;
       },
       error: () => {
-        window.alert('فشل تحميل التحويلات');
+       // window.alert('فشل تحميل التحويلات');
+        this.error=true
+        this.errorMsg='فشل تحميل التحويلات'
         this.isLoading = false;
       }
     });
   }
 
-  confirmTransfer(id: string): void {
+  confirmTransfer(id: any): void {
     this.updatingId = id;
-    this.supervisorService.updateTransferStatus(id, 'confirmed').subscribe({
+    this.supervisorService.updateTransferStatus(id, 'CONFIRMED').subscribe({
       next: () => {
         const transfer = this.transfers.find(t => t.id === id);
-        if (transfer) transfer.status = 'confirmed';
+        if (transfer) transfer.status = 'CONFIRMED';
         this.updatingId = null;
       },
       error: () => {
@@ -53,18 +56,5 @@ export class SupervisorComponent implements OnInit {
     });
   }
 
-  cancelTransfer(id: string): void {
-    this.updatingId = id;
-    this.supervisorService.updateTransferStatus(id, 'cancelled').subscribe({
-      next: () => {
-        const transfer = this.transfers.find(t => t.id === id);
-        if (transfer) transfer.status = 'cancelled';
-        this.updatingId = null;
-      },
-      error: () => {
-        window.alert('فشل إلغاء التحويل');
-        this.updatingId = null;
-      }
-    });
-  }
+  
 }

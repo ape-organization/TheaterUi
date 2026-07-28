@@ -3,10 +3,11 @@
   /* White, Brown, Gold, Black Palette */
   --clr-bg-primary: #faf8f5;
   --clr-bg-secondary: #f0ece6;
-  --clr-bg-card: #ffffff;
-  --clr-bg-elevated: #ffffff;
-  --clr-bg-hover: #f5f0ea;
-
+  --clr-bg-auth-card: #f0ece6;
+  --clr-bg-card: #111110;
+  --clr-bg-elevated: #666462;
+  --clr-bg-hover: #666462;
+//#ffffff
   --clr-text-primary: #1a1a1a;
   --clr-text-secondary: #6b5e4e;
   --clr-text-muted: #a09080;
@@ -295,7 +296,7 @@ body {
 .cinema-input {
   width: 100%;
   padding: 1rem 1.25rem;
-  background: var(--clr-bg-card);
+  background: var(--clr-bg-auth-card);
   border: 1px solid rgba(107, 78, 58, 0.12);
   border-radius: var(--radius-md);
   color: var(--clr-text-primary);

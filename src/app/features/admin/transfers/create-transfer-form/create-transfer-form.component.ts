@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CreateMoneyTransferRequest } from '../../../core/models/api.models';
+import { CreateMoneyTransferRequest } from '../../../../core/models/api.models';
 
 @Component({
   selector: 'app-create-transfer-form',

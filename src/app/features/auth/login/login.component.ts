@@ -39,21 +39,7 @@ export class LoginComponent {
 
   submit(): void {
     this.error.set(false);    
-    if (this.activeTab() === 'email') {
-      if (this.emailForm.invalid) {
-        this.emailForm.markAllAsTouched();
-        return;
-      }
-      const email = this.emailForm.value.email ?? '';
-      this.authService.login('email', email).subscribe({
-        next: () => {
-          this.router.navigate(['/auth/verify'], { queryParams: { method: 'email', contact: email } });
-        },
-        error: () => {
-          window.alert('تعذر إرسال رمز التحقق. حاول مرة أخرى.');
-        }
-      });
-    } else {
+   
       if (this.phoneForm.invalid) {
         this.phoneForm.markAllAsTouched();
         return;
@@ -65,11 +51,16 @@ export class LoginComponent {
           this.router.navigate(['/auth/verify'], { queryParams: { method: 'phone', contact: phone } });
         },
         error: (res:any) => {
+          console.log(res)
           this.error.set(true);
-          this.errorMsg.set(res.message || 'تعذر إرسال رمز التحقق. حاول مرة أخرى.');
+         
+          if (res.message?.includes("https"))
+                    this.errorMsg.set('تعذر تسجيل البيانات. حاول مرة أخرى.');
+else
+        this.errorMsg.set(res.message || 'تعذر تسجيل البيانات. حاول مرة أخرى.');
          // window.alert('تعذر إرسال رمز التحقق. حاول مرة أخرى.');
         }
       });
-    }
+    
   }
 }

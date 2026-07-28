@@ -20,7 +20,7 @@ export class AdminService {
     );
   }
 
-  updateReservationStatus(id: string, status: 'confirmed' | 'cancelled'): Observable<any> {
+  updateReservationStatus(id: string, status: 'CONFIRMED' ): Observable<any> {
     this.isLoading.set(true);
 
     return this.http.patch<any>(`${environment.apiUrl}/admin/reservations/${id}/status`, { status }).pipe(
