@@ -56,14 +56,13 @@ private readonly dialog = inject(MatDialog);
         }
         else
         {
-            /*  if (response.role === 'admin') {
+              if (response.role === 'admin') {
           this.router.navigate(['/admin']);
         } else if (response.role === 'supervisor') {
           this.router.navigate(['/supervisor']);
-        } else { */
+        } else { 
              this.router.navigate(['/event']);
-//this.router.navigate(['/admin']);
-        //}
+        }
         }
       },
       error: (res:any) => {
@@ -84,16 +83,15 @@ private readonly dialog = inject(MatDialog);
         if(res.name && res.name !== ''){
 response.user.name =result. userName;
   this.authService.setAuthenticatedUser(response);
-//this.router.navigate(['/admin']);
-//this.router.navigate(['/supervisor']);
-       /*  if (response.role === 'admin') {
+
+         if (response.role === 'admin') {
           this.router.navigate(['/admin']);
         } else if (response.role === 'supervisor') {
           this.router.navigate(['/supervisor']);
-        } else { */
+        } else { 
                this.router.navigate(['/event']);
 
-        //}
+        }
         }
 
         },

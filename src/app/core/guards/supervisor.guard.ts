@@ -6,7 +6,7 @@ export const supervisorGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 //&& authService.currentUser()?.role === 'supervisor'
-  if (authService.isAuthenticated() ) {
+  if (authService.isAuthenticated() && authService.currentUser()?.role === 'supervisor') {
     return true;
   }
 
