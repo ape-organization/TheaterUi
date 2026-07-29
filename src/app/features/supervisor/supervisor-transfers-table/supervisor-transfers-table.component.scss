@@ -1,5 +1,5 @@
 .card {
-  background: var(--clr-bg-card);
+  background: var(--clr-bg-auth-card);
   border: 1px solid rgba(107, 78, 58, 0.08);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
@@ -79,7 +79,7 @@
 }
 
 .transfers-table tbody tr:hover {
-  background: var(--clr-bg-hover);
+  background: lightgray;
 }
 
 .id-cell {
