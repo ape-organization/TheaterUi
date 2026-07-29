@@ -60,7 +60,29 @@
 .seat-section {
   padding: 1.5rem 0 3rem;
 }
+.seats
+{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 28px;
+  padding: 0 0.6rem;
+  background: var(--clr-gold-subtle);
+  color: var(--clr-gold);
+  border: 1px solid var(--clr-gold-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.block
+{
+    display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
 
+}
 .seat-section-header {
   display: flex;
   align-items: center;

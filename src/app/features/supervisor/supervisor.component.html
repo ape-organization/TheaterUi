@@ -2,13 +2,13 @@
   <div class="supervisor-container">
    
     <!-- Stats -->
-    <app-supervisor-stats [transfers]="transfers"></app-supervisor-stats>
-<div *ngIf="error">
-{{errorMsg}}
+    <app-supervisor-stats [transfers]="transfers()"></app-supervisor-stats>
+<div *ngIf="error()" class="error">
+{{errorMsg()}}
 </div>
     <!-- Transfers Table -->
     <app-supervisor-transfers-table
-      [transfers]="transfers"
+      [transfers]="transfers()"
       [isLoading]="isLoading"
       [updatingId]="updatingId"
       (confirm)="confirmTransfer($event)"

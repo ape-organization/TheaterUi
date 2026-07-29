@@ -26,7 +26,7 @@ export class EventComponent implements OnInit {
 
   /** Array of selected seat objects from theater-canvas */
   protected selectedSeats: Seat[] = [];
-
+//selectedSeats = signal<Seat[]>([]);
   /** Whether the confirmation modal is visible */
   protected showConfirmModal = false;
 
@@ -54,8 +54,7 @@ export class EventComponent implements OnInit {
   receivedSeats: any[] = [];
 
   ngOnInit(): void {
-    console.log("inside")
-    console.log(this.isLoading())
+  
     this.getReceivedSeats();
   }
 
@@ -81,8 +80,14 @@ export class EventComponent implements OnInit {
   }
   /** Receives selected seats from theater-canvas child component */
   receiveData(data: any[]): void {
-    this.selectedSeats = data;
+    this.selectedSeats=data;
     this.selectedSeatNumbers = data.map((s) => s['seatnumber']);
+
+ this.selectedSeatLabels = data.map(seat => {
+    const hall = this.hallNames[seat.id.split('-')[0]] ?? '';
+    return `${hall} ${seat.seatnumber}`;
+  });
+
   }
 
   /** Open the confirmation modal */
@@ -119,6 +124,12 @@ export class EventComponent implements OnInit {
     // Clear the theater canvas selection so the user can pick any other seats
     this.theaterCanvas?.clearSelection();
   }
+
+private readonly hallNames: Record<string, string> = {
+  STAGE: 'الصالة',
+  BAL: 'البلكونة',
+};
+protected selectedSeatLabels: string[] = [];
 
   get totalPrice(): number {
     return (this.selectedSeats as Seat[]).reduce((sum: number, seat: Seat) => sum + seat.price, 0);

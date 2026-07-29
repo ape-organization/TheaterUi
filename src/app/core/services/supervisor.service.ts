@@ -13,7 +13,7 @@ export class SupervisorService {
   getTransfers(): Observable<SupervisorTransfer[]> {
     this.isLoading.set(true);
 
-    return this.http.get<SupervisorTransfer[]>(`${environment.apiUrl}/api/v1/supervisor/transfers`).pipe(
+    return this.http.get<SupervisorTransfer[]>(`${environment.apiUrl}/super-admin/transfers`).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }
@@ -21,7 +21,7 @@ export class SupervisorService {
   updateTransferStatus(id: any, status: 'CONFIRMED' ): Observable<any> {
     this.isLoading.set(true);
 
-    return this.http.put(`${environment.apiUrl}/api/v1/supervisor/transfers/${id}`, { status }).pipe(
+    return this.http.put(`${environment.apiUrl}/super-admin/transfers/${id}/confirm/`, null).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }

@@ -80,19 +80,22 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   }
 
   /** Scale factor applied to the layout */
-  protected scale = 1;
+  protected scale = signal(1);
 
   /** Seat scale multiplier for CSS custom property */
-  protected seatScale = 1;
+  protected seatScale = signal(1);
 
   /** Offset added to each block's x/y when up-scaled */
-  protected translateOffset = 0;
+  protected translateOffset = signal(0);
 
   /** Whether the container needs horizontal scroll hints */
   protected isOverflowing = false;
 
   /** Viewport width state for breakpoint-aware rendering */
   protected viewportWidth = 0;
+
+  /** Whether the user is currently panning (mouse drag) */
+  protected isPanning = signal(false);
 
   /** Touch gesture tracking */
   private touchStartX = 0;
@@ -102,6 +105,16 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   private lastTouchDist = 0;
   private pinchStartScale = 1;
   private isPinching = false;
+
+  /** Whether a touch is currently active (prevents mouse drag interference on touch devices) */
+  private isTouching = false;
+
+  /** Mouse drag state */
+  private isDragging = false;
+  private dragStartX = 0;
+  private dragStartY = 0;
+  private dragStartScrollLeft = 0;
+  private dragStartScrollTop = 0;
 
   private resizeHandler: (() => void) | null = null;
   private resizeObserver: ResizeObserver | null = null;
@@ -164,14 +177,14 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     const seatScale = vw <= 1024 ? 1 : Math.min(1, Math.max(0.55, newScale * 1.1));
 
     if (
-      newScale !== this.scale ||
-      newOffset !== this.translateOffset ||
-      seatScale !== this.seatScale
+      newScale !== this.scale() ||
+      newOffset !== this.translateOffset() ||
+      seatScale !== this.seatScale()
     ) {
       this.ngZone.run(() => {
-        this.scale = newScale;
-        this.translateOffset = newOffset;
-        this.seatScale = seatScale;
+        this.scale.set(newScale);
+        this.translateOffset.set(newOffset);
+        this.seatScale.set(seatScale);
         // Set CSS custom property for seat sizing
         this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
       });
@@ -191,9 +204,99 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     this.checkOverflow();
   }
 
+  // ─── Zoom Controls ───
+
+  /** Zoom in (increase scale) */
+  zoomIn(): void {
+    let newScale = this.scale() * 1.1;
+    newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
+    this.applyScale(newScale);
+  }
+
+  /** Zoom out (decrease scale) */
+  zoomOut(): void {
+    let newScale = this.scale() * 0.9;
+    newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
+    this.applyScale(newScale);
+  }
+
+  /** Reset zoom to natural 1:1 scale */
+  resetZoom(): void {
+    this.applyScale(1);
+  }
+
+  /** Apply a new scale value and update related state */
+  private applyScale(newScale: number): void {
+    this.ngZone.run(() => {
+      this.scale.set(newScale);
+      const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
+      this.seatScale.set(seatScale);
+      this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
+    });
+  }
+
+  // ─── Mouse Drag-to-Pan ───
+
+  /** Start mouse drag (pan) — skipped on touch devices to avoid interference */
+  onMouseDown(event: MouseEvent): void {
+    if (event.button !== 0) return; // Only left click
+    if (this.isTouching) return; // Skip on touch devices
+    this.isDragging = true;
+    this.dragStartX = event.clientX;
+    this.dragStartY = event.clientY;
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement;
+    if (container) {
+      this.dragStartScrollLeft = container.scrollLeft;
+      this.dragStartScrollTop = container.scrollTop;
+    }
+  }
+
+  /** Handle mouse move during drag (on document so it works outside the container) */
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent): void {
+    if (!this.isDragging) return;
+
+    const deltaX = event.clientX - this.dragStartX;
+    const deltaY = event.clientY - this.dragStartY;
+
+    // Only start panning if movement exceeds a small threshold
+    if (Math.abs(deltaX) < 5 && Math.abs(deltaY) < 5) return;
+
+    this.isPanning.set(true);
+
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement;
+    if (!container) return;
+
+    // Pan both horizontally and vertically
+    container.scrollLeft = this.dragStartScrollLeft - deltaX;
+    container.scrollTop = this.dragStartScrollTop - deltaY;
+  }
+
+  /** End mouse drag */
+  @HostListener('document:mouseup', ['$event'])
+  onMouseUp(_event: MouseEvent): void {
+    this.isDragging = false;
+    this.isPanning.set(false);
+  }
+
+  // ─── Mouse Wheel Zoom (Ctrl + Wheel) ───
+
+  /** Handle mouse wheel — Ctrl+wheel zooms, otherwise default scroll */
+  onWheel(event: WheelEvent): void {
+    if (event.ctrlKey) {
+      event.preventDefault();
+      const delta = -event.deltaY;
+      const zoomFactor = delta > 0 ? 1.1 : 0.9;
+      let newScale = this.scale() * zoomFactor;
+      newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
+      this.applyScale(newScale);
+    }
+  }
+
   // ─── Touch gesture handlers for horizontal scroll and pinch-to-zoom ───
 
   onTouchStart(event: TouchEvent): void {
+    this.isTouching = true;
     if (event.touches.length === 1) {
       // Single finger: track for swipe scroll
       this.isPinching = false;
@@ -210,7 +313,7 @@ export class TheaterCanvas implements OnInit, OnDestroy {
       const dx = event.touches[0].pageX - event.touches[1].pageX;
       const dy = event.touches[0].pageY - event.touches[1].pageY;
       this.lastTouchDist = Math.sqrt(dx * dx + dy * dy);
-      this.pinchStartScale = this.scale;
+      this.pinchStartScale = this.scale();
     }
   }
 
@@ -225,9 +328,9 @@ export class TheaterCanvas implements OnInit, OnDestroy {
         let newScale = this.pinchStartScale * pinchFactor;
         newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
         this.ngZone.run(() => {
-          this.scale = newScale;
+          this.scale.set(newScale);
           const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
-          this.seatScale = seatScale;
+          this.seatScale.set(seatScale);
           this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
         });
       }
@@ -251,6 +354,7 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   }
 
   onTouchEnd(_event: TouchEvent): void {
+    this.isTouching = false;
     this.isPinching = false;
     this.lastTouchDist = 0;
   }

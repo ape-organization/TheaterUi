@@ -213,15 +213,23 @@ export interface CreateMoneyTransferRequest {
 export interface UpdateMoneyTransferRequest {
   status: 'confirmed' | 'cancelled';
 }
-
+export interface admin
+{
+      "id": number,
+      "name": string,
+      "phone": string,
+      "firstLogin": boolean,
+      "role": string,
+      "balance": number
+    }
 export interface SupervisorTransfer {
-  id: string;
-  amount: number;
-  fromAdminName: string;
-  status: 'PENDING' | 'CONFIRMED' ;
-  createdAt: string;
-  confirmedAt?: string;
-  notes?: string;
+ 
+    "id": number,
+    "admin": admin,
+    "amount": number,
+    "status": string,
+    "createdAt": string
+  
 }
 
 // User info for booking

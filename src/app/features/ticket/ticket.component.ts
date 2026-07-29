@@ -40,7 +40,11 @@ moveToHome()
   private loadBooking(): void {
    
         if (this.booking()&&this.booking()?.seats) {
-        this.seats=this.booking()?.seats.map((seat: any) => {
+    this.seats = this.booking()?.seats.map((seat: any) => {
+  if (!seat.label.includes('-')) {
+    return seat.label;
+  }
+
   const [section, seatNumber] = seat.label.split('-');
 
   const sectionName = section === 'STAGE'
@@ -50,7 +54,7 @@ moveToHome()
       : section;
 
   return `${sectionName} (${seatNumber})`;
-})
+});
         }
     
   }

@@ -12,7 +12,7 @@ export class UserService {
 
   constructor(private readonly http: HttpClient) {}
 
-  GetUserReservation(): Observable<Reserivation> {
+  GetUserReservation(): Observable<any> {
     this.isLoading.set(true);
    
     return this.http.get<any>(`${environment.apiUrl}/user/reservations`).pipe(

@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { BookingService } from '../../core/services/booking.service';
 import { EventService } from '../../core/services/event.service';
 import { UserBooking } from '../../core/models/api.models';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-my-reservations',
@@ -14,6 +15,8 @@ import { UserBooking } from '../../core/models/api.models';
 })
 export class MyReservationsComponent implements OnInit {
   private readonly bookingService = inject(BookingService);
+    private readonly userService = inject(UserService);
+
   private readonly eventService = inject(EventService);
   private readonly router = inject(Router);
 
@@ -24,20 +27,40 @@ export class MyReservationsComponent implements OnInit {
   ngOnInit(): void {
     this.loadBookings();
   }
-
+private readonly hallNames: Record<string, string> = {
+  STAGE: 'الصالة',
+  BAL: 'البلكونة',
+};
   loadBookings(): void {
     this.errorMsg.set(null);
 
     // Check if bookings were passed from verify-otp via the service
     const storedBookings = this.bookingService.bookings();
     if (storedBookings && storedBookings.length > 0) {
+    
+       storedBookings.forEach(booking => {
+ booking.seats.forEach(seat => {
+  if (seat.label.includes('-')) {
+    const [hall, number] = seat.label.split('-');
+    seat.label = `${this.hallNames[hall] ?? hall} ${number}`;
+  }
+});
+});
       this.bookings.set(storedBookings);
       return;
     }
-
+console.log("here")
     // Otherwise, fetch from API
-    this.bookingService.getBookings().subscribe({
+    this.userService.GetUserReservation().subscribe({
       next: (data) => {
+         data.forEach((booking:any) => {
+    booking.seats.forEach((seat:any) => {
+  if (seat.label.includes('-')) {
+    const [hall, number] = seat.label.split('-');
+    seat.label = `${this.hallNames[hall] ?? hall} ${number}`;
+  }
+});
+  });
         this.bookings.set(data);
         this.bookingService.setBookings(data);
       },
@@ -47,6 +70,10 @@ export class MyReservationsComponent implements OnInit {
     });
   }
 
+  ///
+
+
+  
   /** Navigate to the ticket view for a specific booking */
   viewTicket(booking: any): void {
     this.bookingService.setBookingResponse(booking);

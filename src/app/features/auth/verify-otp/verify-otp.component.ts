@@ -77,6 +77,9 @@ export class VerifyOtpComponent {
       },
       error: (res:any) => {
         this.error.set(true);
+         if (res.message?.includes("https"))
+                    this.errorMsg.set(' حاول مرة أخرى.');
+          else
         this.errorMsg.set(res.message || 'تعذر التحقق من رمز التحقق. حاول مرة أخرى.');
       }
     });

@@ -12,7 +12,7 @@ import { SupervisorTransfer } from '../../../core/models/api.models';
 export class SupervisorTransfersTableComponent {
   @Input() transfers: SupervisorTransfer[] = [];
   @Input() isLoading = false;
-  @Input() updatingId: string | null = null;
+  @Input() updatingId: any | 0 = 0;
 
   @Output() confirm = new EventEmitter<string>();
   @Output() cancel = new EventEmitter<string>();

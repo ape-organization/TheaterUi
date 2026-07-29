@@ -1,8 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SupervisorTransfer } from '../../core/models/api.models';
 import { SupervisorService } from '../../core/services/supervisor.service';
-import { SupervisorHeaderComponent } from './supervisor-header/supervisor-header.component';
 import { SupervisorStatsComponent } from './supervisor-stats/supervisor-stats.component';
 import { SupervisorTransfersTableComponent } from './supervisor-transfers-table/supervisor-transfers-table.component';
 
@@ -15,12 +14,12 @@ import { SupervisorTransfersTableComponent } from './supervisor-transfers-table/
 })
 export class SupervisorComponent implements OnInit {
   private readonly supervisorService = inject(SupervisorService);
-
-  transfers: SupervisorTransfer[] = [];
-  isLoading = true;
+ //transfers: SupervisorTransfer[] = [];
+transfers = signal<SupervisorTransfer[]>([]); 
+ isLoading = true;
   updatingId: string | null = null;
-error=false
-errorMsg=""
+error=signal( false)
+errorMsg=signal("")
   ngOnInit(): void {
     this.loadTransfers();
   }
@@ -29,13 +28,13 @@ errorMsg=""
     this.isLoading = true;
     this.supervisorService.getTransfers().subscribe({
       next: (data) => {
-        this.transfers = data;
+        this.transfers.set( data);
         this.isLoading = false;
       },
       error: () => {
        // window.alert('فشل تحميل التحويلات');
-        this.error=true
-        this.errorMsg='فشل تحميل التحويلات'
+        this.error.set(true)
+        this.errorMsg.set('فشل تحميل التحويلات')
         this.isLoading = false;
       }
     });
@@ -45,7 +44,7 @@ errorMsg=""
     this.updatingId = id;
     this.supervisorService.updateTransferStatus(id, 'CONFIRMED').subscribe({
       next: () => {
-        const transfer = this.transfers.find(t => t.id === id);
+        const transfer = this.transfers().find(t => t.id === id);
         if (transfer) transfer.status = 'CONFIRMED';
         this.updatingId = null;
       },

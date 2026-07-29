@@ -41,7 +41,7 @@
             [class.active]="activeTab() === 'STAGE'"
             (click)="switchTab('STAGE')">
             <span class="tab-icon">🎭</span>
-            <span class="tab-label">Stage</span>
+            <span class="tab-label">المسرح</span>
         </button>
         <button
             type="button"
@@ -49,17 +49,46 @@
             [class.active]="activeTab() === 'BAL'"
             (click)="switchTab('BAL')">
             <span class="tab-icon">🏛️</span>
-            <span class="tab-label">Balcony</span>
+            <span class="tab-label">البلكونه</span>
         </button>
+    </div>
+
+    <!-- Zoom Controls -->
+    <div class="zoom-controls">
+        <button
+            type="button"
+            class="zoom-btn"
+            (click)="zoomOut()"
+            title="تصغير">
+            <span>−</span>
+        </button>
+        <button
+            type="button"
+            class="zoom-btn"
+            (click)="resetZoom()"
+            title="إعادة ضبط">
+            <span>⟲</span>
+        </button>
+        <button
+            type="button"
+            class="zoom-btn"
+            (click)="zoomIn()"
+            title="تكبير">
+            <span>+</span>
+        </button>
+        <span class="zoom-level">{{ (scale() * 100).toFixed(0) }}%</span>
     </div>
 
     <div class="layout-container"
          [class.is-scrollable]="isOverflowing"
+         [class.is-panning]="isPanning()"
          (touchstart)="onTouchStart($event)"
          (touchmove)="onTouchMove($event)"
-         (touchend)="onTouchEnd($event)">
-        <div class="layout" 
-             [style.transform]="'scale(' + scale + ')'"
+         (touchend)="onTouchEnd($event)"
+         (mousedown)="onMouseDown($event)"
+         (wheel)="onWheel($event)">
+        <div class="layout"
+             [style.transform]="'scale(' + scale() + ')'"
              [style.transform-origin]="'center top'">
 
             <div class="stage-wrapper">
@@ -71,7 +100,7 @@
                 <app-block
                     [block]="block"
                     [selectedSeatIds]="selectedSeatIds()"
-                    [translateOffset]="translateOffset"
+                    [translateOffset]="translateOffset()"
                     (seatClick)="toggleSeatSelection($event)">
                 </app-block>
 

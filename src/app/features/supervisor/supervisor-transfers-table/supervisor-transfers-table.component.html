@@ -23,7 +23,7 @@
             <th>المعرف</th>
             <th>من</th>
             <th>المبلغ</th>
-            <th>ملاحظات</th>
+            
             <th>التاريخ</th>
             <th>الحالة</th>
             <th>إجراء</th>
@@ -33,9 +33,9 @@
           @for (transfer of transfers; track transfer.id) {
             <tr>
               <td class="id-cell">{{ transfer.id }}</td>
-              <td>{{ transfer.fromAdminName }}</td>
+              <td>{{ transfer.admin.name }}</td>
               <td class="amount-cell">EGP {{ transfer.amount | number }}</td>
-              <td>{{ transfer.notes || '—' }}</td>
+              
               <td class="date-cell">{{ transfer.createdAt | date:'medium' }}</td>
               <td>
                 <span class="status-badge"

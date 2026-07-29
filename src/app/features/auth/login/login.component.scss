@@ -140,7 +140,7 @@
 
 .input-prefix {
   position: absolute;
-  right: 1rem;
+  left: 1rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--clr-text-muted);
@@ -150,7 +150,7 @@
 }
 
 .input-prefix + .cinema-input {
-  padding-right: 3rem;
+  padding-left: 3rem;
 }
 
 .input-error {

@@ -64,8 +64,8 @@
 }
 
 .legend-dot.reserved {
-  background: rgba(107, 78, 58, 0.08);
-  border: 1px solid rgba(107, 78, 58, 0.1);
+  background: var(--clr-text-primary);
+  border: 1px solid rgb(235, 233, 233);
   opacity: 0.4;
 }
 
@@ -91,7 +91,9 @@
   border: 2px solid transparent;
   border-radius: var(--radius-md);
   background: var(--clr-bg-card);
-  color: var(--clr-text-secondary);
+ // color: var(--clr-text-secondary);
+   color: white;
+
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
@@ -125,20 +127,83 @@
   }
 }
 
+/* ─── Zoom Controls ─── */
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--clr-bg-card);
+  border: 1px solid rgba(107, 78, 58, 0.08);
+  border-radius: var(--radius-md);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.zoom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(107, 78, 58, 0.15);
+  border-radius: var(--radius-sm);
+  background: var(--clr-bg-secondary);
+  color: var(--clr-text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  padding: 0;
+
+  &:hover {
+    background: var(--clr-bg-hover);
+    border-color: var(--clr-accent);
+    color: var(--clr-accent);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.zoom-level {
+  font-size: 0.75rem;
+  font-weight: 600;
+  //color: var(--clr-text-secondary);
+    color: white;
+
+  min-width: 40px;
+  text-align: center;
+}
+
 /* ─── Layout Container ─── */
 .layout-container {
   position: relative;
   width: 100%;
   max-width: 100%;
+  max-height: calc(100vh - 200px);
+  max-height: calc(100dvh - 200px);
   overflow: auto;
   /* On desktop: center the layout horizontally */
   justify-content: center;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   overscroll-behavior: contain;
+  cursor: grab;
+
+  &.is-panning {
+    cursor: grabbing;
+  }
 
   /* Custom scrollbar styling */
   &::-webkit-scrollbar {
+    width: 6px;
     height: 6px;
   }
 
@@ -198,7 +263,7 @@
 .layout {
   position: relative;
   width: 1350px;
-  height: 900px;
+  height: 1400px;
   flex-shrink: 0;
   transform-origin: center top;
   transition: transform 350ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -310,13 +375,17 @@
     color: white;
   }
 
-  /* Layout container: scroll both directions on mobile/tablet */
-  .layout-container {
-    display: block;
-    overflow: auto;
-    justify-content: flex-start;
-    padding: 0 0;
-  }
+   /* Layout container: scroll both directions on mobile/tablet */
+   .layout-container {
+     display: block;
+     overflow: auto;
+     justify-content: flex-start;
+     padding: 0 0;
+     max-height: calc(100vh - 240px);
+     max-height: calc(100dvh - 240px);
+     /* Allow page scroll chaining on mobile so users can scroll past the theater */
+     overscroll-behavior: auto;
+   }
 
   .layout-container::after {
     display: none; /* remove gradient overlay on mobile */
