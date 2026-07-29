@@ -2,7 +2,11 @@
   min-height: 100vh;
   background: var(--clr-bg-primary);
 }
-
+.error
+{
+  padding: 20px;
+  color: red;
+}
 /* ─── Main ─── */
 .admin-main {
   padding: 1.5rem;

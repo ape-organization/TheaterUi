@@ -12,23 +12,26 @@ import { CreateMoneyTransferRequest } from '../../../../core/models/api.models';
 })
 export class CreateTransferFormComponent {
   @Input() isSubmitting = false;
-  @Output() submit = new EventEmitter<CreateMoneyTransferRequest>();
-
+  //@Output() submit = new EventEmitter<CreateMoneyTransferRequest>();
+@Output() createTransfer = new EventEmitter<CreateMoneyTransferRequest>();
   transferData: CreateMoneyTransferRequest = {
-    amount: 0,
-    toSupervisorName: '',
-    notes: ''
+    amount: 0
   };
-
+error=false
+errorMsg=""
   onSubmit(): void {
-    if (!this.transferData.amount || !this.transferData.toSupervisorName) {
-      window.alert('يرجى إدخال المبلغ واسم المشرف');
+    console.log(this.transferData)
+    if (!this.transferData.amount ) {
+    //  window.alert('يرجى إدخال المبلغ واسم المشرف');
+      this.error=true;
+      this.errorMsg='يرجى إدخال المبلغ واسم المشرف'
       return;
     }
-    this.submit.emit(this.transferData);
+    console
+    this.createTransfer.emit(this.transferData);
   }
 
   resetForm(): void {
-    this.transferData = { amount: 0, toSupervisorName: '', notes: '' };
+    this.transferData = { amount: 0 };
   }
 }

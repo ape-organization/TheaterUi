@@ -37,7 +37,14 @@ export class ConfirmBooking {
 
   /** Derived: seat numbers for display */
   get selectedSeatNumbers(): string[] {
-    return this.selectedSeats().map(s => (s as any)['seatnumber'] ?? s.label ?? '');
+    console.log(this.selectedSeats())
+    console.log(this.selectedSeats().map(s => (s as any)['seatnumber'] ?? s.label ?? ''))
+   // return this.selectedSeats().map(s => (s as any)['seatnumber'] ?? s.label ?? '');
+  return  this.selectedSeats().map(seat => {
+  const section = seat.id.startsWith('STAGE') ? 'الصالة' : 'البلكون';
+  const label=(seat as any)['seatnumber'] ?? seat.label ?? ''
+  return `${section} (${label})`;
+});
   }
 
   /** Derived: total price */
@@ -66,8 +73,16 @@ export class ConfirmBooking {
     if (!seats.length) {
       return;
     }
+//Extract for next step   ---show ticket
+const allSeats=this.selectedSeats().map(seat => {
+  const section = seat.id.startsWith('STAGE') ? 'الصالة' : 'البلكون';
+  const label=(seat as any)['seatnumber'] ?? seat.label ?? ''
+  return `${section} (${label})`;
+});
+
 
     // Extract seat labels for the API request
+
     const seatLabels = seats.map(s => (s as any)['id'] ?? s.label ?? '');
     console.log(seats);
     console.log(seatLabels);

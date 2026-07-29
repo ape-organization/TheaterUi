@@ -27,38 +27,30 @@ export class MyReservationsComponent implements OnInit {
 
   loadBookings(): void {
     this.errorMsg.set(null);
+
+    // Check if bookings were passed from verify-otp via the service
+    const storedBookings = this.bookingService.bookings();
+    if (storedBookings && storedBookings.length > 0) {
+      this.bookings.set(storedBookings);
+      return;
+    }
+
+    // Otherwise, fetch from API
     this.bookingService.getBookings().subscribe({
-      next: (bookings) => {
-        this.bookings.set(bookings);
-        this.bookingService.setBookings(bookings);
+      next: (data) => {
+        this.bookings.set(data);
+        this.bookingService.setBookings(data);
       },
-      error: (err) => {
-        console.error('Failed to load bookings:', err);
-        this.errorMsg.set('حدث خطأ في تحميل الحجوزات. يرجى المحاولة مرة أخرى.');
+      error: () => {
+        this.errorMsg.set('حدث خطأ في تحميل الحجوزات');
       }
     });
   }
 
   /** Navigate to the ticket view for a specific booking */
-  viewTicket(booking: UserBooking): void {
-    // Store the selected booking so the ticket component can use it immediately
-    this.bookingService.setBookingResponse(booking as any);
-
-    // If event info is available, set it on the event service
-    if (booking.eventTitle) {
-      this.eventService.setSelectedEvent({
-        id: 0,
-        title: booking.eventTitle,
-        date: booking.eventDate || '',
-        time: booking.eventTime || '',
-        location: '',
-        ticketPrice: 0,
-        description: '',
-        imageUrl: ''
-      });
-    }
-
-    this.router.navigate(['/ticket', booking.id]);
+  viewTicket(booking: any): void {
+    this.bookingService.setBookingResponse(booking);
+    this.router.navigate(['/ticket']);
   }
 
   /** Refresh the bookings list */
@@ -69,21 +61,5 @@ export class MyReservationsComponent implements OnInit {
   /** Get the number of seats for a booking */
   getSeatsCount(booking: UserBooking): number {
     return booking.seats?.length ?? 0;
-  }
-
-  /** Format a date string for display */
-  formatDate(dateStr: string): string {
-    if (!dateStr) return '—';
-    return new Date(dateStr).toLocaleDateString('ar-EG', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  }
-
-  /** Check if a booking is expired */
-  isExpired(booking: UserBooking): boolean {
-    if (!booking.expiresAt) return false;
-    return new Date(booking.expiresAt) < new Date();
   }
 }

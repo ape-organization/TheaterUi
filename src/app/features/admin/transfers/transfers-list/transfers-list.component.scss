@@ -2,15 +2,14 @@
   background: var(--clr-bg-auth-card);
   border: 1px solid rgba(107, 78, 58, 0.1);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
   margin-bottom: 1.5rem;
   box-shadow: var(--shadow-sm);
+  padding: 3px;
 }
 
 .card h2 {
   font-size: 1.2rem;
   color: var(--clr-text-primary);
-  margin-bottom: 1.25rem;
   font-weight: 600;
 }
 
@@ -39,7 +38,7 @@
 
 .empty-state {
   text-align: center;
-  padding: 2rem;
+  padding: 2px;
   color: var(--clr-text-muted);
 }
 

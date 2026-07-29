@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AllBookingResponse } from '../../../core/models/api.models';
 
@@ -10,14 +10,18 @@ import { AllBookingResponse } from '../../../core/models/api.models';
   styleUrl: './admin-stats.component.scss'
 })
 export class AdminStatsComponent {
-  @Input() bookings: AllBookingResponse[] = [];
+ @Input() bookings: AllBookingResponse[] = [];
+ngOnChanges(changes: SimpleChanges) {
+    console.log(changes['bookings'].currentValue);
+  }
+ 
 
   get totalBookings(): number {
     return this.bookings.length;
   }
 
   get pendingCount(): number {
-    return this.bookings.filter(b => b.status == 'PENDING').length;
+    return this.bookings.filter(b => b.status === 'PENDING').length;
   }
 
   get confirmedCount(): number {

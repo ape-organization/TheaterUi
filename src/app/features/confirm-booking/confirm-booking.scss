@@ -48,6 +48,7 @@
 .modal-label {
   font-size: 0.88rem;
   color: black;
+  font-weight: bold;
 }
 
 .modal-value {
@@ -61,7 +62,7 @@
   border-bottom: none;
   padding-top: 0.8rem;
   margin-top: 0.4rem;
-  border-top: 2px solid var(--clr-gold-subtle);
+ // border-top: 2px solid var(--clr-gold-subtle);
 }
 
 .modal-price {

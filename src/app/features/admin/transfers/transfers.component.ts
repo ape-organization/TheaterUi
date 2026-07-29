@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MoneyTransfer, CreateMoneyTransferRequest } from '../../../core/models/api.models';
+import {  Balance, CreateMoneyTransferRequest } from '../../../core/models/api.models';
 import { AdminService } from '../../../core/services/admin.service';
 import { TransfersHeaderComponent } from './transfers-header/transfers-header.component';
 import { CreateTransferFormComponent } from './create-transfer-form/create-transfer-form.component';
@@ -16,7 +16,7 @@ import { TransfersListComponent } from './transfers-list/transfers-list.componen
 export class TransfersComponent implements OnInit {
   private readonly adminService = inject(AdminService);
 
-  transfers: MoneyTransfer[] = [];
+  transfers: Balance={balance:0};
   isLoading = true;
   isSubmitting = false;
 
@@ -26,7 +26,7 @@ export class TransfersComponent implements OnInit {
 
   loadTransfers(): void {
     this.isLoading = true;
-    this.adminService.getTransfers().subscribe({
+    this.adminService.getBalance().subscribe({
       next: (data) => {
         this.transfers = data;
         this.isLoading = false;
@@ -38,8 +38,9 @@ export class TransfersComponent implements OnInit {
     });
   }
 
-  createTransfer(request: CreateMoneyTransferRequest): void {
+  createTransfer(request: any): void {
     this.isSubmitting = true;
+    console.log(request)
     this.adminService.createTransfer(request).subscribe({
       next: () => {
         this.isSubmitting = false;

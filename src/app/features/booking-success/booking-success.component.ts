@@ -14,4 +14,10 @@ import { EventService } from '../../core/services/event.service';
 export class BookingSuccessComponent {
   protected readonly booking = inject(BookingService).bookingSummary;
   protected readonly event = inject(EventService).selectedEvent;
+
+  ngOninit()
+  {
+    console.log(this.booking)
+    console.log(this.event)
+  }
 }

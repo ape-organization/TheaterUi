@@ -12,16 +12,16 @@ import { AllBookingResponse } from '../../../core/models/api.models';
 export class AdminBookingsTableComponent {
   @Input() bookings: AllBookingResponse[] = [];
   @Input() isLoading = false;
-  @Input() updatingId: string | null = null;
+  @Input() updatingId: number | null = null;
 
   @Output() refresh = new EventEmitter<void>();
-  @Output() updateStatus = new EventEmitter<{ bookingId: string; status: 'CONFIRMED'  }>();
+  @Output() updateStatus = new EventEmitter<{ bookingId: number; status: 'CONFIRMED' }>();
 
   onRefresh(): void {
     this.refresh.emit();
   }
 
-  onUpdateStatus(bookingId: string, status: 'CONFIRMED' ): void {
+  onUpdateStatus(bookingId: number, status: 'CONFIRMED'): void {
     this.updateStatus.emit({ bookingId, status });
   }
 

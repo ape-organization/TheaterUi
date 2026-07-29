@@ -38,12 +38,13 @@ export const routes: Routes = [
     path: 'ticket',
     canActivate: [authGuard],
     loadComponent: () => import('./features/ticket/ticket.component').then((m) => m.TicketComponent)
-  },
+  }
+ /*  ,
   {
     path: 'ticket/:id',
     canActivate: [authGuard],
     loadComponent: () => import('./features/ticket/ticket.component').then((m) => m.TicketComponent)
-  },
+  } */,
   {
     path: 'my-reservations',
     canActivate: [authGuard],

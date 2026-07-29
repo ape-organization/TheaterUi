@@ -84,7 +84,7 @@
         <div class="reservation-grid">
           @for (booking of bookings(); track booking.id) {
             <div class="reservation-card"
-                 [class.reservation-expired]="isExpired(booking)"
+                 
                  (click)="viewTicket(booking)">
 
               <!-- Status Badge -->
@@ -92,11 +92,8 @@
                 <span class="status-badge"
                       [class.status-pending]="booking.status === 'PENDING'"
                       [class.status-confirmed]="booking.status === 'CONFIRMED'"
-                      [class.status-cancelled]="booking.status === 'CANCELLED'"
-                      [class.status-expired]="isExpired(booking)">
-                  @if (isExpired(booking) && booking.status !== 'CANCELLED') {
-                    منتهي
-                  } @else if (booking.status === 'PENDING') {
+                     >
+                  @if (booking.status === 'PENDING') {
                     معلق
                   } @else if (booking.status === 'CONFIRMED') {
                     مؤكد
@@ -115,23 +112,14 @@
                   <span class="id-value">#{{ booking.id }}</span>
                 </div>
 
-                <!-- Event Title -->
-                <div class="reservation-event" *ngIf="booking.eventTitle">
-                  <span class="event-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                      <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
-                  </span>
-                  <span class="event-title" title="{{ booking.eventTitle }}">{{ booking.eventTitle }}</span>
-                </div>
+             
 
                 <!-- Seats -->
                 <div class="reservation-seats">
                   <span class="seats-label">المقاعد ({{ getSeatsCount(booking) }})</span>
                   <div class="seats-chips">
                     <span class="seat-chip" *ngFor="let seat of booking.seats; let i = index"
-                          [class.seat-expired]="isExpired(booking)">
+                         >
                       {{ seat.id }}
                     </span>
                   </div>
@@ -140,22 +128,9 @@
                 <!-- User Info -->
                 <div class="reservation-user" *ngIf="booking.user.name">
                   <span class="user-name">{{ booking.user.name }}</span>
-                  <span class="user-church" *ngIf="booking.user.church">{{ booking.user.church }}</span>
                 </div>
 
-                <!-- Dates -->
-                <div class="reservation-dates">
-                  <div class="date-row">
-                    <span class="date-label">تاريخ الحجز</span>
-                    <span class="date-value">{{ formatDate(booking.createdAt) }}</span>
-                  </div>
-                  <div class="date-row" *ngIf="booking.expiresAt">
-                    <span class="date-label">موعد الانتهاء</span>
-                    <span class="date-value expiry-time" [class.expired]="isExpired(booking)">
-                      {{ formatDate(booking.expiresAt) }}
-                    </span>
-                  </div>
-                </div>
+              
               </div>
 
               <!-- View Ticket Button -->

@@ -1,16 +1,16 @@
 <div class="card">
-  <h2>جميع التحويلات</h2>
+  <h2> الرصيد</h2>
 
-  @if (isLoading) {
-    <div class="loading-state">
+  <!--//@if (isLoading) {
+     <div class="loading-state">
       <div class="spinner"></div>
       <span>جاري التحميل...</span>
     </div>
-  } @else if (transfers.length === 0) {
+  } @else if (transfers. === 0) {--> 
     <div class="empty-state">
-      <p>لا توجد تحويلات بعد</p>
+      <p>{{transfers.balance}} <span style="color: green;"> ج .م</span></p>
     </div>
-  } @else {
+  <!-- } @else {
     <div class="table-wrapper">
       <table class="transfers-table">
         <thead>
@@ -46,5 +46,5 @@
         </tbody>
       </table>
     </div>
-  }
+  } -->
 </div>

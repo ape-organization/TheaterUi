@@ -37,8 +37,9 @@
 }
 
 .btn-refresh:hover:not(:disabled) {
-  background: var(--clr-bg-hover);
-  color: var(--clr-text-primary);
+
+  background: var(--clr-text-secondary);
+  color: var(--clr-bg-secondary);
 }
 
 .btn-refresh:disabled {
@@ -125,7 +126,7 @@
 }
 
 .admin-table tbody tr:hover {
-  background: var(--clr-bg-hover);
+  background: #adadac;
 }
 
 .booking-id {
@@ -263,7 +264,7 @@
 }
 
 .btn-confirm:hover:not(:disabled) {
-  background: rgba(45, 122, 74, 0.2);
+  background: var(--clr-text-secondary);
 }
 
 .btn-cancel {

@@ -31,15 +31,10 @@ export class LoginComponent {
   readonly error = signal(false);
   readonly errorMsg = signal('');
 
-  switchTab(tab: 'email' | 'phone'): void {
-    this.activeTab.set(tab);
-  }
-
-
 
   submit(): void {
-    this.error.set(false);    
-   
+    this.error.set(false);
+
       if (this.phoneForm.invalid) {
         this.phoneForm.markAllAsTouched();
         return;
@@ -53,14 +48,14 @@ export class LoginComponent {
         error: (res:any) => {
           console.log(res)
           this.error.set(true);
-         
+
           if (res.message?.includes("https"))
                     this.errorMsg.set('تعذر تسجيل البيانات. حاول مرة أخرى.');
-else
+          else
         this.errorMsg.set(res.message || 'تعذر تسجيل البيانات. حاول مرة أخرى.');
          // window.alert('تعذر إرسال رمز التحقق. حاول مرة أخرى.');
         }
       });
-    
+
   }
 }

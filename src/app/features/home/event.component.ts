@@ -54,6 +54,8 @@ export class EventComponent implements OnInit {
   receivedSeats: any[] = [];
 
   ngOnInit(): void {
+    console.log("inside")
+    console.log(this.isLoading())
     this.getReceivedSeats();
   }
 

@@ -23,11 +23,11 @@ export interface AuthResponse {
  
   "token": "string",
   "firstLogin": true,
-  "role":string,
   "user": User,
 
   
 }
+
 export interface Seat
 {
   
@@ -37,6 +37,27 @@ export interface Seat
       "price":number
     
 }
+export interface SeatReceive
+{
+  
+      "id": number,
+      "label": string,
+      "status": string,
+      "price":number
+    
+}
+export interface Reserivation
+{
+    "id": number,
+    "status": string,
+    "expiresAt":string,
+    "createdAt":string,
+    "seats": SeatReceive[],
+    "user": User
+  }
+
+
+
 export interface SeatBlock{
 
     id:string;
@@ -130,33 +151,26 @@ export interface BookingRequest {
 }
 
 export interface BookingResponse {
-  bookingId: string;
-  eventTitle: string;
-  eventDate: string;
-  eventTime: string;
+  bookingId: number;
+ 
   selectedSeats: string[];
   totalAmount: number;
   status: 'pending' | 'confirmed' | 'cancelled';
-  contactMethod: 'email' | 'phone';
-  contactValue: string;
+
   name?: string;
-  church?: string;
+  
 }
 
 export interface AllBookingResponse {
-  bookingId: string;
-  userId: string;
-  userContact: string;
-  contactMethod: 'email' | 'phone';
-  eventTitle: string;
-  eventDate: string;
-  eventTime: string;
-  selectedSeats: string[];
-  totalAmount: number;
-  status: 'PENDING' | 'CONFIRMED' ;
-  createdAt: string;
-  name?: string;
-  church?: string;
+ 
+    "id": number,
+    "status": string,
+    "expiresAt": string,
+    "createdAt": string,
+    "totalAmount": number| null,
+    "seats": SeatReceive[],
+    "user": User
+  
 }
 
 export interface UpdateBookingStatusRequest {
@@ -187,24 +201,13 @@ export interface TheaterSection {
 }
 
 // Supervisor / Money Transfer models
-export interface MoneyTransfer {
-  id: string;
-  amount: number;
-  fromAdminId: string;
-  fromAdminName: string;
-  toSupervisorId: string;
-  toSupervisorName: string;
-  status: 'pending' | 'confirmed' | 'cancelled';
-  createdAt: string;
-  confirmedAt?: string;
-  notes?: string;
+export interface Balance {
+balance:number;
 }
 
 export interface CreateMoneyTransferRequest {
   amount: number;
-  toSupervisorId?: string;
-  toSupervisorName?: string;
-  notes?: string;
+
 }
 
 export interface UpdateMoneyTransferRequest {

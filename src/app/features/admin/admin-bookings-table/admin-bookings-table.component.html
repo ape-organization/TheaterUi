@@ -31,45 +31,32 @@
         <thead>
           <tr>
             <th>رقم الحجز</th>
-            <th>العميل</th>
+           
             <th>الاسم</th>
-            <th>جهة الاتصال</th>
-            <th>الفعالية</th>
+           
             <th>المقاعد</th>
             <th>المبلغ</th>
-            <th>التاريخ</th>
+           
             <th>الحالة</th>
             <th>إجراء</th>
           </tr>
         </thead>
         <tbody>
-          @for (booking of bookings; track booking.bookingId) {
+          @for (booking of bookings; track booking.id) {
             <tr>
-              <td class="booking-id">{{ booking.bookingId }}</td>
-              <td>
-                <div class="customer-info">
-                  <div class="customer-avatar">
-                    {{ (booking.name || booking.userContact).charAt(0).toUpperCase() }}
-                  </div>
-                  <span>{{ booking.name || booking.userContact }}</span>
-                </div>
-              </td>
-              <td>{{ booking.name || '—' }}</td>
-              <td>
-                <span class="contact-badge" [class.contact-email]="booking.contactMethod === 'email'" [class.contact-phone]="booking.contactMethod === 'phone'">
-                  @if (booking.contactMethod === 'email') { بريد } @else { هاتف }
-                </span>
-              </td>
-              <td>{{ booking.eventTitle }}</td>
+              <td class="booking-id">{{ booking.id }}</td>
+             
+              <td>{{ booking.user.name || '—' }}</td>
+             
+             
               <td>
                 <div class="seats-list">
-                  @for (seat of booking.selectedSeats; track seat) {
-                    <span class="seat-chip">{{ seat }}</span>
+                  @for (seat of booking.seats; track seat.id) {
+                    <span class="seat-chip">{{ seat.label }}</span>
                   }
                 </div>
               </td>
-              <td class="amount">ج.م {{ booking.totalAmount | number }}</td>
-              <td class="date-cell">{{ booking.createdAt | date:'medium' }}</td>
+              <td class="amount">ج.م {{ booking.seats.length *100 | number }}</td>
               <td>
                 <span class="status-badge" [class]="getStatusClass(booking.status)">
                   @if (booking.status === 'PENDING') { قيد الانتظار }
@@ -82,9 +69,9 @@
                   <div class="action-buttons">
                     <button
                       class="btn-action btn-confirm"
-                      (click)="onUpdateStatus(booking.bookingId, 'CONFIRMED')"
-                      [disabled]="updatingId === booking.bookingId">
-                      @if (updatingId === booking.bookingId) {
+                      (click)="onUpdateStatus(booking.id, 'CONFIRMED')"
+                      [disabled]="updatingId === booking.id">
+                      @if (updatingId === booking.id) {
                         <div class="btn-spinner"></div>
                       } @else {
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -93,7 +80,6 @@
                       }
                       تأكيد
                     </button>
-                   
                   </div>
                 } @else {
                   <span class="no-action">—</span>

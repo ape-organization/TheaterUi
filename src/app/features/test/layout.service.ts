@@ -170,7 +170,7 @@ export class LayoutService {
   }
 
   private generateTopRightLevelOne(): SeatBlock {
-    return this.makeBlock(103, 900, 100, -20, this.RightTopseatRowsLevelOne,"STAGE-");
+    return this.makeBlock(103, 900, 130, -20, this.RightTopseatRowsLevelOne,"STAGE-");
   }
 
   //////level two
@@ -260,7 +260,7 @@ export class LayoutService {
   }
 
   /** VIP price for rows A, B, C */
-  private readonly VIP_PRICE = 200;
+  private readonly VIP_PRICE = 100;
   /** Regular price for all other rows */
   private readonly REGULAR_PRICE = 100;
 

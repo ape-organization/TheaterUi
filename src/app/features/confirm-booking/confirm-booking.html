@@ -10,7 +10,7 @@
      
       <div class="modal-row">
         <span class="modal-label">المقاعد</span>
-        <span class="modal-value">{{ selectedSeatNumbers.join(', ') }}</span>
+        <span class="modal-value">{{ selectedSeatNumbers.join(' - ') }}</span>
       </div>
   
 
@@ -19,13 +19,13 @@
         <span class="modal-value modal-price">ج.م {{ modalTotalPrice | number }}</span>
       </div>
 
-      <div class="admin-approval-notice">
+    <!--   <div class="admin-approval-notice">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
         <span>الحجز بحاجة لموافقة الإدارة</span>
       </div>
-    </div>
+    </div> -->
 
     @if (error) {
       <div class="error-message">

@@ -1,19 +1,18 @@
 <div class="admin-page">
 
+ 
   <!-- Main Content -->
   <main class="admin-main">
     <div class="admin-container">
       <!-- Stats -->
-      <app-admin-stats [bookings]="bookings"></app-admin-stats>
-      
-<div *ngIf="error">
-  <span>{{ errorMsg() }}</span>
-</div>
-      
+      <app-admin-stats [bookings]="bookings()"></app-admin-stats>
+      <div *ngIf="error()" class="error">
+        <span>{{ errorMsg() }}</span>
+      </div>
 
       <!-- Bookings Table -->
       <app-admin-bookings-table
-        [bookings]="bookings"
+        [bookings]="bookings()"
         [isLoading]="isLoading"
         [updatingId]="updatingId"
         (refresh)="loadBookings()"

@@ -15,18 +15,19 @@ export class HeaderComponent {
   private router = inject(Router);
 
   readonly currentUser = this.authService.currentUser;
-  readonly isAuthenticated = this.authService.isAuthenticated;
-
+  readonly isAuthenticated = this.authService.isLoggedIn;
+name = localStorage.getItem('name');
   get isAdmin(): boolean {
-    return this.currentUser()?.role === 'admin';
+    return this.currentUser()?.user.role === 'ADMIN';
   }
 
   get isSupervisor(): boolean {
-    return this.currentUser()?.role === 'supervisor';
+    return this.currentUser()?.user.role === 'SUPER_ADMIN';
   }
 
   logout(): void {
     this.authService.logout();
+    this.name = null;
     this.router.navigate(['/auth/login']);
   }
 }

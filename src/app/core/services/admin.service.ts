@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, Observable } from 'rxjs';
-import { BookingRequest, BookingResponse, ReceriveSeat, ReceriveSeatRequest, Seat, MoneyTransfer, CreateMoneyTransferRequest } from '../models/api.models';
+import { BookingRequest, BookingResponse, ReceriveSeat, ReceriveSeatRequest, Seat, CreateMoneyTransferRequest, Balance, AllBookingResponse } from '../models/api.models';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -12,36 +12,35 @@ export class AdminService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getAllRecerivation(): Observable<any> {
+  getAllRecerivation(): Observable<AllBookingResponse[]> {
     this.isLoading.set(true);
 
-    return this.http.get<any>(`${environment.apiUrl}/admin/reservations`).pipe(
+    return this.http.get<AllBookingResponse[]>(`${environment.apiUrl}/admin/reservations`).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }
 
-  updateReservationStatus(id: string, status: 'CONFIRMED' ): Observable<any> {
+  updateReservationStatus(id: any, status: 'CONFIRMED' ): Observable<any> {
     this.isLoading.set(true);
 
-    return this.http.patch<any>(`${environment.apiUrl}/admin/reservations/${id}/status`, { status }).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/admin/reservations/${id}/status`,"").pipe(
       finalize(() => this.isLoading.set(false))
     );
   }
 
   /** Get all money transfers */
-  getTransfers(): Observable<MoneyTransfer[]> {
+  getBalance(): Observable<Balance> {
     this.isLoading.set(true);
 
-    return this.http.get<MoneyTransfer[]>(`${environment.apiUrl}/api/v1/admin/transfers`).pipe(
+    return this.http.get<Balance>(`${environment.apiUrl}/admin/balance`).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }
 
   /** Create a new money transfer */
-  createTransfer(request: CreateMoneyTransferRequest): Observable<MoneyTransfer> {
+  createTransfer(request: CreateMoneyTransferRequest): Observable<any> {
     this.isLoading.set(true);
-
-    return this.http.post<MoneyTransfer>(`${environment.apiUrl}/api/v1/admin/transfers`, request).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/admin/transfers`, request).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }
