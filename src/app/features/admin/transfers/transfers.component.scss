@@ -8,7 +8,12 @@
   max-width: 1000px;
   margin: 0 auto;
 }
-
+.error
+{
+  color:red;
+  font-weight: bold;
+  padding: 10px;
+}
 @media (max-width: 768px) {
   .transfers-page {
     padding: 1rem 0.75rem;

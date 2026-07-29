@@ -24,7 +24,7 @@ errorMsg=""
     if (!this.transferData.amount ) {
     //  window.alert('يرجى إدخال المبلغ واسم المشرف');
       this.error=true;
-      this.errorMsg='يرجى إدخال المبلغ واسم المشرف'
+      this.errorMsg='يرجى إدخال المبلغ'
       return;
     }
     console

@@ -2,17 +2,20 @@
   <div class="transfers-container">
     <!-- Header -->
     <app-transfers-header></app-transfers-header>
-
-    <!-- Create Transfer Form -->
-    <app-create-transfer-form
-      [isSubmitting]="isSubmitting"
-      (createTransfer)="createTransfer($event)">
-    </app-create-transfer-form>
-
-    <!-- Transfers List -->
+ <!-- Transfers List -->
     <app-transfers-list
       [transfers]="transfers"
       [isLoading]="isLoading">
     </app-transfers-list>
+    <!-- Create Transfer Form -->
+     <div *ngIf="error()" class="error">
+      <span>{{errorMsg()}}</span>
+     </div>
+    <app-create-transfer-form
+      [isSubmitting]="isSubmitting()"
+      (createTransfer)="createTransfer($event)">
+    </app-create-transfer-form>
+
+   
   </div>
 </div>

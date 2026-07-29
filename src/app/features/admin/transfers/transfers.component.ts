@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {  Balance, CreateMoneyTransferRequest } from '../../../core/models/api.models';
 import { AdminService } from '../../../core/services/admin.service';
 import { TransfersHeaderComponent } from './transfers-header/transfers-header.component';
 import { CreateTransferFormComponent } from './create-transfer-form/create-transfer-form.component';
 import { TransfersListComponent } from './transfers-list/transfers-list.component';
+import { TitleStrategy } from '@angular/router';
 
 @Component({
   selector: 'app-transfers',
@@ -15,10 +16,11 @@ import { TransfersListComponent } from './transfers-list/transfers-list.componen
 })
 export class TransfersComponent implements OnInit {
   private readonly adminService = inject(AdminService);
-
+error=signal(false)
+errorMsg=signal("")
   transfers: Balance={balance:0};
   isLoading = true;
-  isSubmitting = false;
+  isSubmitting =signal( false);
 
   ngOnInit(): void {
     this.loadTransfers();
@@ -39,16 +41,17 @@ export class TransfersComponent implements OnInit {
   }
 
   createTransfer(request: any): void {
-    this.isSubmitting = true;
+    this.isSubmitting.set( true);
     console.log(request)
     this.adminService.createTransfer(request).subscribe({
       next: () => {
-        this.isSubmitting = false;
+        this.isSubmitting .set(false);
         this.loadTransfers();
       },
       error: () => {
-        window.alert('فشل إنشاء التحويل');
-        this.isSubmitting = false;
+        this.error.set(true)
+this.errorMsg.set('فشل إنشاء التحويل')
+        this.isSubmitting.set(false);
       }
     });
   }

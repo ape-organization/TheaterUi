@@ -36,7 +36,7 @@ export class AdminComponent implements OnInit {
       },
       error: () => {
         this.error.set(true);
-        this.errorMsg.set('فشل تحميل الحجوزات.');
+        this.errorMsg.set('فشل تحميل الحجوزات');
         this.isLoading = false;
       }
     });
@@ -54,7 +54,7 @@ export class AdminComponent implements OnInit {
       },
       error: () => {
         this.error.set(true);
-        this.errorMsg.set('فشل تحديث حالة الحجز.');
+        this.errorMsg.set('فشل تحديث حالة الحجز');
         this.updatingId = null;
       }
     });
