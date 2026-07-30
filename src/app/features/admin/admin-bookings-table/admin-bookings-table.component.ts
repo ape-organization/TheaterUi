@@ -12,7 +12,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 })
 export class AdminBookingsTableComponent {
 //  @Input() bookings: AllBookingResponse[] = [];
-bookings = input<AllBookingResponse[]>([]);  
+bookings = input<any[]>([]);  
 @Input() isLoading = false;
   @Input() updatingId: number | null = null;
 

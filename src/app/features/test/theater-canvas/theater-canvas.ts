@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, OnInit, OnDestroy, NgZone, output, ElementRef, HostListener, input } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, OnDestroy, AfterViewInit, NgZone, output, ElementRef, HostListener, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stage } from '../stage/stage';
 import { Block } from '../block/block';
@@ -24,7 +24,7 @@ const DESKTOP_PADDING = 32;
   templateUrl: './theater-canvas.html',
   styleUrl: './theater-canvas.scss',
 })
-export class TheaterCanvas implements OnInit, OnDestroy {
+export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   private layout = inject(LayoutService);
   private ngZone = inject(NgZone);
   private hostEl = inject(ElementRef);
@@ -90,6 +90,8 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   /** Switch the active tab */
   switchTab(tab: 'STAGE' | 'BAL'): void {
     this.activeTab.set(tab);
+    // Re-center so the newly shown tab starts from the middle on mobile.
+    setTimeout(() => this.centerScroll(), 50);
   }
 
   /** Scale factor applied to the layout */
@@ -161,6 +163,12 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    // Center the theatre horizontally on open so mobile/RTL users start at the
+    // middle and can slide both left and right to reach all seats.
+    setTimeout(() => this.centerScroll(), 50);
+  }
+
   private updateScale(): void {
     const vw = window.innerWidth;
     this.viewportWidth = vw;
@@ -207,6 +215,11 @@ export class TheaterCanvas implements OnInit, OnDestroy {
         // Set CSS custom property for seat sizing
         this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
       });
+      // On mobile/tablet the layout overflows the viewport; keep it centered
+      // after rescaling (e.g. when narrowing the window from desktop to mobile).
+      if (vw <= 1024) {
+        setTimeout(() => this.centerScroll(), 50);
+      }
     }
   }
 
@@ -214,6 +227,45 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     const layoutContainer = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
     if (layoutContainer) {
       this.isOverflowing = layoutContainer.scrollWidth > layoutContainer.clientWidth;
+    }
+  }
+
+  /** Center the theatre on the stage (المسرح) so the page opens showing it,
+   *  letting the user slide left and right to reach all seats.
+   *  Only adjusts horizontal scroll — never touches vertical page scroll. */
+  private centerScroll(): void {
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+    if (!container) return;
+
+    // If the layout fits the viewport, nothing to center.
+    if (container.scrollWidth <= container.clientWidth) return;
+
+    const stage = container.querySelector('.stage') as HTMLElement | null;
+    if (stage) {
+      // Use rendered rects so CSS transforms (scale) and RTL are accounted for.
+      const cRect = container.getBoundingClientRect();
+      const sRect = stage.getBoundingClientRect();
+      // Horizontal distance to shift so the stage center aligns with the
+      // container's visible center.
+      const delta = (sRect.left + sRect.width / 2) - (cRect.left + cRect.width / 2);
+      // In RTL, scrollLeft is negative in Chrome/Edge/Firefox (0 = right edge),
+      // positive in Safari. Adding the delta works for both because the sign of
+      // scrollLeft matches the coordinate system of getBoundingClientRect.
+      container.scrollLeft += delta;
+      return;
+    }
+
+    // Fallback: center on the layout middle if the stage isn't found.
+    const overflow = container.scrollWidth - container.clientWidth;
+    const center = overflow / 2;
+    const isRTL = getComputedStyle(container).direction === 'rtl';
+    if (isRTL) {
+      container.scrollLeft = -center;
+      if (container.scrollLeft === 0) {
+        container.scrollLeft = center;
+      }
+    } else {
+      container.scrollLeft = center;
     }
   }
 

@@ -6,6 +6,8 @@ import { TransfersHeaderComponent } from './transfers-header/transfers-header.co
 import { CreateTransferFormComponent } from './create-transfer-form/create-transfer-form.component';
 import { TransfersListComponent } from './transfers-list/transfers-list.component';
 import { TitleStrategy } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-transfers',
@@ -15,7 +17,9 @@ import { TitleStrategy } from '@angular/router';
   styleUrl: './transfers.component.scss'
 })
 export class TransfersComponent implements OnInit {
+ 
   private readonly adminService = inject(AdminService);
+
 error=signal(false)
 errorMsg=signal("")
   transfers=signal({balance:0});

@@ -40,7 +40,7 @@ export class AdminComponent implements OnInit {
     (a, b) => this.statusOrder[a.status] - this.statusOrder[b.status]
   )
 ); */
-this.bookings.set(
+/* this.bookings.set(
   [...(data as AllBookingResponse[])].sort((a, b) => {
     // First: sort by status
     const statusCompare =
@@ -53,8 +53,27 @@ this.bookings.set(
     // Then: newest first
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   })
+); */
+        
+this.bookings.set(
+  [...(data as AllBookingResponse[])]
+    .map(booking => ({
+      ...booking,
+      isExpired: new Date(booking.expiresAt).getTime() <= Date.now()
+    }))
+    .sort((a, b) => {
+      const statusCompare =
+        this.statusOrder[a.status] - this.statusOrder[b.status];
+
+      if (statusCompare !== 0) {
+        return statusCompare;
+      }
+
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    })
 );
-        console.log(this.bookings)
+
+console.log(this.bookings)
         this.isLoading = false;
       },
       error: () => {

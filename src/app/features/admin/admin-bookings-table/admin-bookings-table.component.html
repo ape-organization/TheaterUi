@@ -65,7 +65,7 @@
                 </span>
               </td>
               <td class="actions-cell">
-                @if (booking.status === 'PENDING') {
+                @if (booking.status === 'PENDING' && !booking.isExpired) {
                   <div class="action-buttons">
                     <button
                       class="btn-action btn-confirm"
@@ -82,7 +82,7 @@
                     </button>
                   </div>
                 } @else {
-                  <span class="no-action">—</span>
+                  <span class="no-action">انتهي</span>
                 }
               </td>
             </tr>

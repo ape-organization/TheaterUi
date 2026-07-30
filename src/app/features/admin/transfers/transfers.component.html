@@ -11,11 +11,11 @@
      <div *ngIf="error()" class="error">
       <span>{{errorMsg()}}</span>
      </div>
-    <app-create-transfer-form
+    <app-create-transfer-form 
       [isSubmitting]="isSubmitting()"
       (createTransfer)="createTransfer($event)">
     </app-create-transfer-form>
-
+  
    
   </div>
 </div>
