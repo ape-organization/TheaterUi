@@ -4,7 +4,8 @@ import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../core/services/booking.service';
 import { EventService } from '../../core/services/event.service';
 import { UserBooking } from '../../core/models/api.models';
-import QRCode from 'qrcode';
+import * as QRCode from 'qrcode';
+
 @Component({
   selector: 'app-ticket',
   standalone: true,
@@ -13,7 +14,6 @@ import QRCode from 'qrcode';
   styleUrl: './ticket.component.scss'
 })
 export class TicketComponent implements OnInit {
-  protected readonly qrCodeDataUrl = signal<string>('');
   protected readonly booking = inject(BookingService).bookingResponse;
   protected readonly event = inject(EventService).selectedEvent;
 
@@ -24,42 +24,19 @@ export class TicketComponent implements OnInit {
 
   /** The booking being viewed — falls back to the bookingResponse signal */
   protected readonly currentBooking = signal<UserBooking | null>(null);
- navigation = this.router.currentNavigation();
+  navigation = this.router.currentNavigation();
 
- ticket = history.state.user;;
-seats:any=''
+  ticket = history.state.user;;
+  seats:any=''
+  /** QR code data URL for confirmed bookings */
+  protected readonly qrCodeDataUrl = signal<string | null>(null);
+
   ngOnInit(): void {
     console.log(this.booking())
       this.loadBooking();
-    this.generateQrCode();
+
   }
-  private async generateQrCode(): Promise<void> {
-  const booking = this.booking();
-
-  if (!booking || booking.status !== 'CONFIRMED') {
-    return;
-  }
-
- const qrValue = `
-🎭 تذكرة دخول المسرح
-
-رقم الحجز: ${booking.id}
-
-الاسم: ${booking.user.name}
-
-المقاعد:
-${booking.seats
-  .map(s => this.displaySeatLabel(s.label))
-  .join('، ')}
-
-الحالة: ${booking.status === 'CONFIRMED' ? 'مؤكد' : 'قيد الانتظار'}
-`;
-
-  const url = await QRCode.toDataURL(qrValue);
-
-  this.qrCodeDataUrl.set(url);
-}
-moveToHome()
+ moveToHome()
 {
   this.router.navigate(['/event'])
 }
@@ -80,7 +57,7 @@ displaySeatLabel(label: string): string {
 }
   /** Fetch a specific booking by ID when navigating from the reservations list */
  /*  private loadBooking(): void {
-   
+    
         if (this.booking()&&this.booking()?.seats) {
     this.seats = this.booking()?.seats.map((seat: any) => {
   if (!seat.label.includes('-')) {
@@ -110,5 +87,35 @@ private loadBooking(): void {
   this.seats = booking.seats.map((seat: any) =>
     this.displaySeatLabel(seat.label)
   );
+
+  // Generate a QR code for confirmed bookings containing the ticket data
+  if (booking.status === 'CONFIRMED') {
+    this.generateQrCode(booking);
+  }
+}
+
+/** Build a compact ticket payload and render it as a QR code data URL */
+private generateQrCode(booking: UserBooking): void {
+  const payload = {
+    id: booking.id,
+    name: booking.user?.name ?? '',
+    seats: booking.seats.map(s => s.label),
+    status: booking.status,
+    createdAt: booking.createdAt,
+  };
+
+  QRCode.toDataURL(JSON.stringify(payload), {
+    width: 220,
+    margin: 1,
+    color: {
+      dark: '#1a1a1a',
+      light: '#ffffff',
+    },
+  })
+    .then((url: string) => this.qrCodeDataUrl.set(url))
+    .catch((err: unknown) => {
+      console.error('Failed to generate QR code', err);
+      this.qrCodeDataUrl.set(null);
+    });
 }
       }

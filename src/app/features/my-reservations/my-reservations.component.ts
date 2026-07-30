@@ -31,7 +31,17 @@ private readonly hallNames: Record<string, string> = {
   STAGE: 'الصالة',
   BAL: 'البلكونة',
 };
-  loadBookings(): void {
+
+displaySeatLabel(label: string): string {
+  if (!label.includes('-')) {
+    return label;
+  }
+
+  const [hall, number] = label.split('-');
+
+  return `${this.hallNames[hall] ?? hall} ${number}`;
+}
+ /*  loadBookings(): void {
     this.errorMsg.set(null);
 
     // Check if bookings were passed from verify-otp via the service
@@ -68,10 +78,34 @@ console.log("here")
         this.errorMsg.set('حدث خطأ في تحميل الحجوزات');
       }
     });
-  }
+  } */
 
   ///
+  clearBookings(): void {
+  this.bookingService.bookings.set(null);
+}
+loadBookings(): void {
+  this.errorMsg.set(null);
 
+  const storedBookings = this.bookingService.bookings();
+
+  if (storedBookings && storedBookings.length > 0) {
+    this.bookings.set(storedBookings);
+    // Don't use them again
+    this.clearBookings();
+    return;
+  }
+
+  this.userService.GetUserReservation().subscribe({
+    next: (data) => {
+      this.bookings.set(data);
+     // this.bookingService.setBookings(data);
+    },
+    error: () => {
+      this.errorMsg.set('حدث خطأ في تحميل الحجوزات');
+    }
+  });
+}
 
   
   /** Navigate to the ticket view for a specific booking */

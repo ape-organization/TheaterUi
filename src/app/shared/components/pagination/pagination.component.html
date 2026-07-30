@@ -1,0 +1,49 @@
+@if (totalPages() > 1) {
+  <div class="pagination">
+    <!-- Info text -->
+    <span class="pagination-info">
+      {{ startItem() }}–{{ endItem() }} من {{ totalItems }}
+    </span>
+
+    <div class="pagination-controls">
+      <!-- Previous -->
+      <button
+        type="button"
+        class="page-btn page-nav"
+        [disabled]="!hasPrev()"
+        (click)="goPrev()"
+        aria-label="الصفحة السابقة">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+
+      <!-- Page numbers -->
+      @for (page of pages(); track page) {
+        @if (page === '...') {
+          <span class="page-ellipsis">…</span>
+        } @else {
+          <button
+            type="button"
+            class="page-btn"
+            [class.active]="page === currentPage"
+            (click)="goTo(page)">
+            {{ page }}
+          </button>
+        }
+      }
+
+      <!-- Next -->
+      <button
+        type="button"
+        class="page-btn page-nav"
+        [disabled]="!hasNext()"
+        (click)="goNext()"
+        aria-label="الصفحة التالية">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+}

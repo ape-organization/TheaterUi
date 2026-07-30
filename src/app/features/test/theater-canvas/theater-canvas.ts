@@ -267,9 +267,8 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement;
     if (!container) return;
 
-    // Pan both horizontally and vertically
+    // Pan horizontally only; vertical scrolling is handled by the page
     container.scrollLeft = this.dragStartScrollLeft - deltaX;
-    container.scrollTop = this.dragStartScrollTop - deltaY;
   }
 
   /** End mouse drag */
@@ -341,16 +340,11 @@ export class TheaterCanvas implements OnInit, OnDestroy {
       return;
     }
 
-    // Single finger scroll (both directions)
-    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement;
-    if (!container) return;
-
-    const walkX = event.touches[0].pageX - this.touchStartX;
-    const walkY = event.touches[0].pageY - this.touchStartY;
-
-    // Scroll both horizontally and vertically
-    container.scrollLeft = this.touchScrollLeft - walkX;
-    container.scrollTop = this.touchScrollTop - walkY;
+    // On all screen sizes let the browser handle native scrolling:
+    //   - horizontal swipe scrolls the theatre left/right
+    //   - vertical swipe scrolls the whole page (theatre is part of page flow)
+    // This avoids trapping the user inside a nested theatre scroll.
+    return;
   }
 
   onTouchEnd(_event: TouchEvent): void {

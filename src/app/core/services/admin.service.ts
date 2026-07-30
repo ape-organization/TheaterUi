@@ -23,16 +23,16 @@ export class AdminService {
   updateReservationStatus(id: any, status: 'CONFIRMED' ): Observable<any> {
     this.isLoading.set(true);
 
-    return this.http.post<any>(`${environment.apiUrl}/admin/reservations/${id}/status`,"").pipe(
+    return this.http.post<any>(`${environment.apiUrl}/admin/reservations/${id}/confirm`,{}).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }
 
   /** Get all money transfers */
-  getBalance(): Observable<Balance> {
+  getBalance(): Observable<any> {
     this.isLoading.set(true);
 
-    return this.http.get<Balance>(`${environment.apiUrl}/admin/balance`).pipe(
+    return this.http.get<any>(`${environment.apiUrl}/admin/balance`).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }

@@ -27,8 +27,9 @@ errorMsg=""
       this.errorMsg='يرجى إدخال المبلغ'
       return;
     }
-    console
     this.createTransfer.emit(this.transferData);
+        this.transferData.amount =0
+
   }
 
   resetForm(): void {

@@ -1,0 +1,87 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid rgba(107, 78, 58, 0.08);
+}
+
+.pagination-info {
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  white-space: nowrap;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 0.5rem;
+  border: 1px solid rgba(107, 78, 58, 0.15);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--clr-text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: all var(--transition);
+  user-select: none;
+
+  &:hover:not(:disabled):not(.active) {
+    background: var(--clr-brown-subtle);
+    border-color: var(--clr-accent);
+    color: var(--clr-accent);
+  }
+
+  &.active {
+    background: var(--clr-accent);
+    border-color: var(--clr-accent);
+    color: #fff;
+    cursor: default;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.page-nav {
+  padding: 0;
+  width: 32px;
+}
+
+.page-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 32px;
+  color: var(--clr-text-muted);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    justify-content: center;
+    padding: 0.75rem 1rem;
+  }
+
+  .pagination-info {
+    width: 100%;
+    text-align: center;
+  }
+}

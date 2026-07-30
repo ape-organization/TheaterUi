@@ -1,10 +1,13 @@
 .card {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
   background: var(--clr-bg-auth-card);
   border: 1px solid rgba(107, 78, 58, 0.1);
   border-radius: var(--radius-lg);
   margin-bottom: 1.5rem;
   box-shadow: var(--shadow-sm);
-  padding: 3px;
+  padding: 4px;
 }
 
 .card h2 {

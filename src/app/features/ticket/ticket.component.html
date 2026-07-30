@@ -28,6 +28,7 @@
         <div class="ticket-info-row">
           <span class="ticket-info-label">الاسم</span>
           <span class="ticket-info-value">{{ booking()?.user?.name || 'غير محدد' }}</span>
+
         </div>
 
 
@@ -43,6 +44,14 @@
 
       
 
+      </div>
+
+      <!-- QR Code (confirmed bookings only) -->
+      <div class="ticket-qr" *ngIf="booking()?.status === 'CONFIRMED' && qrCodeDataUrl()">
+        <div class="qr-frame">
+          <img [src]="qrCodeDataUrl()" alt="رمز تذكرة الحجز" class="qr-image" />
+        </div>
+        <p class="qr-caption">امسح الرمز للتحقق من التذكرة</p>
       </div>
 
       <!-- Payment Notice -->

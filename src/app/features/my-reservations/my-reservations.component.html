@@ -69,11 +69,14 @@
     <!-- Reservations List -->
     @if (!isLoading() && !errorMsg() && bookings() && bookings()!.length > 0) {
       <div class="reservations-list">
+        <div style="display: flex;justify-content: center;">
+
         <div class="list-summary">
           <span class="total-count">{{ bookings()!.length }} حجز</span>
         </div>
+        </div>
 
-        <div class="reservation-grid">
+        <div class="view">
           @for (booking of bookings(); track booking.id) {
             <div class="reservation-card"
                  
@@ -112,8 +115,11 @@
                   <div class="seats-chips">
                     <span class="seat-chip" *ngFor="let seat of booking.seats; let i = index"
                          >
-                      {{ seat.label }}
+                      <!-- {{ seat.label }} -->
+{{ displaySeatLabel(seat.label) }}
+
                     </span>
+                    
                   </div>
                 </div>
 

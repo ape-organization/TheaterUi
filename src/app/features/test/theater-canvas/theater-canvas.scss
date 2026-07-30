@@ -187,14 +187,19 @@
   position: relative;
   width: 100%;
   max-width: 100%;
-  max-height: calc(100vh - 200px);
-  max-height: calc(100dvh - 200px);
-  overflow: auto;
+  /* No max-height on any screen size: the theatre expands the page so
+     users scroll the page through the theatre and reach the footer naturally. */
+  max-height: none;
+  /* Horizontal scroll to see all seats; vertical is handled by the page */
+  overflow-x: auto;
+  overflow-y: hidden;
   /* On desktop: center the layout horizontally */
   justify-content: center;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  overscroll-behavior: contain;
+  /* Contain horizontal overscroll to the theatre; let vertical chain to page */
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
   cursor: grab;
 
   &.is-panning {
@@ -262,8 +267,8 @@
 
 .layout {
   position: relative;
-  width: 1350px;
-  height: 1400px;
+  width: 1300px;
+  height: 800px;
   flex-shrink: 0;
   transform-origin: center top;
   transition: transform 350ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -375,16 +380,21 @@
     color: white;
   }
 
-   /* Layout container: scroll both directions on mobile/tablet */
+   /* Layout container: horizontal scroll only on mobile/tablet.
+      Vertical content expands the page so users scroll the page
+      through the theatre and reach the footer naturally. */
    .layout-container {
      display: block;
-     overflow: auto;
+     overflow-x: auto;
+     overflow-y: hidden;
      justify-content: flex-start;
      padding: 0 0;
-     max-height: calc(100vh - 240px);
-     max-height: calc(100dvh - 240px);
+     /* No max-height: let the theatre height push the page down */
+     max-height: none;
      /* Allow page scroll chaining on mobile so users can scroll past the theater */
      overscroll-behavior: auto;
+     /* Snap horizontally so left/right scroll feels contained to the theatre */
+     overscroll-behavior-x: contain;
    }
 
   .layout-container::after {

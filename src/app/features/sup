@@ -1,0 +1,82 @@
+<div class="card">
+  <h2>التحويلات الواردة</h2>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>جاري التحميل...</span>
+    </div>
+  } @else if (transfers.length === 0) {
+    <div class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="1" x2="12" y2="23"/>
+        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+      </svg>
+      <h3>لا توجد تحويلات</h3>
+      <p>لم يتم إرسال أي تحويلات إليك بعد</p>
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <table class="transfers-table">
+        <thead>
+          <tr>
+            <th>المعرف</th>
+            <th>من</th>
+            <th>المبلغ</th>
+            
+            <th>التاريخ</th>
+            <th>الحالة</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (transfer of paginatedTransfers(); track transfer.id) {
+            <tr>
+              <td class="id-cell">{{ transfer.id }}</td>
+              <td>{{ transfer.admin.name }}</td>
+              <td class="amount-cell">EGP {{ transfer.amount | number }}</td>
+              
+              <td class="date-cell">{{ transfer.createdAt | date:'medium' }}</td>
+              <td>
+                <span class="status-badge"
+                      [class.pending]="transfer.status === 'PENDING'"
+                      [class.confirmed]="transfer.status === 'CONFIRMED'"
+                      >
+                  @if (transfer.status === 'PENDING') { قيد الانتظار }
+                  @else if (transfer.status === 'CONFIRMED') { تم الاستلام }
+                 
+                </span>
+              </td>
+              <td>
+                @if (transfer.status === 'PENDING') {
+                  <div class="action-buttons">
+                    <button class="btn-confirm" (click)="onConfirm(transfer.id)" [disabled]="updatingId === transfer.id">
+                      @if (updatingId === transfer.id) {
+                        <div class="btn-spinner"></div>
+                      } @else {
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                      }
+                      تأكيد الاستلام
+                    </button>
+                  
+                  </div>
+                } @else {
+                  <span class="no-action">—</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination
+      [totalItems]="transfers.length"
+      [pageSize]="pageSize"
+      [currentPage]="currentPage()"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+  }
+</div>

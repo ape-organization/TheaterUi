@@ -21,7 +21,7 @@ export class SupervisorService {
   updateTransferStatus(id: any, status: 'CONFIRMED' ): Observable<any> {
     this.isLoading.set(true);
 
-    return this.http.put(`${environment.apiUrl}/super-admin/transfers/${id}/confirm/`, null).pipe(
+    return this.http.post(`${environment.apiUrl}/super-admin/transfers/${id}/confirm`, {}).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }

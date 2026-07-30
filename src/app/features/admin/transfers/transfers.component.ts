@@ -18,7 +18,7 @@ export class TransfersComponent implements OnInit {
   private readonly adminService = inject(AdminService);
 error=signal(false)
 errorMsg=signal("")
-  transfers: Balance={balance:0};
+  transfers=signal({balance:0});
   isLoading = true;
   isSubmitting =signal( false);
 
@@ -30,11 +30,14 @@ errorMsg=signal("")
     this.isLoading = true;
     this.adminService.getBalance().subscribe({
       next: (data) => {
-        this.transfers = data;
+        console.log(data)
+        this.transfers.set( data);
         this.isLoading = false;
       },
       error: () => {
-        window.alert('فشل تحميل التحويلات');
+        
+        this.error.set(true)
+this.errorMsg.set('فشل إنشاء التحويل')
         this.isLoading = false;
       }
     });
@@ -44,7 +47,8 @@ errorMsg=signal("")
     this.isSubmitting.set( true);
     console.log(request)
     this.adminService.createTransfer(request).subscribe({
-      next: () => {
+      next: (res:any) => {
+        console.log(res)
         this.isSubmitting .set(false);
         this.loadTransfers();
       },

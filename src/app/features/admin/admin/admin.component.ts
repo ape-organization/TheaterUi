@@ -13,6 +13,10 @@ import { AdminBookingsTableComponent } from '../admin-bookings-table/admin-booki
   styleUrl: './admin.component.scss'
 })
 export class AdminComponent implements OnInit {
+   statusOrder: Record<string, number> = {
+  PENDING: 0,
+  CONFIRMED: 1
+};
   private readonly adminService = inject(AdminService);
  // bookings: AllBookingResponse[] = [];
  bookings = signal<AllBookingResponse[]>([]);
@@ -30,7 +34,12 @@ export class AdminComponent implements OnInit {
     this.adminService.getAllRecerivation().subscribe({
       next: (data) => {
         console.log(data);
-       this.bookings.set(data as AllBookingResponse[]);
+     //  this.bookings.set(data as AllBookingResponse[]);
+     this.bookings.set(
+  (data as AllBookingResponse[]).sort(
+    (a, b) => this.statusOrder[a.status] - this.statusOrder[b.status]
+  )
+);
         console.log(this.bookings)
         this.isLoading = false;
       },
@@ -45,11 +54,21 @@ export class AdminComponent implements OnInit {
   updateStatus(bookingId: number, status: 'CONFIRMED'): void {
     this.updatingId = bookingId;
     this.adminService.updateReservationStatus(bookingId, status).subscribe({
-      next: () => {
-        const booking = this.bookings().find((b) => b.id === bookingId);
-        if (booking) {
-          booking.status = status;
-        }
+      next: (res:any) => {
+        console.log(res)
+        console.log(bookingId)
+  this.bookings.update(bookings =>
+        bookings.map(booking =>
+          booking.id === bookingId
+            ? { ...booking, status }
+            : booking
+        )
+         .sort((a, b) => {
+      if (a.status === b.status) return 0;
+      return a.status === 'PENDING' ? -1 : 1;
+    })
+      );
+
         this.updatingId = null;
       },
       error: () => {

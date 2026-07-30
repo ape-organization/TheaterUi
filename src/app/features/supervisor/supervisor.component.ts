@@ -28,7 +28,10 @@ errorMsg=signal("")
     this.isLoading = true;
     this.supervisorService.getTransfers().subscribe({
       next: (data) => {
-        this.transfers.set( data);
+       // this.transfers.set( data);
+       this.transfers.set(
+  [...data].sort((a, b) => this.statusOrder[a.status] - this.statusOrder[b.status])
+);
         this.isLoading = false;
       },
       error: () => {
@@ -39,17 +42,31 @@ errorMsg=signal("")
       }
     });
   }
-
+ statusOrder: Record<string, number> = {
+  PENDING: 0,
+  CONFIRMED: 1
+};
   confirmTransfer(id: any): void {
     this.updatingId = id;
     this.supervisorService.updateTransferStatus(id, 'CONFIRMED').subscribe({
       next: () => {
-        const transfer = this.transfers().find(t => t.id === id);
-        if (transfer) transfer.status = 'CONFIRMED';
+        this.transfers.update(transfers => {
+  if (!transfers) return transfers;
+
+  return transfers
+    .map(transfer =>
+      transfer.id === id
+        ? { ...transfer, status: 'CONFIRMED' }
+        : transfer
+    )
+    .sort((a, b) => this.statusOrder[a.status] - this.statusOrder[b.status]);
+});
         this.updatingId = null;
       },
       error: () => {
-        window.alert('فشل تأكيد الاستلام');
+       // window.alert('فشل تأكيد الاستلام');
+        this.error.set(true);
+        this.errorMsg.set('فشل تأكيد الاستلام')
         this.updatingId = null;
       }
     });
