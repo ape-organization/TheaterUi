@@ -79,18 +79,47 @@
   opacity: 0.5;
 }
 
-/* VIP seat styling */
-.seat-btn.vip-seat:not(.selected):not(.reserved) {
+/* ─── Status-based seat colors ─── */
+/* PENDING seats: red (booking in progress, locked) */
+.seat-btn.pending,
+.seat-btn.vip-seat.pending {
+  background: rgb(76, 22, 2);
+  border-color: white;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.seat-btn.pending .seat-number {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* CONFIRMED seats: green (booking confirmed, locked) */
+.seat-btn.confirmed,
+.seat-btn.vip-seat.confirmed {
+  background: var(--clr-success);
+  border-color: white;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.seat-btn.confirmed .seat-number {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* VIP seat styling (available seats only — pending/confirmed override) */
+.seat-btn.vip-seat:not(.selected):not(.reserved):not(.pending):not(.confirmed) {
   border-color: rgba(199, 149, 43, 0.2);
   background: rgba(199, 149, 43, 0.06);
 }
 
-.seat-btn.vip-seat:not(.selected):not(.reserved) .seat-number {
+.seat-btn.vip-seat:not(.selected):not(.reserved):not(.pending):not(.confirmed) .seat-number {
   color: var(--clr-gold);
   font-weight: 700;
 }
 
-.seat-btn.vip-seat:not(.selected):not(.reserved):hover {
+.seat-btn.vip-seat:not(.selected):not(.reserved):not(.pending):not(.confirmed):hover {
   border-color: var(--clr-gold);
   box-shadow: 0 4px 12px rgba(107, 78, 58, 0.15), 0 0 8px rgba(199, 149, 43, 0.2);
 }

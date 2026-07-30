@@ -28,6 +28,8 @@ errorMsg=signal("")
 
   loadTransfers(): void {
     this.isLoading = true;
+            this.error.set(false)
+
     this.adminService.getBalance().subscribe({
       next: (data) => {
         console.log(data)
@@ -44,6 +46,8 @@ this.errorMsg.set('فشل إنشاء التحويل')
   }
 
   createTransfer(request: any): void {
+            this.error.set(false)
+
     this.isSubmitting.set( true);
     console.log(request)
     this.adminService.createTransfer(request).subscribe({

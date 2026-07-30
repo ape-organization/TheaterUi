@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Stage } from '../stage/stage';
 import { Block } from '../block/block';
 import { LayoutService } from '../layout.service';
-import type { Seat } from '../../../core/data/test.data';
+import type { Seat, SeatStatus } from '../../../core/data/test.data';
 
 /** Intrinsic layout width in pixels (matches SCSS .layout width) */
 const LAYOUT_WIDTH = 1350;
 /** Intrinsic layout height in pixels (matches SCSS .layout height) */
-const LAYOUT_HEIGHT = 1400;
+const LAYOUT_HEIGHT = 1000;
 /** Viewport width where 1:1 scaling is applied (layout fits natively) */
 const NATURAL_BREAKPOINT = 1400;
 /** Maximum scale cap on ultra-wide screens */
@@ -33,21 +33,34 @@ export class TheaterCanvas implements OnInit, OnDestroy {
 
   reservedSeatNumbers = input<string[]>([]);
 
+  /** Map of seat id -> server status ('PENDING' | 'CONFIRMED') for status coloring */
+  seatStatusMap = input<Record<string, string>>({});
+
   /** Active tab: 'STAGE' (default) or 'BAL' */
   protected activeTab = signal<'STAGE' | 'BAL'>('STAGE');
 
   /** Blocks with reserved seats applied so the template can render locked seats */
   displayBlocks = computed(() => {
     const reserved = new Set(this.reservedSeatNumbers());
+    const statusMap = this.seatStatusMap();
     return this.blocks.map(block => ({
       ...block,
       rows: block.rows.map(row => ({
         ...row,
-        seats: row.seats.map(seat =>
+        seats: row.seats.map(seat => {
           // Match against seat.id because the server label (e.g. "STAGE-A14")
           // equals the seat's id, not its seatnumber (e.g. "A14")
-          reserved.has(seat.id) ? { ...seat, status: 'reserved' as const } : seat
-        )
+          if (reserved.has(seat.id)) {
+            const serverStatus = statusMap[seat.id];
+            // Map server status to seat status for status-based coloring
+            const mappedStatus: SeatStatus =
+              serverStatus === 'PENDING' ? 'pending' :
+              serverStatus === 'CONFIRMED' ? 'confirmed' :
+              'reserved';
+            return { ...seat, status: mappedStatus };
+          }
+          return seat;
+        })
       }))
     }));
   });
@@ -84,6 +97,12 @@ export class TheaterCanvas implements OnInit, OnDestroy {
 
   /** Seat scale multiplier for CSS custom property */
   protected seatScale = signal(1);
+
+  /** Scaled layout dimensions — drives the scrollable area size so that
+   *  zoomed-in content stays reachable (CSS transforms don't affect layout
+   *  box size, so we expose the real scaled size to a sizer wrapper). */
+  protected scaledWidth = computed(() => Math.round(LAYOUT_WIDTH * this.scale()));
+  protected scaledHeight = computed(() => Math.round(LAYOUT_HEIGHT * this.scale()));
 
   /** Offset added to each block's x/y when up-scaled */
   protected translateOffset = signal(0);
@@ -267,8 +286,9 @@ export class TheaterCanvas implements OnInit, OnDestroy {
     const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement;
     if (!container) return;
 
-    // Pan horizontally only; vertical scrolling is handled by the page
+    // Pan both horizontally and vertically so zoomed-in seats stay reachable
     container.scrollLeft = this.dragStartScrollLeft - deltaX;
+    container.scrollTop = this.dragStartScrollTop - deltaY;
   }
 
   /** End mouse drag */
@@ -360,7 +380,8 @@ export class TheaterCanvas implements OnInit, OnDestroy {
   }
 
   toggleSeatSelection(seat: Seat): void {
-    if (seat.status === 'reserved') {
+    // Locked seats (reserved, pending, confirmed) cannot be selected
+    if (seat.status === 'reserved' || seat.status === 'pending' || seat.status === 'confirmed') {
       return;
     }
     const current = this.selectedSeatIds();

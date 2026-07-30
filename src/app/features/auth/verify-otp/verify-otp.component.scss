@@ -1,3 +1,31 @@
+//reset nutton 
+.resend-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* Disabled */
+.resend-btn:disabled {
+  color: #9ca3af; /* gray */
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* Enabled */
+.resend-btn:not(:disabled) {
+  color: #16a34a; /* green */
+  font-weight: 600;
+}
+
+.resend-btn:not(:disabled):hover {
+  color: #15803d;
+  text-decoration: underline;
+}
 /* ─── These styles are shared with login component ─── */
 .auth-page {
   min-height: calc(100vh - 64px);

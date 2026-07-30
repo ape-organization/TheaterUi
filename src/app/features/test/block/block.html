@@ -10,7 +10,7 @@
         @for (row of block().rows; track row.id) {
             <app-row
                 [row]="row"
-                [type]="row.label === 'A' || row.label === 'B' || row.label === 'C' ? 'vip' : 'regular'"
+                [type]="'vip'"
                 [selectedSeatIds]="selectedSeatIds()"
                 (seatClick)="seatClick.emit($event)">
             </app-row>

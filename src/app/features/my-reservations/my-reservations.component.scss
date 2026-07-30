@@ -1,6 +1,6 @@
 .reservations-page {
   min-height: calc(100vh - 64px);
-  padding: 2rem 1rem;
+  padding: .5rem 1rem;
   background: var(--clr-bg-primary);
   width: 100%;
 }
@@ -196,12 +196,10 @@
 
 /* ─── Reservation Grid ─── */
 .view {
-  display: flex;
-  justify-content: center;
+ display: flex;
   flex-wrap: wrap;
-  //grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  //gap: 1.5rem;
-  width: 100%;
+  gap: 1.5rem;
+  align-items: stretch;
 }
 
 /* ─── Reservation Card ─── */
@@ -212,11 +210,14 @@
   overflow: hidden;
   box-shadow: var(--shadow-md);
   cursor: pointer;
-  width: 350px;
+  max-width: 350px;
   margin:10px;
   transition: all var(--transition);
   position: relative;
   animation: scaleIn 0.5s ease-out 0.2s both;
+   flex: 1 1 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 .reservation-card:hover {
@@ -283,6 +284,7 @@
 
 /* ─── Reservation Body ─── */
 .reservation-body {
+  flex: 1;
   padding: 1.25rem 1.5rem;
 }
 
@@ -438,6 +440,7 @@
   background: rgba(107, 78, 58, 0.02);
   border-top: 1px solid rgba(107, 78, 58, 0.06);
   text-align: center;
+  margin-top: auto;
 }
 
 .view-ticket-hint {

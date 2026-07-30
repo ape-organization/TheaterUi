@@ -35,10 +35,24 @@ export class AdminComponent implements OnInit {
       next: (data) => {
         console.log(data);
      //  this.bookings.set(data as AllBookingResponse[]);
-     this.bookings.set(
+   /*   this.bookings.set(
   (data as AllBookingResponse[]).sort(
     (a, b) => this.statusOrder[a.status] - this.statusOrder[b.status]
   )
+); */
+this.bookings.set(
+  [...(data as AllBookingResponse[])].sort((a, b) => {
+    // First: sort by status
+    const statusCompare =
+      this.statusOrder[a.status] - this.statusOrder[b.status];
+
+    if (statusCompare !== 0) {
+      return statusCompare;
+    }
+
+    // Then: newest first
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  })
 );
         console.log(this.bookings)
         this.isLoading = false;
@@ -53,21 +67,27 @@ export class AdminComponent implements OnInit {
 
   updateStatus(bookingId: number, status: 'CONFIRMED'): void {
     this.updatingId = bookingId;
-    this.adminService.updateReservationStatus(bookingId, status).subscribe({
+     this.adminService.updateReservationStatus(bookingId, status).subscribe({
       next: (res:any) => {
         console.log(res)
         console.log(bookingId)
   this.bookings.update(bookings =>
-        bookings.map(booking =>
-          booking.id === bookingId
-            ? { ...booking, status }
-            : booking
-        )
-         .sort((a, b) => {
-      if (a.status === b.status) return 0;
-      return a.status === 'PENDING' ? -1 : 1;
+  bookings
+    .map(booking =>
+      booking.id === bookingId
+        ? { ...booking, status }
+        : booking
+    )
+    .sort((a, b) => {
+      // First: status
+      if (a.status !== b.status) {
+        return a.status === 'PENDING' ? -1 : 1;
+      }
+
+      // Second: newest first
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     })
-      );
+);
 
         this.updatingId = null;
       },
@@ -76,6 +96,8 @@ export class AdminComponent implements OnInit {
         this.errorMsg.set('فشل تحديث حالة الحجز');
         this.updatingId = null;
       }
-    });
+    }); 
+
+ 
   }
 }

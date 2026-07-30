@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../../../core/services/user.service';
 import { BookingService } from '../../../core/services/booking.service';
 import { BookingResponse } from '../../../core/models/api.models';
+import { single } from 'rxjs';
 
 @Component({
   selector: 'app-verify-otp',
@@ -42,7 +43,68 @@ export class VerifyOtpComponent {
   get contactDisplay(): string {
     return this.contact;
   }
+  remainingSeconds=signal( 60);
+private timer: any;
 
+ngOnInit(): void {
+  // First time opening the page, wait 1 minute
+  this.startCooldown();
+}
+  ngOnDestroy(): void {
+  clearInterval(this.timer);
+}
+startCooldown() {
+
+  clearInterval(this.timer);
+
+  this.remainingSeconds.set(60);
+
+  this.timer = setInterval(() => {
+
+    if (this.remainingSeconds() > 0) {
+      this.remainingSeconds.update(v => v - 1);
+    } else {
+      clearInterval(this.timer);
+    }
+  }, 1000);
+}
+resetFlag=signal(false)
+   resetOTP(): void {
+    this.resetFlag.set(true)
+    this.error.set(false);
+      if (!this.contactDisplay) {
+        this.error.set(true);
+        
+        this.errorMsg.set('من فضلك اعد ادخال رقم الهاتف ');
+        return;
+      }
+
+      const phone = this.contactDisplay?? '';
+      this.authService.login('phone', phone).subscribe({
+        next: (res:any) => {
+          //reset otp 
+          console.log(res)
+                    this.resetFlag.set(false)
+
+          this.form.get('otp')?.reset();
+          // Lock for another minute
+  this.startCooldown();
+        },
+        error: (res:any) => {
+          this.error.set(true);
+          this.resetFlag.set(false)
+
+          if (res.message?.includes("https"))
+                    this.errorMsg.set('تعذر تسجيل البيانات. حاول مرة أخرى.');
+          else
+        this.errorMsg.set(res.message || 'تعذر تسجيل البيانات. حاول مرة أخرى.');
+
+          this.router.navigate(['/login']);
+         // window.alert('تعذر إرسال رمز التحقق. حاول مرة أخرى.');
+        }
+      });
+
+  } 
   submit(): void {
     this.error.set(false);
     if (this.form.invalid) {
@@ -54,8 +116,8 @@ export class VerifyOtpComponent {
 
     this.authService.verifyOtp(this.method, this.contact, otp).subscribe({
       next: async (response) => {
-        this.authService.setAuthenticatedUser(response);
         console.log(response)
+        this.authService.setAuthenticatedUser(response);
         if(response.firstLogin)
         {
            this.getUserInfo(response);
@@ -63,7 +125,6 @@ export class VerifyOtpComponent {
         }
         else
         {
-          console.log(response.user.role === 'USER')
               if (response.user.role === 'ADMIN') {
           this.router.navigate(['/admin']);
         } else if (response.user.role === 'USER') {
@@ -88,12 +149,10 @@ export class VerifyOtpComponent {
   {
  this.userService.GetUserReservation().subscribe({
         next: (res:any) => {
-          console.log(res)
-          console.log(res.length)
+      
 
            if(res.length==1)
           {
-            console.log("here ")
                 this.bookingService.clearSelection();
                 //case res into BookingResponse to sent to ticket
 /* const bookings: BookingResponse[] = res.map((booking: any) => ({
@@ -175,7 +234,6 @@ response.user.name = result.userName;
 
         },
       error: (res:any) => {
-        console.log(res)
           this.error.set(true);
 
           if (res.message?.includes("https"))

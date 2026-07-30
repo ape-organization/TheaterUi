@@ -29,9 +29,25 @@ errorMsg=signal("")
     this.supervisorService.getTransfers().subscribe({
       next: (data) => {
        // this.transfers.set( data);
-       this.transfers.set(
+    /*    this.transfers.set(
   [...data].sort((a, b) => this.statusOrder[a.status] - this.statusOrder[b.status])
+); */
+this.transfers.set(
+  [...data].sort((a, b) => {
+    // First: sort by status
+    const statusCompare = this.statusOrder[a.status] - this.statusOrder[b.status];
+
+    if (statusCompare !== 0) {
+      return statusCompare;
+    }
+
+    // Then: newest date first
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  })
 );
+
+
+////
         this.isLoading = false;
       },
       error: () => {
@@ -50,7 +66,7 @@ errorMsg=signal("")
     this.updatingId = id;
     this.supervisorService.updateTransferStatus(id, 'CONFIRMED').subscribe({
       next: () => {
-        this.transfers.update(transfers => {
+    this.transfers.update(transfers => {
   if (!transfers) return transfers;
 
   return transfers
@@ -59,8 +75,22 @@ errorMsg=signal("")
         ? { ...transfer, status: 'CONFIRMED' }
         : transfer
     )
-    .sort((a, b) => this.statusOrder[a.status] - this.statusOrder[b.status]);
+    .sort((a, b) => {
+      const statusCompare =
+        this.statusOrder[a.status] - this.statusOrder[b.status];
+
+      if (statusCompare !== 0) {
+        return statusCompare;
+      }
+
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
 });
+
+
+
+
+///
         this.updatingId = null;
       },
       error: () => {

@@ -4,8 +4,10 @@
   class="seat-btn"
   [class.selected]="selectedSeatIds().includes(seat().id)"
   [class.reserved]="seat().status === 'reserved'"
+  [class.pending]="seat().status === 'pending'"
+  [class.confirmed]="seat().status === 'confirmed'"
   [class.vip-seat]="type() === 'vip'"
-  [disabled]="seat().status === 'reserved'"
+  [disabled]="seat().status === 'reserved' || seat().status === 'pending' || seat().status === 'confirmed'"
   (click)="seatClick.emit(seat())"
   [attr.aria-label]="'Seat ' + seat().seatnumber + ', ' + seat().status"
 >

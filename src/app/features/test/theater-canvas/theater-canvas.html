@@ -11,12 +11,12 @@
             <span>مختار</span>
         </div>
         <div class="legend-item">
-            <span class="legend-dot reserved"></span>
-            <span>محجوز</span>
+            <span class="legend-dot pending"></span>
+            <span>قيد الانتظار</span>
         </div>
         <div class="legend-item">
-            <span class="legend-dot premium"></span>
-            <span>VIP</span>
+            <span class="legend-dot confirmed"></span>
+            <span>مؤكد</span>
         </div>
     </div>
 
@@ -41,7 +41,7 @@
             [class.active]="activeTab() === 'STAGE'"
             (click)="switchTab('STAGE')">
             <span class="tab-icon">🎭</span>
-            <span class="tab-label">المسرح</span>
+            <span class="tab-label">الصالة</span>
         </button>
         <button
             type="button"
@@ -87,25 +87,31 @@
          (touchend)="onTouchEnd($event)"
          (mousedown)="onMouseDown($event)"
          (wheel)="onWheel($event)">
-        <div class="layout"
-             [style.transform]="'scale(' + scale() + ')'"
-             [style.transform-origin]="'center top'">
+        <!-- Sizer wrapper: reserves the real scaled dimensions so the
+             scrollable area grows with zoom and no seats get clipped. -->
+        <div class="layout-sizer"
+             [style.width.px]="scaledWidth()"
+             [style.height.px]="scaledHeight()">
+            <div class="layout"
+                 [style.transform]="'scale(' + scale() + ')'"
+                 [style.transform-origin]="'top left'">
 
-            <div class="stage-wrapper">
-                <app-stage />
+                <div class="stage-wrapper">
+                    <app-stage />
+                </div>
+
+                @for(block of filteredBlocks(); track block.id){
+
+                    <app-block
+                        [block]="block"
+                        [selectedSeatIds]="selectedSeatIds()"
+                        [translateOffset]="translateOffset()"
+                        (seatClick)="toggleSeatSelection($event)">
+                    </app-block>
+
+                }
+
             </div>
-
-            @for(block of filteredBlocks(); track block.id){
-
-                <app-block
-                    [block]="block"
-                    [selectedSeatIds]="selectedSeatIds()"
-                    [translateOffset]="translateOffset()"
-                    (seatClick)="toggleSeatSelection($event)">
-                </app-block>
-
-            }
-
         </div>
     </div>
 

@@ -48,7 +48,14 @@ export class EventComponent implements OnInit {
    * (e.g. "STAGE-A14") matches the theater seat's `id`.
    */
   protected reservedSeatNumbers = signal<string[]>([]);
-error=false;
+
+  /**
+   * Map of seat id -> server status ('PENDING' | 'CONFIRMED') so the theater
+   * canvas can color each locked seat according to its real status.
+   */
+  protected seatStatusMap = signal<Record<string, string>>({});
+
+  error=false;
 errorMsg=""
   /** Reference to the theater canvas so we can clear its selection */
   @ViewChild(TheaterCanvas) theaterCanvas!: TheaterCanvas;
@@ -74,6 +81,16 @@ errorMsg=""
         this.reservedSeatNumbers.set(
           this.receivedSeats.map((x: any) => x['seatnumber'] ?? x['label'])
         );
+
+        // Build a map of seat id -> server status for status-based coloring
+        const statusMap: Record<string, string> = {};
+        this.receivedSeats.forEach((x: any) => {
+          const seatId = x['seatnumber'] ?? x['label'];
+          if (seatId) {
+            statusMap[seatId] = x.status;
+          }
+        });
+        this.seatStatusMap.set(statusMap);
       },
       error: (err) => {
         console.error('Failed to load reserved seats:', err);

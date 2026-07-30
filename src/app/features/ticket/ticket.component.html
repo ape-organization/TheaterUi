@@ -1,89 +1,157 @@
 <section class="ticket-page">
   <div class="ticket-container">
 
-   
+    <!-- Success indicator -->
+    <div class="success-indicator" *ngIf="booking()">
+      <div class="success-check">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2 class="success-title">تم الحجز بنجاح</h2>
+      <p class="success-subtitle">تفاصيل تذكرتك أدناه</p>
+    </div>
 
     <!-- Ticket Card -->
     <div class="ticket-card" *ngIf="booking()">
- <!-- Logo -->
-    <div class="ticket-logo">
-      <img src="../../../assets/images/logo.png" alt="شعار المشروع" class="logo-image" onerror="this.style.display='none'" />
-      <span class="logo-fallback" *ngIf="false">المسرح</span>
-    </div>
-      <!-- Status Badge -->
-      <div class="ticket-status-bar">
-        <span class="status-badge"
-              [class.status-pending]="booking()?.status === 'PENDING'"
-              [class.status-confirmed]="booking()?.status === 'CONFIRMED'">
-          {{ booking()?.status === 'PENDING' ? 'معلق' : 'مؤكد' }}
-        </span>
-      </div>
 
-     
+      <!-- Ticket Header (gradient banner) -->
+      <div class="ticket-header">
+        <div style="display: flex;justify-content: center;">
+
+          <div class="header-logo">
+            <img src="../../../assets/images/logo.png" 
+            alt="شعار المشروع" class="logo-image" onerror="this.style.display='none'" />
+          </div>
+                  </div>
+
+         <!--  <div class="header-titles">
+            <h1 class="event-title">تذكرة المسرح</h1>
+            <div class="event-meta" *ngIf="booking()?.createdAt">
+              <span class="meta-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                {{ booking()?.createdAt }}
+              </span>
+            </div>
+          </div> -->
+        <div class="status-badge"
+             [class.status-pending]="booking()?.status === 'PENDING'"
+             [class.status-confirmed]="booking()?.status === 'CONFIRMED'">
+          <span class="status-dot"></span>
+          {{ booking()?.status === 'PENDING' ? 'معلق' : 'مؤكد' }}
+        </div>
+      </div>
 
       <!-- Ticket Body -->
       <div class="ticket-body">
 
-        <!-- Name -->
-        <div class="ticket-info-row">
-          <span class="ticket-info-label">الاسم</span>
-          <span class="ticket-info-value">{{ booking()?.user?.name || 'غير محدد' }}</span>
+        <div style="display: flex;justify-content: space-between;">
 
+        <!-- Booking ID -->
+        <div class="booking-id-section">
+          <span class="booking-id-label">رقم الحجز</span>
+          <span class="booking-id-value">#{{ booking()?.id }}</span>
         </div>
 
+        <!-- Info Grid -->
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <span class="info-label">الاسم</span>
+              <span class="info-value">{{ booking()?.user?.name || 'غير محدد' }}</span>
+            </div>
+          </div>
 
-        <!-- Selected Seats -->
-        <div class="ticket-info-row">
-          <span class="ticket-info-label">المقاعد المحجوزة</span>
+          <div class="info-card" *ngIf="booking()?.user?.church">
+            <div class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <span class="info-label">الكنيسة</span>
+              <span class="info-value">{{ booking()?.user?.church }}</span>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <!-- Seats Section -->
+        <div class="seats-section">
+          <div class="seats-section-header">
+          
+            <span class="seats-title">المقاعد المحجوزة</span>
+            <span class="seats-count">{{ seats?.length || 0 }}</span>
+          </div>
           <div class="seats-chips">
             <span class="seat-chip" *ngFor="let seat of seats">
               {{ seat }}
             </span>
           </div>
-        </div> 
-
-      
+        </div>
 
       </div>
 
-      <!-- QR Code (confirmed bookings only) -->
-      <div class="ticket-qr" *ngIf="booking()?.status === 'CONFIRMED' && qrCodeDataUrl()">
-        <div class="qr-frame">
-          <img [src]="qrCodeDataUrl()" alt="رمز تذكرة الحجز" class="qr-image" />
-        </div>
-        <p class="qr-caption">امسح الرمز للتحقق من التذكرة</p>
-      </div>
-
-      <!-- Payment Notice -->
-      <div class="payment-notice" *ngIf="booking()?.status === 'PENDING'">
-        <div class="notice-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-        </div>
-        <div class="notice-text">
-          <strong>ملاحظة دفع:</strong>
-          يرجى إتمام الدفع خلال ساعتين من وقت الحجز.
-          سيتم إلغاء الحجز تلقائيًا بعد انتهاء المدة.
-        </div>
-      </div>
-
-      <!-- Tear-off line -->
-      <div class="ticket-tear">
+      <!-- Perforated tear line -->
+      <div class="ticket-tear" *ngIf="booking()?.status === 'PENDING'">
         <div class="tear-hole left"></div>
         <div class="tear-line"></div>
         <div class="tear-hole right"></div>
       </div>
 
+      <!-- Ticket Stub (QR / Payment notice) -->
+      <div class="ticket-stub">
+        <!-- QR Code for confirmed bookings -->
+        <div class="qr-section" *ngIf="booking()?.status === 'CONFIRMED' && qrCodeDataUrl()">
+          <div class="qr-frame">
+            <img [src]="qrCodeDataUrl()" alt="رمز تذكرة الحجز" class="qr-image" />
+          </div>
+        </div>
+ 
+        <!-- Payment notice for pending bookings -->
+        <div class="payment-notice" *ngIf="booking()?.status === 'PENDING'">
+          <div class="notice-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div class="notice-content">
+            <strong class="notice-title">ملاحظة الدفع</strong>
+            <p class="notice-text">يرجى إتمام الدفع خلال ساعتين من وقت الحجز. سيتم إلغاء الحجز تلقائيًا بعد انتهاء المدة.</p>
+          </div>
+        </div>
+
+        <!-- Booking timestamp -->
+       <!--  <div class="booking-timestamp" *ngIf="booking()?.createdAt">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>تاريخ الحجز: {{ booking()?.createdAt }}</span>
+        </div> -->
+      </div>
+<div class="ticket-tear" >
+        <div class="tear-hole left"></div>
+        <div class="tear-line"></div>
+        <div class="tear-hole right"></div>
+      </div>
       <!-- Actions -->
       <div class="ticket-actions">
-        <a (click)="moveToHome()" class="btn-secondary">
+        <a (click)="moveToHome()" class="btn-secondary ticket-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
           <span>حجز آخر</span>
         </a>

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { supervisorGuard } from './core/guards/supervisor.guard';
+import { logGuard } from './core/guards/log.guard';
 
 export const routes: Routes = [
   {
@@ -9,10 +10,14 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
+           canActivate: [logGuard],
+
         loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent)
       },
       {
         path: 'verify',
+           canActivate: [logGuard],
+
         loadComponent: () => import('./features/auth/verify-otp/verify-otp.component').then((m) => m.VerifyOtpComponent)
       }
       ,

@@ -175,20 +175,20 @@ export class LayoutService {
 
   //////level two
   private generateTopLeftLevelTwo(): SeatBlock {
-    return this.makeBlock(201, 120, 350, 20, this.LeftTopseatRowsLevelTwo,"STAGE-");
+    return this.makeBlock(201, 110, 420, 20, this.LeftTopseatRowsLevelTwo,"STAGE-");
   }
 
   private generateTopCenterLevelTwo(): SeatBlock {
-    return this.makeBlock(202, 500, 450, 0, this.CenterTopseatRowsLevelTwo,"STAGE-");
+    return this.makeBlock(202, 500, 550, 0, this.CenterTopseatRowsLevelTwo,"STAGE-");
   }
 
   private generateTopRightLevelTwo(): SeatBlock {
-    return this.makeBlock(203, 850, 450, -15, this.RightTopseatRowsLevelTwo,"STAGE-");
+    return this.makeBlock(203, 850, 550, -20, this.RightTopseatRowsLevelTwo,"STAGE-");
   }
 
   //////level three
   private generateTopLeftLevelThree(): SeatBlock {
-    return this.makeBlock(301, 30, 700, 20, this.LeftTopseatRowsLevelThree,"STAGE-");
+    return this.makeBlock(301, 15, 800, 20, this.LeftTopseatRowsLevelThree,"STAGE-");
   }
 
   private generateTopCenterLevelThree(): SeatBlock {
@@ -196,7 +196,7 @@ export class LayoutService {
   }
 
   private generateTopRightLevelThree(): SeatBlock {
-    return this.makeBlock(303, 950, 800, -15, this.RightTopseatRowsLevelThree,"STAGE-");
+    return this.makeBlock(303, 980, 900, -20, this.RightTopseatRowsLevelThree,"STAGE-");
   }
 
   //////level four
@@ -259,21 +259,16 @@ export class LayoutService {
     }));
   }
 
-  /** VIP price for rows A, B, C */
-  private readonly VIP_PRICE = 100;
-  /** Regular price for all other rows */
+  /** All seats are normal (no VIP), but styled with the VIP gold color.
+   *  A single regular price applies to every seat. */
   private readonly REGULAR_PRICE = 100;
-
-  private isVipRow(label: string): boolean {
-    return ['A', 'B', 'C'].includes(label);
-  }
 
   private createSeats(seatNumbers: string[], blockLabel: string): Seat[] {
     return seatNumbers.map((sn) => ({
       id: blockLabel + sn,
       seatnumber: sn,
       status: 'available' as const,
-      price: this.isVipRow(sn.charAt(0)) ? this.VIP_PRICE : this.REGULAR_PRICE
+      price: this.REGULAR_PRICE
     }));
   }
 

@@ -2,7 +2,9 @@ export type SeatStatus =
   | 'available'
   | 'reserved'
   | 'selected'
-  | 'vip';
+  | 'vip'
+  | 'pending'
+  | 'confirmed';
 
 export interface Seat {
   id: string;

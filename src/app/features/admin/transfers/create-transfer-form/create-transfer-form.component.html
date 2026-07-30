@@ -19,7 +19,7 @@
    <div *ngIf="error">
 {{errorMsg}}
    </div>
-    <button type="submit" (dblclick)="onSubmit()" class="btn-primary" [disabled]="isSubmitting">
+    <button type="submit" (click)="onSubmit()" class="btn-primary" [disabled]="isSubmitting">
       @if (isSubmitting) {
         جاري الإرسال...
       } @else {
