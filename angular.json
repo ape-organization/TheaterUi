@@ -25,6 +25,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "src/web.config",
               {
                 "glob": "**/*",
                 "input": "public"
