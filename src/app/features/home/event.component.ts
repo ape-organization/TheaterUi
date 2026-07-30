@@ -10,6 +10,7 @@ import { TheaterCanvas } from '../test/theater-canvas/theater-canvas';
 import { UserInfo } from '../../shared/components/user-info/user-info';
 import { HomeHeader } from '../home-header/home-header';
 import { ConfirmBooking } from '../confirm-booking/confirm-booking';
+import { single } from 'rxjs';
 
 @Component({
   selector: 'app-event',
@@ -47,7 +48,8 @@ export class EventComponent implements OnInit {
    * (e.g. "STAGE-A14") matches the theater seat's `id`.
    */
   protected reservedSeatNumbers = signal<string[]>([]);
-
+error=false;
+errorMsg=""
   /** Reference to the theater canvas so we can clear its selection */
   @ViewChild(TheaterCanvas) theaterCanvas!: TheaterCanvas;
 
@@ -92,7 +94,13 @@ export class EventComponent implements OnInit {
 
   /** Open the confirmation modal */
   openConfirmModal(): void {
+    this.error=false
     if (!this.selectedSeats.length) {
+      return;
+    }
+     if (this.selectedSeats.length>=20) {
+      this.error=true;
+      this.errorMsg='لا يمكن حجز اكثر من 20 مقعد في التذكره الواحده'
       return;
     }
     this.selectedSeatNumbers = this.selectedSeats.map((s) => (s as any)['seatnumber']);

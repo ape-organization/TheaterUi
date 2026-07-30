@@ -41,6 +41,9 @@
       @if (selectedSeats.length > 0 && !bookingSuccess) {
         <div class="booking-bar">
           <div class="booking-summary">
+            <span style="color: red;" *ngIf="error">
+              {{errorMsg}}
+            </span>
             <span class="booking-seats-count">{{ selectedSeats.length }} مقعد مختار</span>
     <div  class="block">
   <span class="seats" *ngFor="let seat of selectedSeatLabels">{{ seat }}</span>
