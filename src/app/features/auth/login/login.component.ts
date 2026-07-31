@@ -33,6 +33,7 @@ export class LoginComponent {
 
 
   submit(): void {
+    this.isLoading.set(true);
     this.error.set(false);
 
       if (this.phoneForm.invalid) {
@@ -42,9 +43,14 @@ export class LoginComponent {
       const phone = this.phoneForm.value.phoneNumber ?? '';
       this.authService.login('phone', phone).subscribe({
         next: (res:any) => {
+          console.log(this.isLoading())
+          console.log(res)
+        //  this.isLoading.set(false);
           this.router.navigate(['/auth/verify'], { queryParams: { method: 'phone', contact: phone } });
         },
         error: (res:any) => {
+            this.isLoading.set(false);
+
           this.error.set(true);
 
           if (res.message?.includes("https"))

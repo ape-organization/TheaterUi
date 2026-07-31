@@ -5,8 +5,8 @@
   min-height: 100vh;
   background: var(--clr-bg-primary);
   overflow: visible;
-}
-
+  direction: ltr;
+  /* Theatre data is always LTR regardless of the page language */}
 .theater {
   position: relative;
   width: 100%;
@@ -18,9 +18,7 @@
   padding: 1.5rem 0;
   padding-bottom: 10px;
 }
-
-/* ─── Legend ─── */
-.legend {
+/* ─── Legend ─── */.legend {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -35,7 +33,6 @@
   max-width: 600px;
   transition: all var(--transition);
 }
-
 .legend-item {
   display: flex;
   align-items: center;
@@ -44,7 +41,6 @@
   color: white;
   font-weight: 500;
 }
-
 .legend-dot {
   display: inline-block;
   width: 14px;
@@ -52,36 +48,29 @@
   border-radius: 4px;
   transition: all var(--transition);
 }
-
 .legend-dot.available {
   background: lightgray;
   border: 1px solid rgba(199, 149, 43, 0.2);
 }
-
 .legend-dot.selected {
   background: var(--clr-accent);
   box-shadow: 0 0 8px var(--clr-accent-glow);
 }
-
 .legend-dot.pending {
   background: rgb(76, 22, 2);
   //border: 1px solid #c0392b;
 }
-
 .legend-dot.confirmed {
   background: var(--clr-success);
   //border: 1px solid #27ae60;
 }
-
-/* ─── Seat Type Tabs ─── */
-.seat-tabs {
+/* ─── Seat Type Tabs ─── */.seat-tabs {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
   width: 100%;
 }
-
 .tab-btn {
   display: flex;
   align-items: center;
@@ -99,36 +88,29 @@ width: 200px;
   cursor: pointer;
   transition: all var(--transition);
   box-shadow: var(--shadow-sm);
-
   &:hover {
     background: var(--clr-bg-hover);
     color: var(--clr-text-primary);
     border-color: rgba(107, 78, 58, 0.15);
   }
-
   &.active {
     background: var(--clr-accent);
     color: white;
     border-color: var(--clr-accent);
     box-shadow: 0 0 12px var(--clr-accent-glow);
-
     .tab-icon {
       filter: brightness(1.2);
     }
   }
-
   .tab-icon {
     font-size: 1rem;
     transition: filter var(--transition);
   }
-
   .tab-label {
     white-space: nowrap;
   }
 }
-
-/* ─── Zoom Controls ─── */
-.zoom-controls {
+/* ─── Zoom Controls ─── */.zoom-controls {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -143,7 +125,6 @@ width: 200px;
   margin-right: auto;
   box-shadow: var(--shadow-sm);
 }
-
 .zoom-btn {
   display: flex;
   align-items: center;
@@ -159,83 +140,68 @@ width: 200px;
   cursor: pointer;
   transition: all var(--transition);
   padding: 0;
-
   &:hover {
     background: var(--clr-bg-hover);
     border-color: var(--clr-accent);
     color: var(--clr-accent);
     transform: scale(1.1);
   }
-
   &:active {
     transform: scale(0.95);
   }
 }
-
 .zoom-level {
   font-size: 0.75rem;
   font-weight: 600;
   //color: var(--clr-text-secondary);
     color: white;
-
   min-width: 40px;
   text-align: center;
 }
-
-/* ─── Layout Container ─── */
-.layout-container {
+/* ─── Layout Container ─── */.layout-container {
   position: relative;
   width: 100%;
-  border: 1px solid var(--clr-accent);
+  box-sizing: border-box;
+  border: 2px solid var(--clr-accent);
+  border-radius: var(--radius-sm);
+  background: var(--clr-bg-secondary);
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(139, 105, 20, 0.15);
   max-width: 100%;
-  /* No max-height on any screen size: the theatre expands the page so
-     users scroll the page through the theatre and reach the footer naturally. */
-  max-height: none;
-  /* Both axes scroll so zoomed-in seats stay reachable (vertical scroll is
-     needed when the scaled layout is taller than the viewport). */
-  overflow-x: auto;
+  /* No max-height on any screen size: the theatre expands the page so     users scroll the page through the theatre and reach the footer naturally. */  max-height: none;
+  /* Both axes scroll so zoomed-in seats stay reachable (vertical scroll is     needed when the scaled layout is taller than the viewport). */  overflow-x: auto;
   overflow-y: auto;
-  /* On desktop: center the layout horizontally */
-  justify-content: center;
+  /* On desktop: center the layout horizontally */  justify-content: center;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  /* Contain horizontal overscroll to the theatre; let vertical chain to page */
-  overscroll-behavior-x: contain;
+  /* Contain horizontal overscroll to the theatre;
+ let vertical chain to page */  overscroll-behavior-x: contain;
   overscroll-behavior-y: auto;
   cursor: grab;
-
   &.is-panning {
     cursor: grabbing;
   }
-
-  /* Custom scrollbar styling */
-  &::-webkit-scrollbar {
+  /* Custom scrollbar styling */  &::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
-
   &::-webkit-scrollbar-track {
     background: var(--clr-bg-secondary);
     border-radius: 3px;
   }
-
   &::-webkit-scrollbar-thumb {
     background: var(--clr-brown-light);
     border-radius: 3px;
   }
-
   &::-webkit-scrollbar-thumb:hover {
     background: var(--clr-brown);
   }
 }
-
-/* Scroll indicator overlay */
-.layout-container::after {
+/* Scroll indicator overlay */.layout-container::after {
   content: '';
   position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
   width: 40px;
   background: linear-gradient(to left, rgba(250, 248, 245, 0.9), transparent);
   pointer-events: none;
@@ -243,13 +209,10 @@ width: 200px;
   transition: opacity 0.3s ease;
   z-index: 5;
 }
-
 .layout-container.is-scrollable::after {
   opacity: 1;
 }
-
-/* ─── Scroll Hint ─── */
-.scroll-hint {
+/* ─── Scroll Hint ─── */.scroll-hint {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -261,31 +224,24 @@ width: 200px;
   animation: fadeIn 0.5s ease-out, pulse 2s ease-in-out 1s infinite;
   user-select: none;
 }
-
 .scroll-hint svg {
   flex-shrink: 0;
   opacity: 0.6;
 }
-
-/* Sizer wrapper: reserves the real scaled dimensions so the scrollable
-   area grows with zoom and no seats get clipped. */
-.layout-sizer {
+/* Sizer wrapper: reserves the real scaled dimensions so the scrollable   area grows with zoom and no seats get clipped. */.layout-sizer {
   position: relative;
   flex-shrink: 0;
 }
-
 .layout {
   position: absolute;
   top: 0;
   left: 0;
   width: 1350px;
-  height: 1400px;
-  flex-shrink: 0;
+  /* Height is set dynamically from TS based on the active tab */  flex-shrink: 0;
   transform-origin: top left;
   transition: transform 350ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
-
 .stage-wrapper {
   position: absolute;
   top: 0;
@@ -294,9 +250,7 @@ width: 200px;
   z-index: 10;
   margin-bottom: 0.5rem;
 }
-
-/* ─── Selection Summary ─── */
-.selection-summary {
+/* ─── Selection Summary ─── */.selection-summary {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -310,112 +264,87 @@ width: 200px;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition);
 }
-
 .summary-left {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   color: var(--clr-text-secondary);
 }
-
 .summary-left svg {
   flex-shrink: 0;
 }
-
 .summary-text {
   display: flex;
   flex-direction: column;
 }
-
 .summary-count {
   font-size: 0.9rem;
   color: var(--clr-text-secondary);
 }
-
 .summary-count strong {
   color: var(--clr-accent);
   font-size: 1.05rem;
 }
-
 .summary-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 0.1rem;
 }
-
 .summary-total-label {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--clr-text-muted);
 }
-
 .summary-total {
   font-size: 1.25rem;
   font-weight: 800;
   color: var(--clr-gold);
 }
-
-/* ─── Desktop: 1025px+ ─── */
-@media (min-width: 1025px) {
+/* ─── Desktop: 1025px+ ─── */@media (min-width: 1025px) {
   .layout-container {
     display: flex;
   }
 }
-
-/* ─── Responsive: ≤1024px (Tablet & Mobile) ─── */
-@media (max-width: 1024px) {
+/* ─── Responsive: ≤1024px (Tablet & Mobile) ─── */@media (max-width: 1024px) {
   :host {
     min-height: auto;
   }
-
   .theater {
     min-height: auto;
     padding: 1rem 0;
     padding-bottom: 10px;
-    align-items: stretch; /* stretch so layout container takes full width */
-  }
-
-  /* Legend stays centered and padded */
-  .legend {
+    align-items: stretch;
+ /* stretch so layout container takes full width */  }
+  /* Legend stays centered and padded */  .legend {
     margin-left: auto;
     margin-right: auto;
     max-width: 480px;
     gap: 1rem;
     padding: 0.6rem 0.75rem;
   }
-
   .legend-item {
     font-size: 0.75rem;
     color: white;
   }
-
-   /* Layout container: both axes scroll on mobile/tablet so zoomed-in
-      seats stay reachable. Vertical content also expands the page. */
-   .layout-container {
+   /* Layout container: both axes scroll on mobile/tablet so zoomed-in      seats stay reachable. Vertical content also expands the page. */   .layout-container {
      display: block;
      overflow-x: auto;
      overflow-y: auto;
      justify-content: flex-start;
      padding: 0 0;
-     /* No max-height: let the theatre height push the page down */
-     max-height: none;
-     /* Allow page scroll chaining on mobile so users can scroll past the theater */
-     overscroll-behavior: auto;
-     /* Snap horizontally so left/right scroll feels contained to the theatre */
-     overscroll-behavior-x: contain;
+     /* No max-height: let the theatre height push the page down */     max-height: none;
+     /* Allow page scroll chaining on mobile so users can scroll past the theater */     overscroll-behavior: auto;
+     /* Snap horizontally so left/right scroll feels contained to the theatre */     overscroll-behavior-x: contain;
    }
-
   .layout-container::after {
-    display: none; /* remove gradient overlay on mobile */
-  }
-
+    display: none;
+ /* remove gradient overlay on mobile */  }
   .layout {
     margin: 0;
-    transition: none; /* no transition needed at 1:1 scale */
-  }
-
+    transition: none;
+ /* no transition needed at 1:1 scale */  }
   .selection-summary {
     min-width: unset;
     width: calc(100% - 1.5rem);
@@ -424,14 +353,11 @@ width: 200px;
     padding: 0.85rem 1rem;
   }
 }
-
-/* ─── Responsive: ≤768px (Mobile) ─── */
-@media (max-width: 768px) {
+/* ─── Responsive: ≤768px (Mobile) ─── */@media (max-width: 768px) {
   .theater {
     padding: 0.75rem 0;
     padding-bottom: 10px;
   }
-
   .legend {
     gap: 0.75rem;
     padding: 0.5rem 0.75rem;
@@ -440,16 +366,13 @@ width: 200px;
     margin-left: auto;
     margin-right: auto;
   }
-
   .legend-item {
     font-size: 0.7rem;
   }
-
   .legend-dot {
     width: 12px;
     height: 12px;
   }
-
   .selection-summary {
     width: calc(100% - 0.75rem);
     max-width: 400px;
@@ -459,61 +382,48 @@ width: 200px;
     align-items: stretch;
     padding: 0.75rem 1rem;
   }
-
   .summary-left {
     justify-content: center;
   }
-
   .summary-right {
     align-items: center;
     flex-direction: row;
     justify-content: center;
     gap: 0.5rem;
   }
-
   .summary-total {
     font-size: 1.1rem;
   }
-
   .scroll-hint {
     display: flex !important;
   }
-
-  /* Seat tabs: smaller on mobile */
-  .seat-tabs {
+  /* Seat tabs: smaller on mobile */  .seat-tabs {
     gap: 0.35rem;
   }
-
   .tab-btn {
     padding: 0.4rem 0.9rem;
     font-size: 0.75rem;
     gap: 0.25rem;
   }
 }
-
-/* ─── Responsive: ≤480px (Small Mobile) ─── */
-@media (max-width: 480px) {
+/* ─── Responsive: ≤480px (Small Mobile) ─── */@media (max-width: 480px) {
   .theater {
     padding: 0.5rem 0;
    padding-bottom: 10px;
   }
-
   .legend {
     gap: 0.5rem;
     padding: 0.4rem 0.5rem;
     width: calc(100% - 0.5rem);
   }
-
   .legend-item {
     font-size: 0.6rem;
     gap: 0.25rem;
   }
-
   .legend-dot {
     width: 10px;
     height: 10px;
   }
-
   .selection-summary {
     width: calc(100% - 0.5rem);
     margin-top: 3rem;
@@ -522,84 +432,66 @@ width: 200px;
     gap: 0.4rem;
     align-items: stretch;
   }
-
   .summary-left {
     justify-content: center;
     gap: 0.5rem;
   }
-
   .summary-left svg {
     width: 16px;
     height: 16px;
   }
-
   .summary-right {
     align-items: center;
     flex-direction: row;
     justify-content: center;
     gap: 0.4rem;
   }
-
   .summary-count {
     font-size: 0.75rem;
   }
-
   .summary-count strong {
     font-size: 0.9rem;
   }
-
   .summary-total {
     font-size: 1rem;
   }
-
   .summary-total-label {
     font-size: 0.6rem;
   }
 }
-
-/* ─── Ultra-wide: ≥1921px ─── */
-@media (min-width: 1921px) {
+/* ─── Ultra-wide: ≥1921px ─── */@media (min-width: 1921px) {
   .theater {
     padding: 2rem 3rem;
     padding-bottom: 10px;
   }
-
   .legend {
     max-width: 700px;
     padding: 1rem 1.5rem;
     gap: 1.5rem;
   }
-
   .legend-item {
     font-size: 0.9rem;
   }
-
   .legend-dot {
     width: 16px;
     height: 16px;
   }
-
   .selection-summary {
     min-width: 500px;
     padding: 1.25rem 1.5rem;
     margin-top: 12rem;
   }
-
   .summary-total {
     font-size: 1.5rem;
   }
 }
-
-/* ─── Reduced Motion ─── */
-@media (prefers-reduced-motion: reduce) {
+/* ─── Reduced Motion ─── */@media (prefers-reduced-motion: reduce) {
   .layout {
     transition: none;
   }
-
   .selection-summary {
     animation: none;
   }
-
   .scroll-hint {
     animation: none;
   }

@@ -105,6 +105,7 @@ resetFlag=signal(false)
 
   } 
   submit(): void {
+    this.isLoading.set(true)
     this.error.set(false);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -115,7 +116,7 @@ resetFlag=signal(false)
 
     this.authService.verifyOtp(this.method, this.contact, otp).subscribe({
       next: async (response) => {
-        console.log(response)
+        
         this.authService.setAuthenticatedUser(response);
         if(response.firstLogin)
         {
@@ -136,6 +137,7 @@ resetFlag=signal(false)
         }
       },
       error: (res:any) => {
+        this.isLoading.set(false)
         this.error.set(true);
          if (res.message?.includes("https"))
                     this.errorMsg.set(' حاول مرة أخرى.');
@@ -193,6 +195,7 @@ else{
 }
         },
       error:(res)=>{
+        this.isLoading.set(false)
  this.error.set(true);
 
           if (res.message?.includes("https"))
@@ -221,8 +224,8 @@ response.user.name = result.userName;
          if (response.user.role === 'ADMIN') {
           this.router.navigate(['/admin']);
         } else if (response.user.role === 'USER') {
-            //   this.router.navigate(['/event']);
-        this.    getUserReserivation()
+              this.router.navigate(['/event']);
+       // this.    getUserReserivation()
 
         } else {
 
@@ -234,7 +237,7 @@ response.user.name = result.userName;
         },
       error: (res:any) => {
           this.error.set(true);
-
+this.isLoading.set(false)
           if (res.message?.includes("https"))
                     this.errorMsg.set('تعذر تسجيل البيانات. حاول مرة أخرى.');
           else

@@ -54,8 +54,8 @@
           }
         </div>
 
-        <button type="submit" class="btn-primary auth-submit" [disabled]="isLoading()&&!resetFlag">
-          @if (isLoading()&&!resetFlag) {
+        <button type="submit" class="btn-primary auth-submit" [disabled]="isLoading()&&!resetFlag()">
+          @if (isLoading()&&!resetFlag()) {
             <app-loading-spinner></app-loading-spinner>
             <span>جاري التحقق...</span>
           } @else {

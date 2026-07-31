@@ -75,7 +75,7 @@ export class LayoutService {
 
   private CenterTopseatRowsLevelTwo = [
     { label: 'I', seats: [ 'I9','I7','I5' ,'I3','I1','I2','I4','I6','I8'] },
-    { label: 'J', seats: ['J9','J7', 'J5', 'J3', 'J1','2', 'J4', 'J6', 'J8'] },
+    { label: 'J', seats: ['J9','J7', 'J5', 'J3', 'J1','J2', 'J4', 'J6', 'J8'] },
     { label: 'K', seats: ['K9', 'K7', 'K5', 'K3', 'K1','K2', 'K4', 'K6','K8'] },
     { label: 'L', seats: ['L9', 'L7', 'L5', 'L3', 'L1', 'L2','L4', 'L6', 'L8'] },
     { label: 'M', seats: ['M9', 'M7', 'M5', 'M3', 'M1', 'M2','M4', 'M6','M8'] },

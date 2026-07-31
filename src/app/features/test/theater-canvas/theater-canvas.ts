@@ -7,8 +7,10 @@ import type { Seat, SeatStatus } from '../../../core/data/test.data';
 
 /** Intrinsic layout width in pixels (matches SCSS .layout width) */
 const LAYOUT_WIDTH = 1350;
-/** Intrinsic layout height in pixels (matches SCSS .layout height) */
-const LAYOUT_HEIGHT = 1000;
+/** Intrinsic layout height in pixels for STAGE tab */
+const LAYOUT_HEIGHT_STAGE = 1000;
+/** Intrinsic layout height in pixels for BAL tab (shorter layout) */
+const LAYOUT_HEIGHT_BAL = 650;
 /** Viewport width where 1:1 scaling is applied (layout fits natively) */
 const NATURAL_BREAKPOINT = 1400;
 /** Maximum scale cap on ultra-wide screens */
@@ -100,11 +102,16 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   /** Seat scale multiplier for CSS custom property */
   protected seatScale = signal(1);
 
+  /** Layout height adapts to the active tab so BAL (shorter) doesn't waste space */
+  protected layoutHeight = computed(() =>
+    this.activeTab() === 'STAGE' ? LAYOUT_HEIGHT_STAGE : LAYOUT_HEIGHT_BAL
+  );
+
   /** Scaled layout dimensions — drives the scrollable area size so that
    *  zoomed-in content stays reachable (CSS transforms don't affect layout
    *  box size, so we expose the real scaled size to a sizer wrapper). */
   protected scaledWidth = computed(() => Math.round(LAYOUT_WIDTH * this.scale()));
-  protected scaledHeight = computed(() => Math.round(LAYOUT_HEIGHT * this.scale()));
+  protected scaledHeight = computed(() => Math.round(this.layoutHeight() * this.scale()));
 
   /** Offset added to each block's x/y when up-scaled */
   protected translateOffset = signal(0);
@@ -164,8 +171,8 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Center the theatre horizontally on open so mobile/RTL users start at the
-    // middle and can slide both left and right to reach all seats.
+    // Center the theatre horizontally on open so users start at the middle
+    // and can slide both left and right to reach all seats.
     setTimeout(() => this.centerScroll(), 50);
   }
 
@@ -230,9 +237,10 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  /** Center the theatre on the stage (المسرح) so the page opens showing it,
+  /** Center the theatre on the stage so the page opens showing it,
    *  letting the user slide left and right to reach all seats.
-   *  Only adjusts horizontal scroll — never touches vertical page scroll. */
+   *  Only adjusts horizontal scroll — never touches vertical page scroll.
+   *  Theatre data is always LTR regardless of the page language. */
   private centerScroll(): void {
     const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
     if (!container) return;
@@ -242,31 +250,19 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
 
     const stage = container.querySelector('.stage') as HTMLElement | null;
     if (stage) {
-      // Use rendered rects so CSS transforms (scale) and RTL are accounted for.
+      // Use rendered rects so CSS transforms (scale) are accounted for.
       const cRect = container.getBoundingClientRect();
       const sRect = stage.getBoundingClientRect();
       // Horizontal distance to shift so the stage center aligns with the
       // container's visible center.
       const delta = (sRect.left + sRect.width / 2) - (cRect.left + cRect.width / 2);
-      // In RTL, scrollLeft is negative in Chrome/Edge/Firefox (0 = right edge),
-      // positive in Safari. Adding the delta works for both because the sign of
-      // scrollLeft matches the coordinate system of getBoundingClientRect.
       container.scrollLeft += delta;
       return;
     }
 
     // Fallback: center on the layout middle if the stage isn't found.
     const overflow = container.scrollWidth - container.clientWidth;
-    const center = overflow / 2;
-    const isRTL = getComputedStyle(container).direction === 'rtl';
-    if (isRTL) {
-      container.scrollLeft = -center;
-      if (container.scrollLeft === 0) {
-        container.scrollLeft = center;
-      }
-    } else {
-      container.scrollLeft = center;
-    }
+    container.scrollLeft = overflow / 2;
   }
 
   /** Handle window resize for overflow check */
