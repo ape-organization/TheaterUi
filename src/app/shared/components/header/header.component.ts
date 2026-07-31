@@ -15,8 +15,9 @@ export class HeaderComponent {
   private router = inject(Router);
 
   readonly currentUser = this.authService.currentUser;
-  readonly isAuthenticated = this.authService.isLoggedIn;
-name = localStorage.getItem('name');
+  //readonly isAuthenticated = this.authService.isLoggedIn;
+//name = localStorage.getItem('name');
+readonly isAuthenticated = this.authService.isAuthenticated;
   get isAdmin(): boolean {
     return this.currentUser()?.user.role === 'ADMIN';
   }
@@ -27,7 +28,7 @@ name = localStorage.getItem('name');
 
   logout(): void {
     this.authService.logout();
-    this.name = null;
+   // this.name = null;
     this.router.navigate(['/auth/login']);
   }
   toReservation()
