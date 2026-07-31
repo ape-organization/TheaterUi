@@ -19,6 +19,9 @@ bookings = input<any[]>([]);
   @Output() refresh = new EventEmitter<void>();
   @Output() updateStatus = new EventEmitter<{ bookingId: number; status: 'CONFIRMED' }>();
 
+  /** Pending confirmation request (null when dialog is closed) */
+  protected readonly pendingConfirm = signal<{ bookingId: number; status: 'CONFIRMED' } | null>(null);
+
   /** Number of bookings shown per page */
   protected readonly pageSize = 10;
 
@@ -36,7 +39,22 @@ protected readonly paginatedBookings = computed(() => {
   }
 
   onUpdateStatus(bookingId: number, status: 'CONFIRMED'): void {
-    this.updateStatus.emit({ bookingId, status });
+    // Open the confirmation dialog instead of emitting immediately
+    this.pendingConfirm.set({ bookingId, status });
+  }
+
+  /** User confirmed the action — proceed with the status update */
+  onConfirmUpdate(): void {
+    const pending = this.pendingConfirm();
+    if (pending) {
+      this.updateStatus.emit(pending);
+    }
+    this.pendingConfirm.set(null);
+  }
+
+  /** User cancelled the action — do nothing */
+  onCancelUpdate(): void {
+    this.pendingConfirm.set(null);
   }
 
   onPageChange(page: number): void {
