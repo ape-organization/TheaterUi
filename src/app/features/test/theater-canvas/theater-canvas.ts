@@ -7,8 +7,10 @@ import type { Seat, SeatStatus } from '../../../core/data/test.data';
 
 /** Intrinsic layout width in pixels (matches SCSS .layout width) */
 const LAYOUT_WIDTH = 1350;
-/** Intrinsic layout height in pixels (matches SCSS .layout height) */
-const LAYOUT_HEIGHT = 1000;
+/** Intrinsic layout height for the STAGE tab — seats end around y≈935px */
+const STAGE_LAYOUT_HEIGHT = 1000;
+/** Intrinsic layout height for the BAL tab — seats end around y≈540px */
+const BAL_LAYOUT_HEIGHT = 620;
 /** Viewport width where 1:1 scaling is applied (layout fits natively) */
 const NATURAL_BREAKPOINT = 1400;
 /** Maximum scale cap on ultra-wide screens */
@@ -100,11 +102,16 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   /** Seat scale multiplier for CSS custom property */
   protected seatScale = signal(1);
 
+  /** Per-tab intrinsic layout height — eliminates white space under seats */
+  protected layoutHeight = computed(() =>
+    this.activeTab() === 'BAL' ? BAL_LAYOUT_HEIGHT : STAGE_LAYOUT_HEIGHT
+  );
+
   /** Scaled layout dimensions — drives the scrollable area size so that
    *  zoomed-in content stays reachable (CSS transforms don't affect layout
    *  box size, so we expose the real scaled size to a sizer wrapper). */
   protected scaledWidth = computed(() => Math.round(LAYOUT_WIDTH * this.scale()));
-  protected scaledHeight = computed(() => Math.round(LAYOUT_HEIGHT * this.scale()));
+  protected scaledHeight = computed(() => Math.round(this.layoutHeight() * this.scale()));
 
   /** Offset added to each block's x/y when up-scaled */
   protected translateOffset = signal(0);
@@ -114,6 +121,9 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
 
   /** Viewport width state for breakpoint-aware rendering */
   protected viewportWidth = 0;
+
+  /** Whether the user has manually adjusted zoom (prevents updateScale from overriding it) */
+  private userHasZoomed = false;
 
   /** Whether the user is currently panning (mouse drag) */
   protected isPanning = signal(false);
@@ -178,6 +188,11 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
     let newOffset = 0;
 
     if (vw <= 1024) {
+      // On mobile/tablet, don't override a scale the user set manually via zoom buttons.
+      if (this.userHasZoomed) {
+        this.checkOverflow();
+        return;
+      }
       // Mobile & Tablet: keep full 1:1 scale, no shrinking
       // The layout will overflow horizontally and users scroll to see all seats
       newScale = 1;
@@ -277,22 +292,35 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
 
   // ─── Zoom Controls ───
 
-  /** Zoom in (increase scale) */
+  /** Zoom in (increase scale), centered on the visible area */
   zoomIn(): void {
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
     let newScale = this.scale() * 1.1;
     newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
-    this.applyScale(newScale);
+    this.userHasZoomed = true;
+    if (container) {
+      this.applyScale(newScale, container.clientWidth / 2, container.clientHeight / 2);
+    } else {
+      this.applyScale(newScale);
+    }
   }
 
-  /** Zoom out (decrease scale) */
+  /** Zoom out (decrease scale), centered on the visible area */
   zoomOut(): void {
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
     let newScale = this.scale() * 0.9;
     newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
-    this.applyScale(newScale);
+    this.userHasZoomed = true;
+    if (container) {
+      this.applyScale(newScale, container.clientWidth / 2, container.clientHeight / 2);
+    } else {
+      this.applyScale(newScale);
+    }
   }
 
   /** Reset zoom to natural 1:1 scale */
   resetZoom(): void {
+    this.userHasZoomed = false;
     this.applyScale(1);
   }
 

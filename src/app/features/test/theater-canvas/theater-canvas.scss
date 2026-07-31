@@ -188,8 +188,10 @@ width: 200px;
   width: 100%;
   border: 1px solid var(--clr-accent);
   max-width: 100%;
-  /* No max-height on any screen size: the theatre expands the page so
-     users scroll the page through the theatre and reach the footer naturally. */
+  /* No max-height here — set via [style.max-height.px]="layoutHeight()" binding so it
+     tracks the active tab's intrinsic height and keeps the canvas footprint stable
+     on the page regardless of the current zoom level. Zoomed-in content scrolls inside
+     this fixed-size box rather than expanding the page. */
   max-height: none;
   /* Both axes scroll so zoomed-in seats stay reachable (vertical scroll is
      needed when the scaled layout is taller than the viewport). */
@@ -279,7 +281,9 @@ width: 200px;
   top: 0;
   left: 0;
   width: 1350px;
-  height: 1400px;
+  /* Height is set dynamically per tab via [style.height.px] binding;
+     this fallback matches STAGE_LAYOUT_HEIGHT. */
+  height: 1000px;
   flex-shrink: 0;
   transform-origin: top left;
   transition: transform 350ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -391,12 +395,14 @@ width: 200px;
     color: white;
   }
 
-   /* Layout container: both axes scroll on mobile/tablet so zoomed-in
-      seats stay reachable. Vertical content also expands the page. */
+   /* Layout container on mobile: only horizontal scroll is captured here.
+      overflow-y uses `clip` instead of `auto` so no vertical scroll container
+      is created — vertical scroll passes through to the page, preventing the
+      classic "touch scroll trapped inside the theatre" problem. */
    .layout-container {
      display: block;
      overflow-x: auto;
-     overflow-y: auto;
+     overflow-y: clip;
      justify-content: flex-start;
      padding: 0 0;
      /* No max-height: let the theatre height push the page down */

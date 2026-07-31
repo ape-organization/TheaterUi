@@ -80,6 +80,7 @@
     </div>
 
     <div class="layout-container"
+         [style.max-height.px]="layoutHeight()"
          [class.is-scrollable]="isOverflowing"
          [class.is-panning]="isPanning()"
          (touchstart)="onTouchStart($event)"
@@ -94,7 +95,8 @@
              [style.height.px]="scaledHeight()">
             <div class="layout"
                  [style.transform]="'scale(' + scale() + ')'"
-                 [style.transform-origin]="'top left'">
+                 [style.transform-origin]="'top left'"
+                 [style.height.px]="layoutHeight()">
 
                 <div class="stage-wrapper">
                     <app-stage />
