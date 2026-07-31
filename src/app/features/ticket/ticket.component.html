@@ -99,6 +99,20 @@
           </div>
         </div>
 
+        <!-- Note Section -->
+        <div class="note-section" *ngIf="booking()?.notes">
+          <div class="note-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            <span class="note-title">ملاحظة</span>
+          </div>
+          <p class="note-text">{{ booking()?.notes }}</p>
+        </div>
+
       </div>
 
       <!-- Perforated tear line -->
@@ -110,14 +124,13 @@
 
       <!-- Ticket Stub (QR / Payment notice) -->
       <div class="ticket-stub">
-        <!-- QR Code for confirmed bookings -->
-        <div class="qr-section" *ngIf="booking()?.status === 'CONFIRMED' && qrCodeDataUrl()">
-          <div class="qr-frame">
-            <img [src]="qrCodeDataUrl()" alt="رمز تذكرة الحجز" class="qr-image" />
-          </div>
-        </div>
- 
-        <!-- Payment notice for pending bookings -->
+         <!-- QR Code for confirmed bookings -->
+         <div class="qr-section" *ngIf="booking()?.status === 'CONFIRMED' && qrCodeDataUrl()">
+           <div class="qr-frame">
+             <img [src]="qrCodeDataUrl()" alt="رمز تذكرة الحجز" class="qr-image" />
+           </div>
+         </div>
+ <!-- Payment notice for pending bookings -->
         <div class="payment-notice" *ngIf="booking()?.status === 'PENDING'">
           <div class="notice-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -132,7 +145,7 @@
           </div>
         </div>
 
-        <!-- Booking timestamp -->
+         <!-- Booking timestamp -->
        <!--  <div class="booking-timestamp" *ngIf="booking()?.createdAt">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
@@ -141,13 +154,34 @@
           <span>تاريخ الحجز: {{ booking()?.createdAt }}</span>
         </div> -->
       </div>
-<div class="ticket-tear" >
+<div class="ticket-tear"*ngIf="booking()?.status === 'CONFIRMED'" >
         <div class="tear-hole left"></div>
         <div class="tear-line"></div>
         <div class="tear-hole right"></div>
       </div>
       <!-- Actions -->
+       <div style="display: flex;justify-content: center;">
+ <a (click)="openWhatsApp()" class="btn-secondary whatsapp-btn"
+ *ngIf="booking()?.status === 'PENDING' && booking()?.paymentLink !== ''"
+ >
+ <svg
+  width="20"
+  height="20"
+  viewBox="0 0 24 24"
+  fill="currentColor"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path d="M12.04 2C6.52 2 2.04 6.48 2.04 12c0 1.77.46 3.5 1.34 5.03L2 22l5.1-1.34A9.94 9.94 0 0 0 12.04 22c5.52 0 10-4.48 10-10S17.56 2 12.04 2Zm5.84 14.36c-.25.69-1.45 1.32-2.01 1.4-.52.08-1.17.11-1.89-.12-.44-.14-1-.33-1.72-.64-3.02-1.31-4.98-4.37-5.13-4.58-.15-.21-1.23-1.64-1.23-3.13s.78-2.22 1.06-2.52c.28-.31.61-.39.81-.39.2 0 .4 0 .58.01.18.01.42-.07.66.51.25.6.84 2.08.92 2.23.08.15.13.33.03.54-.1.21-.15.34-.3.52-.15.18-.32.41-.46.55-.15.15-.31.31-.13.61.18.3.8 1.31 1.72 2.12 1.18 1.05 2.17 1.38 2.47 1.53.3.15.47.13.64-.08.18-.21.74-.86.94-1.15.2-.3.4-.25.67-.15.28.09 1.75.82 2.05.97.3.15.5.22.57.35.07.13.07.75-.18 1.44Z"/>
+</svg>
+         
+          <span>تواصل مع مسئول الحجز للدفع</span>
+        </a>
+       </div>
+      
       <div class="ticket-actions">
+ 
+
+
         <a (click)="moveToHome()" class="btn-secondary ticket-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>

@@ -343,6 +343,38 @@
   transform: translateY(-1px);
 }
 
+/* ─── Note Section ─── */
+.note-section {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(107, 78, 58, 0.04);
+  border: 1px solid rgba(107, 78, 58, 0.08);
+  border-radius: var(--radius-md);
+}
+
+.note-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+  color: var(--clr-brown);
+}
+
+.note-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--clr-text-primary);
+}
+
+.note-text {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--clr-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
 /* ─── Perforated Tear Line ─── */
 .ticket-tear {
   position: relative;
@@ -490,7 +522,14 @@
   max-width: 240px;
   justify-content: center;
 }
-
+.whatsapp-btn {
+  width: 100%;
+  max-width: 400px;
+  justify-content: center;
+  margin-bottom: 5px;
+  color: var(--clr-success);
+border-color: var(--clr-success);
+}
 /* ─── No Booking State ─── */
 .no-booking {
   text-align: center;

@@ -17,7 +17,6 @@ export class BookingSuccessComponent {
 
   ngOninit()
   {
-    console.log(this.booking)
-    console.log(this.event)
+    
   }
 }

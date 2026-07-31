@@ -36,7 +36,7 @@
            
             <th>المقاعد</th>
             <th>المبلغ</th>
-           
+            <th>ملاحظة</th>
             <th>الحالة</th>
             <th>إجراء</th>
           </tr>
@@ -57,6 +57,13 @@
                 </div>
               </td>
               <td class="amount">ج.م {{ booking.seats.length *100 | number }}</td>
+              <td class="notes-cell">
+                @if (booking.notes) {
+                  <span class="notes-text" [title]="booking.notes">{{ booking.notes }}</span>
+                } @else {
+                  <span class="no-notes">—</span>
+                }
+              </td>
               <td>
                 <span class="status-badge" [class]="getStatusClass(booking.status)">
                   @if (booking.status === 'PENDING') { قيد الانتظار }
@@ -69,7 +76,7 @@
                   <div class="action-buttons">
                     <button
                       class="btn-action btn-confirm"
-                      (click)="onUpdateStatus(booking.id, 'CONFIRMED')"
+                      (dblclick)="onUpdateStatus(booking.id, 'CONFIRMED')"
                       [disabled]="updatingId === booking.id">
                       @if (updatingId === booking.id) {
                         <div class="btn-spinner"></div>

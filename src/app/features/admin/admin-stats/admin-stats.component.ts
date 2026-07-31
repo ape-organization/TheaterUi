@@ -12,7 +12,6 @@ import { AllBookingResponse } from '../../../core/models/api.models';
 export class AdminStatsComponent {
  @Input() bookings: AllBookingResponse[] = [];
 ngOnChanges(changes: SimpleChanges) {
-    console.log(changes['bookings'].currentValue);
   }
  
 

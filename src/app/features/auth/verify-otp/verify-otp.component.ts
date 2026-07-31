@@ -83,7 +83,6 @@ resetFlag=signal(false)
       this.authService.login('phone', phone).subscribe({
         next: (res:any) => {
           //reset otp 
-          console.log(res)
                     this.resetFlag.set(false)
 
           this.form.get('otp')?.reset();

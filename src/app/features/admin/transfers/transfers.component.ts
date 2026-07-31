@@ -36,7 +36,6 @@ errorMsg=signal("")
 
     this.adminService.getBalance().subscribe({
       next: (data) => {
-        console.log(data)
         this.transfers.set( data);
         this.isLoading = false;
       },
@@ -53,10 +52,8 @@ this.errorMsg.set('فشل إنشاء التحويل')
             this.error.set(false)
 
     this.isSubmitting.set( true);
-    console.log(request)
     this.adminService.createTransfer(request).subscribe({
       next: (res:any) => {
-        console.log(res)
         this.isSubmitting .set(false);
         this.loadTransfers();
       },

@@ -378,6 +378,34 @@
   border-color: rgba(179, 58, 58, 0.25);
 }
 
+/* Note */
+.reservation-note {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: rgba(107, 78, 58, 0.04);
+  border: 1px solid rgba(107, 78, 58, 0.08);
+  border-radius: var(--radius-sm);
+}
+
+.note-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: black;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.note-text {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--clr-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
 /* User Info */
 .reservation-user {
   margin-bottom: 1rem;

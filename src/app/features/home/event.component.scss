@@ -150,6 +150,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  min-width: 300px;
 }
 
 .booking-seats-count {
@@ -163,48 +164,48 @@
   color: var(--clr-brown);
 }
 
-.btn-book {
-  padding: 0.75rem 2rem;
-}
-
-/* ─── Success Card ─── */
-.booking-success-card {
-  text-align: center;
-  padding: 3rem 2rem;
-  background: var(--clr-bg-auth-card);
-  border: 1px solid rgba(45, 122, 74, 0.2);
-  border-radius: var(--radius-lg);
-  max-width: 500px;
-  //margin: 2rem auto;
-//margin-top: 0px;
-  box-shadow: var(--shadow-sm);
-}
-
-.success-icon {
-  color: var(--clr-success);
-  margin-bottom: 1rem;
-}
-
-.booking-success-card h3 {
-  font-size: 1.3rem;
-  color: var(--clr-success);
-  margin-bottom: 0.75rem;
-}
-
-.booking-message {
-  color: var(--clr-text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.seat-change-msg {
+/* ─── Booking Note ─── */
+.booking-note {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
   margin-top: 0.5rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+.booking-note-label {
   font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+}
+
+.booking-note-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(107, 78, 58, 0.2);
+  border-radius: var(--radius-sm);
+  background: var(--clr-bg-primary);
+  color: var(--clr-text-primary);
+  font-size: 0.85rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 38px;
+  transition: border-color 0.2s ease;
+}
+
+.booking-note-input:focus {
+  outline: none;
+  border-color: var(--clr-gold);
+}
+
+.booking-note-input::placeholder {
   color: var(--clr-text-muted);
 }
 
-
-
+.btn-book {
+  padding: 0.75rem 2rem;
+}
   /* ─── Responsive ─── */
 
 /* Tablet (769px - 1024px) */

@@ -1,7 +1,8 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, Input, Signal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SupervisorTransfer } from '../../../core/models/api.models';
 import { AuthService } from '../../../core/services/auth.service';
+import { SupervisorService } from '../../../core/services/supervisor.service';
 
 @Component({
   selector: 'app-supervisor-stats',
@@ -11,16 +12,27 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './supervisor-stats.component.scss'
 })
 export class SupervisorStatsComponent {
-  readonly userService=inject(AuthService);
+  readonly superAdminService=inject(SupervisorService);
   @Input() transfers: SupervisorTransfer[] = [];
-  
-  get balance():number
+    balance=signal(0);
+ngOnInit()
+{
+  this.getBalance()
+}
+   getBalance()
   {
-  var currentUser=this.userService.currentUser()
+  this.superAdminService.getUserData().subscribe({
+      next: (response: any) => 
+        {
+          if(response)
+          {this.balance.set(response.balance);
+          }
+        },
+      error:()=>{this.balance.set(0)
+      }
+
   //this.balance.set(currentUser?.user)
-  console.log(currentUser?.user.balance)
-  
-return currentUser?.user.balance ??0;
+  })
   }
   get pendingCount(): number {
     return this.transfers.filter(t => t.status === 'PENDING').length;

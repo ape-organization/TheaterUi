@@ -296,14 +296,37 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
     this.applyScale(1);
   }
 
-  /** Apply a new scale value and update related state */
-  private applyScale(newScale: number): void {
+  /** Apply a new scale value and update related state.
+   *  If focalX/focalY are provided (relative to the container's visible area),
+   *  the zoom centers on that point so the content under it stays in place
+   *  instead of jumping to the corner. */
+  private applyScale(newScale: number, focalX?: number, focalY?: number): void {
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+    const oldScale = this.scale();
+
+    // Calculate the content point under the focal point before zooming
+    let contentX = 0, contentY = 0;
+    let hasFocal = false;
+    if (container && focalX !== undefined && focalY !== undefined) {
+      contentX = (container.scrollLeft + focalX) / oldScale;
+      contentY = (container.scrollTop + focalY) / oldScale;
+      hasFocal = true;
+    }
+
     this.ngZone.run(() => {
       this.scale.set(newScale);
       const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
       this.seatScale.set(seatScale);
       this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
     });
+
+    // Adjust scroll to keep the focal point stable after the DOM updates
+    if (hasFocal && container) {
+      requestAnimationFrame(() => {
+        container.scrollLeft = contentX * newScale - focalX!;
+        container.scrollTop = contentY * newScale - focalY!;
+      });
+    }
   }
 
   // ─── Mouse Drag-to-Pan ───
@@ -352,15 +375,23 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
 
   // ─── Mouse Wheel Zoom (Ctrl + Wheel) ───
 
-  /** Handle mouse wheel — Ctrl+wheel zooms, otherwise default scroll */
+  /** Handle mouse wheel — Ctrl+wheel zooms toward the cursor, otherwise default scroll */
   onWheel(event: WheelEvent): void {
     if (event.ctrlKey) {
       event.preventDefault();
+      const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+      if (!container) return;
+
+      // Focal point = cursor position relative to the container's visible area
+      const rect = container.getBoundingClientRect();
+      const focalX = event.clientX - rect.left;
+      const focalY = event.clientY - rect.top;
+
       const delta = -event.deltaY;
       const zoomFactor = delta > 0 ? 1.1 : 0.9;
       let newScale = this.scale() * zoomFactor;
       newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
-      this.applyScale(newScale);
+      this.applyScale(newScale, focalX, focalY);
     }
   }
 
@@ -391,6 +422,14 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   onTouchMove(event: TouchEvent): void {
     if (this.isPinching && event.touches.length === 2) {
       event.preventDefault();
+      const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+      if (!container) return;
+
+      // Focal point = midpoint between the two fingers, relative to the container
+      const rect = container.getBoundingClientRect();
+      const focalX = (event.touches[0].clientX + event.touches[1].clientX) / 2 - rect.left;
+      const focalY = (event.touches[0].clientY + event.touches[1].clientY) / 2 - rect.top;
+
       const dx = event.touches[0].pageX - event.touches[1].pageX;
       const dy = event.touches[0].pageY - event.touches[1].pageY;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -398,12 +437,7 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
         const pinchFactor = dist / this.lastTouchDist;
         let newScale = this.pinchStartScale * pinchFactor;
         newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
-        this.ngZone.run(() => {
-          this.scale.set(newScale);
-          const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
-          this.seatScale.set(seatScale);
-          this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
-        });
+        this.applyScale(newScale, focalX, focalY);
       }
       return;
     }

@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, Observable } from 'rxjs';
-import { SupervisorTransfer } from '../models/api.models';
+import { SupervisorTransfer, User } from '../models/api.models';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -9,7 +9,14 @@ export class SupervisorService {
   readonly isLoading = signal(false);
 
   constructor(private readonly http: HttpClient) {}
+ getUserData(): Observable<User> {
+  
+    this.isLoading.set(true);
 
+    return this.http.get<User>(`${environment.apiUrl}/user/me`).pipe(
+      finalize(() => this.isLoading.set(false))
+    );
+  }
   getTransfers(): Observable<SupervisorTransfer[]> {
     this.isLoading.set(true);
 

@@ -50,7 +50,7 @@
               <td>
                 @if (transfer.status === 'PENDING') {
                   <div class="action-buttons">
-                    <button class="btn-confirm" (click)="onConfirm(transfer.id)" [disabled]="updatingId === transfer.id">
+                    <button class="btn-confirm" (dblclick)="onConfirm(transfer.id)" [disabled]="updatingId === transfer.id">
                       @if (updatingId === transfer.id) {
                         <div class="btn-spinner"></div>
                       } @else {

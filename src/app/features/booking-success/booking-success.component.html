@@ -70,6 +70,13 @@
             <span class="ticket-info-label">الموقع</span>
             <span class="ticket-info-value">{{ event()?.location }}</span>
           </div>
+
+          @if (booking()?.notes) {
+            <div class="ticket-info-item full">
+              <span class="ticket-info-label">ملاحظة</span>
+              <span class="ticket-info-value notes">{{ booking()?.notes }}</span>
+            </div>
+          }
         </div>
       </div>
 

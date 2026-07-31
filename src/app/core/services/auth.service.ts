@@ -40,7 +40,6 @@ export class AuthService {
     } else {
       body.phone = contactValue;
     }
-    console.log(body);
     return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/request-otp`, body).pipe(
       finalize(() => { this.isLoading.set(false) })
     );

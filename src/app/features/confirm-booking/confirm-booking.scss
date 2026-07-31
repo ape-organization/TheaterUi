@@ -70,6 +70,21 @@
   color: var(--clr-gold);
 }
 
+.note-row {
+  align-items: flex-start;
+  border-bottom: none;
+}
+
+.modal-note {
+  max-width: 60%;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--clr-text-secondary);
+}
+
 .admin-approval-notice {
   display: flex;
   align-items: center;

@@ -194,6 +194,14 @@
   color: var(--clr-gold);
 }
 
+.ticket-info-value.notes {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+  color: var(--clr-text-secondary);
+  font-weight: 500;
+}
+
 /* ─── Ticket Tear-off ─── */
 .ticket-tear {
   position: relative;

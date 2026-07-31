@@ -28,8 +28,11 @@ export class TicketComponent implements OnInit {
 
  ticket = history.state.user;;
 seats:any=''
+openWhatsApp(): void {
+  const url = this.booking()?.paymentLink; // or your WhatsApp link
+  window.open(url, '_blank');
+}
   ngOnInit(): void {
-    console.log(this.booking())
       this.loadBooking();
     this.generateQrCode();
   }
@@ -63,7 +66,7 @@ moveToHome()
 {
   this.router.navigate(['/event'])
 }
-////
+
 private readonly hallNames: Record<string, string> = {
   STAGE: 'الصالة',
   BAL: 'البلكونة',

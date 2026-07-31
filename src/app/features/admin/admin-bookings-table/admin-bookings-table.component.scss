@@ -198,6 +198,26 @@
   color: var(--clr-brown);
 }
 
+/* ─── Notes Cell ─── */
+.notes-cell {
+  max-width: 220px;
+}
+
+.notes-text {
+  display: inline-block;
+  max-width: 100%;
+  font-size: 0.82rem;
+  color: var(--clr-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: help;
+}
+
+.no-notes {
+  color: var(--clr-text-muted);
+}
+
 .date-cell {
   font-size: 0.8rem;
   color: var(--clr-text-muted);

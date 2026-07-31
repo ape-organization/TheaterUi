@@ -20,7 +20,6 @@ export class CreateTransferFormComponent {
 error=false
 errorMsg=""
   onSubmit(): void {
-    console.log(this.transferData)
     if (!this.transferData.amount ) {
     //  window.alert('يرجى إدخال المبلغ واسم المشرف');
       this.error=true;

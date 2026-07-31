@@ -74,7 +74,8 @@ export interface SeatBlock{
 }
 export interface 	ReceriveSeatRequest
 {
-  "seatLabels":string[]
+  "seatLabels":string[];
+  "notes"?:string;
 }
 export interface 	ReceriveSeat
 {
@@ -83,6 +84,9 @@ export interface 	ReceriveSeat
   "status": string,
   "expiresAt": string,
   "createdAt": string,
+  "notes":string,
+"paymentLink":string,
+
   "seats": Seat[],
   "user":UserInfo
 
@@ -159,6 +163,7 @@ export interface BookingResponse {
   status: 'pending' | 'confirmed' | 'cancelled';
 
   name?: string;
+  notes?: string;
   
 }
 
@@ -168,6 +173,8 @@ export interface AllBookingResponse {
     "status": string,
     "expiresAt": string,
     "createdAt": string,
+      "notes": string,
+    "paymentLink": string,
     "totalAmount": number| null,
     "seats": SeatReceive[],
     "user": User
@@ -253,4 +260,5 @@ export interface UserBooking {
   eventTitle?: string;
   eventDate?: string;
   eventTime?: string;
+  notes?: string;
 }

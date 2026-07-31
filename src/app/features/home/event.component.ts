@@ -56,7 +56,11 @@ export class EventComponent implements OnInit {
   protected seatStatusMap = signal<Record<string, string>>({});
 
   error=false;
-errorMsg=""
+  errorMsg=""
+
+  /** Optional note the user can attach to the booking */
+  protected notes = '';
+
   /** Reference to the theater canvas so we can clear its selection */
   @ViewChild(TheaterCanvas) theaterCanvas!: TheaterCanvas;
 
@@ -93,7 +97,6 @@ errorMsg=""
         this.seatStatusMap.set(statusMap);
       },
       error: (err) => {
-        console.error('Failed to load reserved seats:', err);
       }
     });
   }
@@ -115,20 +118,18 @@ errorMsg=""
     if (!this.selectedSeats.length) {
       return;
     }
-     if (this.selectedSeats.length>=20) {
+     if (this.selectedSeats.length>20) {
       this.error=true;
       this.errorMsg='لا يمكن حجز اكثر من 20 مقعد في التذكره الواحده'
       return;
     }
     this.selectedSeatNumbers = this.selectedSeats.map((s) => (s as any)['seatnumber']);
     this.showConfirmModal = true;
-    console.log(this.selectedSeatNumbers);
   }
 
   /** Close the confirmation modal */
   closeConfirmModal(): void {
     this.showConfirmModal = false;
-    console.log(this.selectedSeatNumbers);
   }
 
   /** Handle successful booking or cancel — close modal, clear selection, allow re-picking.
@@ -145,6 +146,7 @@ errorMsg=""
     this.selectedSeats = [];
     this.selectedSeatNumbers = [];
     this.bookingSuccess = false;
+    this.notes=''
     this.bookingMessage = '';
     // Clear the theater canvas selection so the user can pick any other seats
     this.theaterCanvas?.clearSelection();

@@ -123,10 +123,18 @@
                   </div>
                 </div>
 
-             
+                <!-- Note -->
+                @if (booking.notes) {
+                  <div class="reservation-note">
+                    <span class="note-label">ملاحظة</span>
+                    <p class="note-text">{{ booking.notes }}</p>
+                  </div>
+                }
 
               
-              </div>
+
+               
+               </div>
 
               <!-- View Ticket Button -->
               <div class="reservation-actions">

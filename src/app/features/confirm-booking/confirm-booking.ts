@@ -21,6 +21,9 @@ export class ConfirmBooking {
   /** Input: the event details */
   event = input<EventResponse | null>(null);
 
+  /** Input: optional note attached by the user */
+  notes = input<string>('');
+
   /** Output: emitted when modal should close */
   closeModal = output<void>();
   /** Output: emitted when booking is confirmed successfully.
@@ -37,8 +40,7 @@ export class ConfirmBooking {
 
   /** Derived: seat numbers for display */
   get selectedSeatNumbers(): string[] {
-    console.log(this.selectedSeats())
-    console.log(this.selectedSeats().map(s => (s as any)['seatnumber'] ?? s.label ?? ''))
+   
    // return this.selectedSeats().map(s => (s as any)['seatnumber'] ?? s.label ?? '');
   return  this.selectedSeats().map(seat => {
   const section = seat.id.startsWith('STAGE') ? 'الصالة' : 'البلكون';
@@ -84,13 +86,13 @@ const allSeats=this.selectedSeats().map(seat => {
     // Extract seat labels for the API request
 
     const seatLabels = seats.map(s => (s as any)['id'] ?? s.label ?? '');
-    console.log(seats);
-    console.log(seatLabels);
-    const request: ReceriveSeatRequest = { "seatLabels": seatLabels };
-    console.log(request);
+   
+    const request: ReceriveSeatRequest = {
+      "seatLabels": seatLabels,
+      "notes": this.notes()?.trim() || undefined
+    };
     this.bookingService.createBooking(request).subscribe({
       next: (response) => {
-        console.log('Booking response:', response);
         this.isBookingLoading.set(false);
         this.bookingService.clearSelection();
         // Store the booking response so the ticket page can display it
@@ -101,7 +103,6 @@ const allSeats=this.selectedSeats().map(seat => {
         this.router.navigate(['/ticket']);
       },
       error: (err) => {
-        console.error('Booking error:', err);
         this.isBookingLoading.set(false);
         this.error = true;
         this.errorMsg = 'لم يتم إنشاء الحجز.';

@@ -42,11 +42,9 @@ export class LoginComponent {
       const phone = this.phoneForm.value.phoneNumber ?? '';
       this.authService.login('phone', phone).subscribe({
         next: (res:any) => {
-          console.log(res)
           this.router.navigate(['/auth/verify'], { queryParams: { method: 'phone', contact: phone } });
         },
         error: (res:any) => {
-          console.log(res)
           this.error.set(true);
 
           if (res.message?.includes("https"))
