@@ -117,7 +117,6 @@ resetFlag=signal(false)
     this.authService.verifyOtp(this.method, this.contact, otp).subscribe({
       next: async (response) => {
         
-        this.authService.setAuthenticatedUser(response);
         if(response.firstLogin)
         {
            this.getUserInfo(response);
@@ -125,6 +124,8 @@ resetFlag=signal(false)
         }
         else
         {
+                  this.authService.setAuthenticatedUser(response);
+
               if (response.user.role === 'ADMIN') {
           this.router.navigate(['/admin']);
         } else if (response.user.role === 'USER') {
