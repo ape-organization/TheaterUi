@@ -8,8 +8,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(28px * var(--seat-scale, 1));
-  height: calc(26px * var(--seat-scale, 1));
+  width: calc(50px * var(--seat-scale, 1));
+  height: calc(50px * var(--seat-scale, 1));
   padding: 1px;
   background: var(--clr-bg-hover);
   border: 1px solid rgba(107, 78, 58, 0.12);

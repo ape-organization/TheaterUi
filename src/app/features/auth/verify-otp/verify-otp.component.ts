@@ -32,7 +32,8 @@ export class VerifyOtpComponent {
     otp: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]]
   });
 
-  readonly isLoading = this.authService.isLoading;
+//  readonly isLoading = this.authService.isLoading;
+readonly isLoading = signal(false);
   readonly error = signal(false);
   readonly errorMsg = signal('');
 
@@ -47,6 +48,7 @@ export class VerifyOtpComponent {
 private timer: any;
 
 ngOnInit(): void {
+
   // First time opening the page, wait 1 minute
   this.startCooldown();
 }
@@ -82,6 +84,7 @@ resetFlag=signal(false)
       const phone = this.contactDisplay?? '';
       this.authService.login('phone', phone).subscribe({
         next: (res:any) => {
+          console.log(res)
           //reset otp 
                     this.resetFlag.set(false)
 

@@ -167,8 +167,10 @@ width: 200px;
   background: var(--clr-bg-secondary);
   box-shadow: var(--shadow-md), 0 0 0 1px rgba(139, 105, 20, 0.15);
   max-width: 100%;
-  /* No max-height on any screen size: the theatre expands the page so     users scroll the page through the theatre and reach the footer naturally. */  max-height: none;
-  /* Both axes scroll so zoomed-in seats stay reachable (vertical scroll is     needed when the scaled layout is taller than the viewport). */  overflow-x: auto;
+  /* Fixed height so the container itself never grows when zooming in.
+     Zoomed content scrolls INSIDE this fixed-size viewport instead of
+     expanding the page. */  height: 80vh;
+  /* Both axes scroll so zoomed-in seats stay reachable (vertical scroll is     needed when the scaled layout is taller than the container). */  overflow-x: auto;
   overflow-y: auto;
   /* On desktop: center the layout horizontally */  justify-content: center;
   -webkit-overflow-scrolling: touch;
@@ -328,13 +330,14 @@ width: 200px;
     font-size: 0.75rem;
     color: white;
   }
-   /* Layout container: both axes scroll on mobile/tablet so zoomed-in      seats stay reachable. Vertical content also expands the page. */   .layout-container {
+    /* Layout container: fixed height on mobile/tablet so zooming happens
+       inside the container (with scrolling) instead of growing the page. */   .layout-container {
      display: block;
      overflow-x: auto;
      overflow-y: auto;
      justify-content: flex-start;
      padding: 0 0;
-     /* No max-height: let the theatre height push the page down */     max-height: none;
+     /* Fixed height: zoomed content scrolls inside, container never grows */     height: 60vh;
      /* Allow page scroll chaining on mobile so users can scroll past the theater */     overscroll-behavior: auto;
      /* Snap horizontally so left/right scroll feels contained to the theatre */     overscroll-behavior-x: contain;
    }

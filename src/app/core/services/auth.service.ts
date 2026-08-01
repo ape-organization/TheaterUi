@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   login(contactMethod: 'email' | 'phone', contactValue: string): Observable<AuthResponse> {
-    this.isLoading.set(true);
+    //this.isLoading.set(true);
 
     const payload: LoginRequest = { contactMethod };
     const body: AuthRequest = { phone: contactValue };
@@ -40,13 +40,14 @@ export class AuthService {
     } else {
       body.phone = contactValue;
     }
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/request-otp`, body).pipe(
+    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/request-otp`, body)
+   /*  .pipe(
       finalize(() => { this.isLoading.set(false) })
-    );
+    ); */
   }
 
   verifyOtp(contactMethod: 'email' | 'phone', contactValue: string, otp: string): Observable<AuthResponse> {
-    this.isLoading.set(true);
+   // this.isLoading.set(true);
 
     const payload: OtpVerifyRequest = { contactMethod, otp };
     const body: AuthOtpVerifyRequest = {
@@ -61,21 +62,23 @@ export class AuthService {
       body.otp = otp;
     }
 
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/verify-otp`, body).pipe(
+    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/verify-otp`, body)
+  /*   .pipe(
       finalize(() => { this.isLoading.set(false) })
-    );
+    ); */
   }
 
   saveUserName(name: any): Observable<any> {
-    this.isLoading.set(true);
+    //this.isLoading.set(true);
 
     const body: any = {
       name: name
     };
 
-    return this.http.put<AuthResponse>(`${environment.apiUrl}/user/name`, body).pipe(
+    return this.http.put<AuthResponse>(`${environment.apiUrl}/user/name`, body)
+  /*   .pipe(
       finalize(() => { this.isLoading.set(false) })
-    );
+    ); */
   }
 
   setAuthenticatedUser(user: AuthResponse): void {

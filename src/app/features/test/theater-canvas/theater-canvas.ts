@@ -11,8 +11,6 @@ const LAYOUT_WIDTH = 1350;
 const LAYOUT_HEIGHT_STAGE = 1000;
 /** Intrinsic layout height in pixels for BAL tab (shorter layout) */
 const LAYOUT_HEIGHT_BAL = 650;
-/** Viewport width where 1:1 scaling is applied (layout fits natively) */
-const NATURAL_BREAKPOINT = 1400;
 /** Maximum scale cap on ultra-wide screens */
 const MAX_SCALE = 1.3;
 /** Minimum scale cap on very small screens */
@@ -40,6 +38,10 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
 
   /** Active tab: 'STAGE' (default) or 'BAL' */
   protected activeTab = signal<'STAGE' | 'BAL'>('STAGE');
+
+  /** The scale that fits all seats in the current tab into the viewport.
+   * Recalculated on init, tab switch, and resize so resetZoom can return to it. */
+  private fitScale = signal(1);
 
   /** Blocks with reserved seats applied so the template can render locked seats */
   displayBlocks = computed(() => {
@@ -92,8 +94,12 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   /** Switch the active tab */
   switchTab(tab: 'STAGE' | 'BAL'): void {
     this.activeTab.set(tab);
-    // Re-center so the newly shown tab starts from the middle on mobile.
-    setTimeout(() => this.centerScroll(), 50);
+    // Recalculate fit-to-view for the new tab so all seats are visible by default,
+    // then the user can zoom in as needed.
+    setTimeout(() => {
+      this.updateScale();
+      this.centerScroll();
+    }, 50);
   }
 
   /** Scale factor applied to the layout */
@@ -137,6 +143,17 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   /** Whether a touch is currently active (prevents mouse drag interference on touch devices) */
   private isTouching = false;
 
+  /** Double-tap-to-zoom tracking */
+  private lastTapTime = 0;
+  private touchStartClientX = 0;
+  private touchStartClientY = 0;
+  private readonly DOUBLE_TAP_DELAY = 300;
+  private readonly DOUBLE_TAP_MAX_MOVE = 10;
+
+  /** Suppresses the next seat toggle when a double-tap-to-zoom is detected,
+   *  so zooming doesn't accidentally select/deselect the seat under the tap. */
+  private suppressNextSeatToggle = false;
+
   /** Mouse drag state */
   private isDragging = false;
   private dragStartX = 0;
@@ -171,44 +188,62 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Center the theatre horizontally on open so users start at the middle
-    // and can slide both left and right to reach all seats.
-    setTimeout(() => this.centerScroll(), 50);
+    // Recalculate fit-to-view after the view is ready (container has dimensions)
+    // so all seats are visible by default; users can zoom in as needed.
+    setTimeout(() => {
+      this.updateScale();
+      this.centerScroll();
+    }, 50);
   }
 
+  /**
+   * Calculate the fit-to-view scale so ALL seats in the active tab are visible
+   * by default. The layout is scaled to fit within both the available width
+   * and a responsive target height. Users can then zoom in to see individual seats.
+   */
   private updateScale(): void {
     const vw = window.innerWidth;
     this.viewportWidth = vw;
 
-    const availableWidth = vw - DESKTOP_PADDING * 2;
-    let newScale: number;
-    let newOffset = 0;
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
 
-    if (vw <= 1024) {
-      // Mobile & Tablet: keep full 1:1 scale, no shrinking
-      // The layout will overflow horizontally and users scroll to see all seats
-      newScale = 1;
-    } else if (vw <= NATURAL_BREAKPOINT) {
-      // Small desktop to natural: scale down proportionally if needed
-      newScale = Math.min(availableWidth / LAYOUT_WIDTH, 1);
-    } else if (vw <= 1920) {
-      // Desktop to full HD: slight up-scale
-      newScale = 1 + (vw - NATURAL_BREAKPOINT) / (1920 - NATURAL_BREAKPOINT) * (MAX_SCALE - 1);
-    } else {
-      // Ultra-wide: cap at max scale
-      newScale = MAX_SCALE;
-    }
+    // Available width: use the container's client width if available, otherwise
+    // estimate from the viewport minus desktop padding.
+    const availableWidth = container?.clientWidth ?? (vw - DESKTOP_PADDING * 2);
+
+    // Target height: responsive — larger on desktop (more screen space),
+    // smaller on mobile. This ensures all seats are visible at a reasonable
+    // size on every screen without page scroll.
+    // Use the container's actual client height when available (the container
+    // now has a fixed CSS height, so this is the real usable height).
+    // Fallback to a viewport-based estimate before the view is ready.
+    const targetHeight = vw <= 1024
+      ? window.innerHeight * 0.6   // Mobile/Tablet: 60vh
+      : window.innerHeight * 0.8;  // Desktop: 80vh (taller area = bigger seats)
+    const availableHeight = container?.clientHeight ?? targetHeight;
+    const layoutH = this.layoutHeight();
+
+    // Fit-to-view: scale so the entire layout (all seats) fits within both
+    // the available width AND the available height. The smaller scale wins so
+    // nothing is clipped. Users can then zoom in as needed.
+    const fitScaleWidth = availableWidth / LAYOUT_WIDTH;
+    const fitScaleHeight = availableHeight / layoutH;
+    let newScale = Math.min(fitScaleWidth, fitScaleHeight);
 
     // Clamp scale
     newScale = Math.max(Math.min(newScale, MAX_SCALE), MIN_SCALE);
 
-    // Calculate translate offset for up-scaled blocks (to prevent clipping)
+    // Store the fit scale so resetZoom() can return to it
+    this.fitScale.set(newScale);
+
+    // No translate offset needed when fitting to view (scale ≤ 1)
+    let newOffset = 0;
     if (newScale > 1) {
       newOffset = (newScale - 1) * 80;
     }
 
-    // Seat scale stays at 1 on mobile/tablet (full size), adapts on desktop+
-    const seatScale = vw <= 1024 ? 1 : Math.min(1, Math.max(0.55, newScale * 1.1));
+    // Seat scale adapts to the zoom level
+    const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
 
     if (
       newScale !== this.scale() ||
@@ -222,11 +257,8 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
         // Set CSS custom property for seat sizing
         this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
       });
-      // On mobile/tablet the layout overflows the viewport; keep it centered
-      // after rescaling (e.g. when narrowing the window from desktop to mobile).
-      if (vw <= 1024) {
-        setTimeout(() => this.centerScroll(), 50);
-      }
+      // Re-center after rescaling so the theatre stays centered.
+      setTimeout(() => this.centerScroll(), 50);
     }
   }
 
@@ -273,23 +305,35 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
 
   // ─── Zoom Controls ───
 
-  /** Zoom in (increase scale) */
+  /** Zoom in (increase scale), centered on the visible area */
   zoomIn(): void {
+    const { focalX, focalY } = this.getCenterFocal();
     let newScale = this.scale() * 1.1;
     newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
-    this.applyScale(newScale);
+    this.applyScale(newScale, focalX, focalY);
   }
 
-  /** Zoom out (decrease scale) */
+  /** Zoom out (decrease scale), centered on the visible area */
   zoomOut(): void {
+    const { focalX, focalY } = this.getCenterFocal();
     let newScale = this.scale() * 0.9;
     newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
-    this.applyScale(newScale);
+    this.applyScale(newScale, focalX, focalY);
   }
 
-  /** Reset zoom to natural 1:1 scale */
+  /** Reset zoom to the fit-to-view scale (show all seats), centered on the visible area */
   resetZoom(): void {
-    this.applyScale(1);
+    const { focalX, focalY } = this.getCenterFocal();
+    this.applyScale(this.fitScale(), focalX, focalY);
+  }
+
+  /** Get the focal point at the center of the container's visible area */
+  private getCenterFocal(): { focalX: number; focalY: number } {
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+    if (container) {
+      return { focalX: container.clientWidth / 2, focalY: container.clientHeight / 2 };
+    }
+    return { focalX: 0, focalY: 0 };
   }
 
   /** Apply a new scale value and update related state.
@@ -313,14 +357,22 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
       this.scale.set(newScale);
       const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
       this.seatScale.set(seatScale);
+      // Update translate offset for up-scaled blocks (to prevent clipping)
+      const newOffset = newScale > 1 ? (newScale - 1) * 80 : 0;
+      this.translateOffset.set(newOffset);
       this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
     });
 
-    // Adjust scroll to keep the focal point stable after the DOM updates
+    // Adjust scroll to keep the focal point stable after the DOM updates.
+    // Disable smooth scroll temporarily so the adjustment is instant and
+    // the focal point doesn't appear to drift during a scroll animation.
     if (hasFocal && container) {
+      const prevScrollBehavior = container.style.scrollBehavior;
+      container.style.scrollBehavior = 'auto';
       requestAnimationFrame(() => {
         container.scrollLeft = contentX * newScale - focalX!;
         container.scrollTop = contentY * newScale - focalY!;
+        container.style.scrollBehavior = prevScrollBehavior;
       });
     }
   }
@@ -396,10 +448,12 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   onTouchStart(event: TouchEvent): void {
     this.isTouching = true;
     if (event.touches.length === 1) {
-      // Single finger: track for swipe scroll
+      // Single finger: track for swipe scroll and double-tap detection
       this.isPinching = false;
       this.touchStartX = event.touches[0].pageX;
       this.touchStartY = event.touches[0].pageY;
+      this.touchStartClientX = event.touches[0].clientX;
+      this.touchStartClientY = event.touches[0].clientY;
       const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement;
       if (container) {
         this.touchScrollLeft = container.scrollLeft;
@@ -449,7 +503,35 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
     return;
   }
 
-  onTouchEnd(_event: TouchEvent): void {
+  onTouchEnd(event: TouchEvent): void {
+    // Detect double-tap-to-zoom (single-finger taps that didn't move much)
+    if (!this.isPinching && event.changedTouches.length === 1) {
+      const tapX = event.changedTouches[0].clientX;
+      const tapY = event.changedTouches[0].clientY;
+      const moved = Math.hypot(tapX - this.touchStartClientX, tapY - this.touchStartClientY);
+      const now = Date.now();
+
+      if (moved < this.DOUBLE_TAP_MAX_MOVE && now - this.lastTapTime < this.DOUBLE_TAP_DELAY) {
+        // Double-tap: zoom in at the tapped point (or reset if already zoomed in)
+        const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+        if (container) {
+          const rect = container.getBoundingClientRect();
+          const focalX = tapX - rect.left;
+          const focalY = tapY - rect.top;
+          const currentScale = this.scale();
+          // Toggle: if zoomed in beyond 1.5x fit, reset; otherwise zoom in to ~2.5x fit
+          const targetScale = currentScale > this.fitScale() * 1.5
+            ? this.fitScale()
+            : Math.min(this.fitScale() * 2.5, MAX_SCALE);
+          this.applyScale(targetScale, focalX, focalY);
+        }
+        this.suppressNextSeatToggle = true; // Prevent the click from toggling a seat
+        this.lastTapTime = 0; // Reset to prevent triple-tap
+      } else {
+        this.lastTapTime = now;
+      }
+    }
+
     this.isTouching = false;
     this.isPinching = false;
     this.lastTouchDist = 0;
@@ -462,6 +544,12 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   }
 
   toggleSeatSelection(seat: Seat): void {
+    // Suppress seat toggle when a double-tap-to-zoom just occurred, so the
+    // zoom gesture doesn't accidentally select/deselect the seat under it.
+    if (this.suppressNextSeatToggle) {
+      this.suppressNextSeatToggle = false;
+      return;
+    }
     // Locked seats (reserved, pending, confirmed) cannot be selected
     if (seat.status === 'reserved' || seat.status === 'pending' || seat.status === 'confirmed') {
       return;

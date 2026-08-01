@@ -27,7 +27,8 @@ export class LoginComponent {
     phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]]
   });
 
-  readonly isLoading = this.authService.isLoading;
+  //readonly isLoading = this.authService.isLoading;
+  readonly isLoading = signal(false);
   readonly error = signal(false);
   readonly errorMsg = signal('');
 
@@ -45,9 +46,8 @@ export class LoginComponent {
       const phone = this.phoneForm.value.phoneNumber ?? '';
       this.authService.login('phone', phone).subscribe({
         next: (res:any) => {
-          console.log(this.isLoading())
           console.log(res)
-        //  this.isLoading.set(false);
+           
           this.router.navigate(['/auth/verify'], { queryParams: { method: 'phone', contact: phone } });
         },
         error: (res:any) => {

@@ -80,7 +80,7 @@ export class LayoutService {
     { label: 'L', seats: ['L9', 'L7', 'L5', 'L3', 'L1', 'L2','L4', 'L6', 'L8'] },
     { label: 'M', seats: ['M9', 'M7', 'M5', 'M3', 'M1', 'M2','M4', 'M6','M8'] },
     { label: 'N', seats: ['N9', 'N7', 'N5', 'N3'  , 'N1', 'N2','N4', 'N6', 'N8'] },
-    { label: 'O', seats: [ 'O9', 'O7', 'O5', 'O3', 'O1','Q2' ,'O4','O6','O8'] },
+    { label: 'O', seats: [ 'O9', 'O7', 'O5', 'O3', 'O1','O2' ,'O4','O6','O8'] },
     { label: 'P', seats: [ 'P9', 'P7', 'P5', 'P3', 'P1', 'P2','P4','P6','P8'] }
    ,{ label: 'Q', seats: [ 'Q9', 'Q7', 'Q5', 'Q3', 'Q1', 'Q2','Q4','Q6','Q8'] }
   ];
