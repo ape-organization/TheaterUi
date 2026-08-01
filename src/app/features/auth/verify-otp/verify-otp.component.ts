@@ -108,6 +108,8 @@ resetFlag=signal(false)
     this.isLoading.set(true)
     this.error.set(false);
     if (this.form.invalid) {
+                  this.isLoading.set(false);
+
       this.form.markAllAsTouched();
       return;
     }

@@ -37,6 +37,8 @@ export class LoginComponent {
     this.error.set(false);
 
       if (this.phoneForm.invalid) {
+                    this.isLoading.set(false);
+
         this.phoneForm.markAllAsTouched();
         return;
       }
