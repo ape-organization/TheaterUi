@@ -145,7 +145,7 @@ export class LayoutService {
 
   private makeBlock(id: number, translateX: number, translateY: number,
      rotation: number, rows: { label: string; seats: string[] }[],label:any): SeatBlock {
-   
+
     return {
       id,
       translateX,
@@ -199,24 +199,24 @@ export class LayoutService {
     return this.makeBlock(303, 980, 900, -20, this.RightTopseatRowsLevelThree,"STAGE-");
   }
 
-  //////level four
+  //////level four (BAL)
   private generateTopLeftLevelFour(): SeatBlock {
-    return this.makeBlock(401, 20, 150, 0, this.LeftBottomseatRowsLevelFour,"BAL-");
+    return this.makeBlock(401, 20, 50, 0, this.LeftBottomseatRowsLevelFour,"BAL-");
   }
 
   private generateTopCenterLevelFour(): SeatBlock {
-    return this.makeBlock(402, 550, 150, 0, this.CenterBottomseatRowsLevelFour,"BAL-");
+    return this.makeBlock(402, 550, 50, 0, this.CenterBottomseatRowsLevelFour,"BAL-");
   }
 
   private generateTopRightLevelFour(): SeatBlock {
-    return this.makeBlock(403, 850, 150, 0, this.RightBootomseatRowsLevelFour,"BAL-"); // 900 y
+    return this.makeBlock(403, 850, 50, 0, this.RightBootomseatRowsLevelFour,"BAL-"); // 900 y
   }
   private generateLeftBottomLevelFive(): SeatBlock {
-    return this.makeBlock(501, 20, 350, 0, this.LeftBottomRows,"BAL-"); //1025   y
+    return this.makeBlock(501, 20, 220, 0, this.LeftBottomRows,"BAL-");
   }
 
   private generateRightBottomLevelFive(): SeatBlock {
-    return this.makeBlock(502, 750, 350, 0, this.RightBottomRows,"BAL-");
+    return this.makeBlock(502, 750, 220, 0, this.RightBottomRows,"BAL-");
   }
 
 

@@ -3,26 +3,23 @@
 }
 
 .stage {
-  width: 500px;
-  height: 40px;
-  border-radius: 0 0 250px 250px;
-  background: linear-gradient(180deg, #d4c5b0 0%, #b8a68e 100%);
-  color: #fff;
+  width: 700px;
+  height: 92px;
+  border-radius: 0 0 350px 350px;
+  background: #141414;
   display: flex;
   justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  font-size: 18px;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  box-shadow: 0 4px 20px rgba(107, 78, 58, 0.15);
-  border: none;
+  align-items: flex-end;
+  padding-bottom: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55),
+              inset 0 -1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.stage-indicator {
-  text-align: center;
-  color: var(--clr-text-muted);
-  font-size: 11px;
-  margin-top: 4px;
-  letter-spacing: 1px;
+.stage-label {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  direction: rtl;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.15);
 }

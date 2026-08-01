@@ -15,7 +15,9 @@
   transform-origin: left top;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding: 0.5rem 0;
-  border-radius: var(--radius-sm);
+  gap: 3px;
+  padding: 4px;
+  border-radius: 4px;
+  background: rgba(240, 236, 230, 0.45);
+  border: 1px solid rgba(200, 190, 180, 0.3);
 }

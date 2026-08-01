@@ -1,7 +1,7 @@
 :host {
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .row {
@@ -12,12 +12,20 @@
 }
 
 .row-label {
-  width: 1.8rem;
+  width: 1.6rem;
   font-weight: 700;
-  color: var(--clr-text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   text-align: center;
   flex-shrink: 0;
+  background: #0d2b55;
+  color: #ffffff;
+  border-radius: 3px;
+  padding: 2px 0;
+  line-height: 1;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .row-label-left {
@@ -25,17 +33,16 @@
 }
 
 .vip-row .row-label-left {
-  color: var(--clr-gold);
-  font-weight: 800;
+  background: #1a3a6e;
 }
 
 .regular-row .row-label-left {
-  color: var(--clr-text-secondary);
+  background: #0d2b55;
 }
 
 .seats {
   display: flex;
-  gap: 0.35rem;
+  gap: 2px;
   flex-wrap: nowrap;
   flex: 1;
   justify-content: center;

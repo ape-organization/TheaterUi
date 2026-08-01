@@ -7,18 +7,14 @@ import type { Seat, SeatStatus } from '../../../core/data/test.data';
 
 /** Intrinsic layout width in pixels (matches SCSS .layout width) */
 const LAYOUT_WIDTH = 1350;
-/** Intrinsic layout height in pixels for STAGE tab */
-const LAYOUT_HEIGHT_STAGE = 1000;
-/** Intrinsic layout height in pixels for BAL tab (shorter layout) */
-const LAYOUT_HEIGHT_BAL = 650;
-/** Viewport width where 1:1 scaling is applied (layout fits natively) */
-const NATURAL_BREAKPOINT = 1400;
-/** Maximum scale cap on ultra-wide screens */
-const MAX_SCALE = 1.3;
-/** Minimum scale cap on very small screens */
-const MIN_SCALE = 0.3;
-/** Horizontal padding on larger screens (each side) */
-const DESKTOP_PADDING = 32;
+/** Intrinsic layout height for the STAGE tab — seats end around y≈935px */
+const STAGE_LAYOUT_HEIGHT = 1000;
+/** Intrinsic layout height for the BAL tab — seats end around y≈430px */
+const BAL_LAYOUT_HEIGHT = 460;
+/** Maximum scale cap */
+const MAX_SCALE = 2.5;
+/** Absolute minimum scale floor (fit-scale is the real min, this is a safety clamp) */
+const ABSOLUTE_MIN_SCALE = 0.1;
 
 @Component({
   selector: 'app-theater-canvas',
@@ -102,14 +98,21 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   /** Seat scale multiplier for CSS custom property */
   protected seatScale = signal(1);
 
-  /** Layout height adapts to the active tab so BAL (shorter) doesn't waste space */
+  /** Fixed canvas height (px) — calculated once on init from the viewport,
+   *  never changed again so zoom never affects the page layout. */
+  protected canvasHeight = signal(0);
+
+  /** The minimum zoom level — equal to the fit-scale so the full theater
+   *  is always visible and users cannot zoom out past it. */
+  private fitScale = 0.5;
+
+  /** Per-tab intrinsic layout height — eliminates white space under seats */
   protected layoutHeight = computed(() =>
-    this.activeTab() === 'STAGE' ? LAYOUT_HEIGHT_STAGE : LAYOUT_HEIGHT_BAL
+    this.activeTab() === 'BAL' ? BAL_LAYOUT_HEIGHT : STAGE_LAYOUT_HEIGHT
   );
 
-  /** Scaled layout dimensions — drives the scrollable area size so that
-   *  zoomed-in content stays reachable (CSS transforms don't affect layout
-   *  box size, so we expose the real scaled size to a sizer wrapper). */
+  /** Scaled layout dimensions — drives the scrollable area inside the
+   *  fixed canvas box so zoomed-in content stays reachable. */
   protected scaledWidth = computed(() => Math.round(LAYOUT_WIDTH * this.scale()));
   protected scaledHeight = computed(() => Math.round(this.layoutHeight() * this.scale()));
 
@@ -144,90 +147,78 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   private dragStartScrollLeft = 0;
   private dragStartScrollTop = 0;
 
-  private resizeHandler: (() => void) | null = null;
   private resizeObserver: ResizeObserver | null = null;
+  /** Re-initialise the canvas on device orientation change */
+  private orientationHandler: (() => void) | null = null;
 
   ngOnInit(): void {
-    this.updateScale();
-    this.resizeHandler = () => this.updateScale();
-    window.addEventListener('resize', this.resizeHandler);
-
-    // Observe the host element for size changes
+    // Overflow check only — canvas size/scale are set once in ngAfterViewInit
     if (window.ResizeObserver) {
-      this.resizeObserver = new ResizeObserver(() => {
-        this.checkOverflow();
-      });
+      this.resizeObserver = new ResizeObserver(() => this.checkOverflow());
       this.resizeObserver.observe(this.hostEl.nativeElement);
     }
+    // Recalculate canvas on orientation flip (portrait ↔ landscape)
+    this.orientationHandler = () => setTimeout(() => {
+      this.initCanvas();
+      this.centerScroll();
+    }, 150);
+    window.addEventListener('orientationchange', this.orientationHandler);
   }
 
   ngOnDestroy(): void {
-    if (this.resizeHandler) {
-      window.removeEventListener('resize', this.resizeHandler);
-    }
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
+    }
+    if (this.orientationHandler) {
+      window.removeEventListener('orientationchange', this.orientationHandler);
     }
   }
 
   ngAfterViewInit(): void {
-    // Center the theatre horizontally on open so users start at the middle
-    // and can slide both left and right to reach all seats.
-    setTimeout(() => this.centerScroll(), 50);
+    this.initCanvas();
+    setTimeout(() => this.centerScroll(), 80);
   }
 
-  private updateScale(): void {
+  /** Calculate canvas size and fit-scale ONCE from the current viewport.
+   *  The canvas height is set so the theater fills all remaining vertical space
+   *  on the screen at the moment the page loads. After this call neither the
+   *  canvas dimensions nor the base scale ever change automatically — zoom
+   *  happens entirely inside the fixed box. */
+  private initCanvas(): void {
     const vw = window.innerWidth;
+    const vh = (window as any).visualViewport?.height ?? window.innerHeight;
     this.viewportWidth = vw;
 
-    const availableWidth = vw - DESKTOP_PADDING * 2;
-    let newScale: number;
-    let newOffset = 0;
+    // Measure the container's actual position so we can calculate the
+    // remaining vertical space below it (accounting for legend, tabs, etc.)
+    const containerEl = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+    const topOffset = containerEl
+      ? containerEl.getBoundingClientRect().top
+      : 180; // fallback estimate
+    // Use at least 55% of viewport height so the canvas isn't tiny when the
+    // content above (hero + seat-section header + legend/tabs/zoom) is taller
+    // than the remaining viewport space.
+    const canvasH = Math.max(Math.round(vh * 0.55), 350, Math.round(vh - topOffset - 16));
+    const canvasW = this.hostEl.nativeElement.getBoundingClientRect().width || vw;
 
-    if (vw <= 1024) {
-      // Mobile & Tablet: keep full 1:1 scale, no shrinking
-      // The layout will overflow horizontally and users scroll to see all seats
-      newScale = 1;
-    } else if (vw <= NATURAL_BREAKPOINT) {
-      // Small desktop to natural: scale down proportionally if needed
-      newScale = Math.min(availableWidth / LAYOUT_WIDTH, 1);
-    } else if (vw <= 1920) {
-      // Desktop to full HD: slight up-scale
-      newScale = 1 + (vw - NATURAL_BREAKPOINT) / (1920 - NATURAL_BREAKPOINT) * (MAX_SCALE - 1);
-    } else {
-      // Ultra-wide: cap at max scale
-      newScale = MAX_SCALE;
-    }
+    this.canvasHeight.set(canvasH);
 
-    // Clamp scale
-    newScale = Math.max(Math.min(newScale, MAX_SCALE), MIN_SCALE);
+    // Fit-scale: make the full STAGE layout (the taller tab) visible on load
+    const fitW = canvasW / LAYOUT_WIDTH;
+    const fitH = canvasH / STAGE_LAYOUT_HEIGHT;
+    const fs = Math.max(ABSOLUTE_MIN_SCALE, Math.min(Math.min(fitW, fitH), MAX_SCALE));
+    this.fitScale = fs;
 
-    // Calculate translate offset for up-scaled blocks (to prevent clipping)
-    if (newScale > 1) {
-      newOffset = (newScale - 1) * 80;
-    }
+    const seatScale = Math.min(1, Math.max(0.4, fs * 1.5));
 
-    // Seat scale stays at 1 on mobile/tablet (full size), adapts on desktop+
-    const seatScale = vw <= 1024 ? 1 : Math.min(1, Math.max(0.55, newScale * 1.1));
+    this.ngZone.run(() => {
+      this.scale.set(fs);
+      this.translateOffset.set(0);
+      this.seatScale.set(seatScale);
+      this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
+    });
 
-    if (
-      newScale !== this.scale() ||
-      newOffset !== this.translateOffset() ||
-      seatScale !== this.seatScale()
-    ) {
-      this.ngZone.run(() => {
-        this.scale.set(newScale);
-        this.translateOffset.set(newOffset);
-        this.seatScale.set(seatScale);
-        // Set CSS custom property for seat sizing
-        this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
-      });
-      // On mobile/tablet the layout overflows the viewport; keep it centered
-      // after rescaling (e.g. when narrowing the window from desktop to mobile).
-      if (vw <= 1024) {
-        setTimeout(() => this.centerScroll(), 50);
-      }
-    }
+    this.checkOverflow();
   }
 
   private checkOverflow(): void {
@@ -237,10 +228,9 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  /** Center the theatre on the stage so the page opens showing it,
+  /** Center the theatre on the stage (المسرح) so the page opens showing it,
    *  letting the user slide left and right to reach all seats.
-   *  Only adjusts horizontal scroll — never touches vertical page scroll.
-   *  Theatre data is always LTR regardless of the page language. */
+   *  Only adjusts horizontal scroll — never touches vertical page scroll. */
   private centerScroll(): void {
     const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
     if (!container) return;
@@ -250,12 +240,15 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
 
     const stage = container.querySelector('.stage') as HTMLElement | null;
     if (stage) {
-      // Use rendered rects so CSS transforms (scale) are accounted for.
+      // Use rendered rects so CSS transforms (scale) and RTL are accounted for.
       const cRect = container.getBoundingClientRect();
       const sRect = stage.getBoundingClientRect();
       // Horizontal distance to shift so the stage center aligns with the
       // container's visible center.
       const delta = (sRect.left + sRect.width / 2) - (cRect.left + cRect.width / 2);
+      // In RTL, scrollLeft is negative in Chrome/Edge/Firefox (0 = right edge),
+      // positive in Safari. Adding the delta works for both because the sign of
+      // scrollLeft matches the coordinate system of getBoundingClientRect.
       container.scrollLeft += delta;
       return;
     }
@@ -273,54 +266,105 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
 
   // ─── Zoom Controls ───
 
-  /** Zoom in (increase scale) */
+  /** Zoom in (increase scale), centered on the visible area */
   zoomIn(): void {
-    let newScale = this.scale() * 1.1;
-    newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
-    this.applyScale(newScale);
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+    let newScale = this.scale() * 1.15;
+    newScale = Math.max(this.fitScale, Math.min(newScale, MAX_SCALE));
+    if (container) {
+      this.applyScale(newScale, container.clientWidth / 2, container.clientHeight / 2);
+    } else {
+      this.applyScale(newScale);
+    }
   }
 
-  /** Zoom out (decrease scale) */
+  /** Zoom out (decrease scale), centered on the visible area */
   zoomOut(): void {
-    let newScale = this.scale() * 0.9;
-    newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
-    this.applyScale(newScale);
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+    let newScale = this.scale() * (1 / 1.15);
+    newScale = Math.max(this.fitScale, Math.min(newScale, MAX_SCALE));
+    if (container) {
+      this.applyScale(newScale, container.clientWidth / 2, container.clientHeight / 2);
+    } else {
+      this.applyScale(newScale);
+    }
   }
 
-  /** Reset zoom to natural 1:1 scale */
+  /** Reset zoom back to the initial fit-scale (full theater visible) */
   resetZoom(): void {
-    this.applyScale(1);
+    const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
+    this.applyScale(this.fitScale,
+      container ? container.clientWidth / 2 : undefined,
+      container ? container.clientHeight / 2 : undefined);
   }
 
   /** Apply a new scale value and update related state.
-   *  If focalX/focalY are provided (relative to the container's visible area),
-   *  the zoom centers on that point so the content under it stays in place
-   *  instead of jumping to the corner. */
+   *
+   *  Two sources of confusion fixed here:
+   *
+   *  1. FLEXBOX CENTERING — when the scaled layout is narrower/shorter than the
+   *     canvas, the browser flexbox-centers the sizer inside the container.
+   *     scrollLeft is still 0, but the sizer's left edge is NOT at x=0.
+   *     Using `getBoundingClientRect` gives the sizer's ACTUAL visual position so
+   *     the focal-point math is correct in both the overflow and no-overflow cases.
+   *
+   *  2. TIMING — ngZone.run() updates Angular signals synchronously but the DOM
+   *     repaint (new sizer dimensions) happens asynchronously.  We compute the
+   *     target scroll analytically (LAYOUT_WIDTH * newScale) so we never have to
+   *     read stale DOM measurements inside requestAnimationFrame. */
   private applyScale(newScale: number, focalX?: number, focalY?: number): void {
     const container = this.hostEl.nativeElement.querySelector('.layout-container') as HTMLElement | null;
-    const oldScale = this.scale();
+    const sizerEl   = container?.querySelector('.layout-sizer') as HTMLElement | null;
+    const oldScale  = this.scale();
 
-    // Calculate the content point under the focal point before zooming
     let contentX = 0, contentY = 0;
     let hasFocal = false;
-    if (container && focalX !== undefined && focalY !== undefined) {
-      contentX = (container.scrollLeft + focalX) / oldScale;
-      contentY = (container.scrollTop + focalY) / oldScale;
+
+    if (container && sizerEl && focalX !== undefined && focalY !== undefined) {
+      // getBoundingClientRect gives the sizer's visual position in the viewport.
+      // Subtracting the container's rect yields the sizer's offset from the
+      // container's top-left corner *as currently rendered* — this correctly
+      // captures flexbox centering (positive offset) and scroll overhang (negative).
+      const cRect = container.getBoundingClientRect();
+      const sRect = sizerEl.getBoundingClientRect();
+      const sizerVisualX = sRect.left - cRect.left; // <0 when scrolled past sizer start
+      const sizerVisualY = sRect.top  - cRect.top;
+
+      // Convert focal point (container-relative px) → sizer-local px → layout px
+      contentX = (focalX - sizerVisualX) / oldScale;
+      contentY = (focalY - sizerVisualY) / oldScale;
       hasFocal = true;
     }
 
     this.ngZone.run(() => {
       this.scale.set(newScale);
-      const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
+      const seatScale = Math.min(1, Math.max(0.4, newScale * 1.5));
       this.seatScale.set(seatScale);
       this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
     });
 
-    // Adjust scroll to keep the focal point stable after the DOM updates
     if (hasFocal && container) {
       requestAnimationFrame(() => {
-        container.scrollLeft = contentX * newScale - focalX!;
-        container.scrollTop = contentY * newScale - focalY!;
+        const cw = container.clientWidth;
+        const ch = container.clientHeight;
+
+        // Compute new sizer dimensions analytically (DOM may not have repainted yet)
+        const newSizerW = LAYOUT_WIDTH       * newScale;
+        const newSizerH = this.layoutHeight() * newScale;
+
+        // If the new sizer fits inside the canvas, flexbox will re-center it.
+        // Account for that centering offset so the scroll target is correct.
+        const newOffsetX = newSizerW < cw ? (cw - newSizerW) / 2 : 0;
+        const newOffsetY = newSizerH < ch ? (ch - newSizerH) / 2 : 0;
+
+        // Scroll so the layout point (contentX, contentY) appears at (focalX, focalY).
+        // behavior:'instant' bypasses any scroll-behavior CSS so the correction
+        // is applied in the same frame as the scale change.
+        container.scrollTo({
+          left:     Math.max(0, newOffsetX + contentX * newScale - focalX!),
+          top:      Math.max(0, newOffsetY + contentY * newScale - focalY!),
+          behavior: 'instant',
+        });
       });
     }
   }
@@ -386,7 +430,7 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
       const delta = -event.deltaY;
       const zoomFactor = delta > 0 ? 1.1 : 0.9;
       let newScale = this.scale() * zoomFactor;
-      newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
+      newScale = Math.max(this.fitScale, Math.min(newScale, MAX_SCALE));
       this.applyScale(newScale, focalX, focalY);
     }
   }
@@ -432,7 +476,7 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
       if (this.lastTouchDist > 0) {
         const pinchFactor = dist / this.lastTouchDist;
         let newScale = this.pinchStartScale * pinchFactor;
-        newScale = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
+        newScale = Math.max(this.fitScale, Math.min(newScale, MAX_SCALE));
         this.applyScale(newScale, focalX, focalY);
       }
       return;
