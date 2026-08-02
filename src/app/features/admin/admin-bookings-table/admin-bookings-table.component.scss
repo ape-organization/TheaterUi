@@ -177,8 +177,8 @@
 }
 
 .seats-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
   gap: 0.3rem;
 }
 
@@ -216,6 +216,13 @@
 
 .no-notes {
   color: var(--clr-text-muted);
+}
+
+.confirmed-by {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--clr-text-secondary);
+  white-space: nowrap;
 }
 
 .date-cell {

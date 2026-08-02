@@ -38,6 +38,7 @@
             <th>المبلغ</th>
             <th>ملاحظة</th>
             <th>الحالة</th>
+            <th>تم التأكيد بواسطة</th>
             <th>إجراء</th>
           </tr>
         </thead>
@@ -70,6 +71,13 @@
                   @else if (booking.status === 'CONFIRMED') { مؤكد }
                   @else { ملغي }
                 </span>
+              </td>
+              <td>
+                @if (booking.confirmedBy) {
+                  <span class="confirmed-by">{{ booking.confirmedBy }}</span>
+                } @else {
+                  <span class="no-notes">—</span>
+                }
               </td>
               <td class="actions-cell">
                 @if (booking.status === 'PENDING' && !booking.isExpired) {
