@@ -31,7 +31,8 @@
         <thead>
           <tr>
             <th>رقم الحجز</th>
-           
+                       <th>مسند إلى</th>
+
             <th>الاسم</th>
            
             <th>المقاعد</th>
@@ -46,7 +47,13 @@
           @for (booking of paginatedBookings(); track booking.id) {
             <tr>
               <td class="booking-id">{{ booking.id }}</td>
-             
+             <td>
+                @if (booking.assignedTo) {
+                  <span class="confirmed-by">{{ booking.assignedTo }}</span>
+                } @else {
+                  <span class="no-notes">—</span>
+                }
+              </td>
               <td>{{ booking.user.name || '—' }}</td>
              
              
@@ -79,6 +86,7 @@
                   <span class="no-notes">—</span>
                 }
               </td>
+              
               <td class="actions-cell">
                 @if (booking.status === 'PENDING' && !booking.isExpired) {
                   <div class="action-buttons">

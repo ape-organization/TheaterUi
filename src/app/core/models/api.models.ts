@@ -176,6 +176,7 @@ export interface AllBookingResponse {
       "notes": string,
     "paymentLink": string,
     "confirmedBy":string,
+    "assignedTo":string,
     "totalAmount": number| null,
     "seats": SeatReceive[],
     "user": User
