@@ -86,6 +86,7 @@ export interface 	ReceriveSeat
   "createdAt": string,
   "notes":string,
 "paymentLink":string,
+"assignedTo":string,
 
   "seats": Seat[],
   "user":UserInfo

@@ -84,7 +84,6 @@ resetFlag=signal(false)
       const phone = this.contactDisplay?? '';
       this.authService.login('phone', phone).subscribe({
         next: (res:any) => {
-          console.log(res)
           //reset otp 
                     this.resetFlag.set(false)
 
