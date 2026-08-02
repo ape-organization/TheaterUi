@@ -103,6 +103,8 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /** Scale factor applied to the layout */
+
+  
   protected scale = signal(1);
 
   /** Seat scale multiplier for CSS custom property */
