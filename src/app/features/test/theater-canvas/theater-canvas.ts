@@ -238,18 +238,17 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
     // Store the fit scale so resetZoom() can return to it
     this.fitScale.set(newScale);
 
-    // No translate offset needed when fitting to view (scale ≤ 1)
-    let newOffset = 0;
-    if (newScale > 1) {
-      newOffset = (newScale - 1) * 80;
-    }
+    // No translate offset needed — the sizer wrapper already reserves the
+    // correct scaled dimensions for scrolling, and transform-origin: top left
+    // handles the scaling. Adding a uniform offset to all blocks causes them
+    // to shift/overlap when zooming.
+    const newOffset = 0;
 
     // Seat scale adapts to the zoom level
     const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
 
     if (
       newScale !== this.scale() ||
-      newOffset !== this.translateOffset() ||
       seatScale !== this.seatScale()
     ) {
       this.ngZone.run(() => {
@@ -359,9 +358,10 @@ export class TheaterCanvas implements OnInit, OnDestroy, AfterViewInit {
       this.scale.set(newScale);
       const seatScale = Math.min(1, Math.max(0.55, newScale * 1.1));
       this.seatScale.set(seatScale);
-      // Update translate offset for up-scaled blocks (to prevent clipping)
-      const newOffset = newScale > 1 ? (newScale - 1) * 80 : 0;
-      this.translateOffset.set(newOffset);
+      // No translate offset — the sizer wrapper reserves the scaled dimensions
+      // for scrolling, so a uniform block offset is unnecessary and causes
+      // blocks to overlap/shift when zooming.
+      this.translateOffset.set(0);
       this.hostEl.nativeElement.style.setProperty('--seat-scale', seatScale.toString());
     });
 

@@ -341,6 +341,12 @@ width: 200px;
      /* Allow page scroll chaining on mobile so users can scroll past the theater */     overscroll-behavior: auto;
      /* Snap horizontally so left/right scroll feels contained to the theatre */     overscroll-behavior-x: contain;
    }
+   /* BAL (balcony) tab uses a shorter layout (650px vs 1000px for STAGE),
+      so reduce the container height to avoid a large empty area at the
+      bottom on mobile/tablet. */
+   .layout-container.tab-bal {
+     height: 40vh;
+   }
   .layout-container::after {
     display: none;
  /* remove gradient overlay on mobile */  }
