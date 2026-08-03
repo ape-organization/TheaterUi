@@ -58,10 +58,13 @@ ${booking.seats
 
 الحالة: ${booking.status === 'CONFIRMED' ? 'مؤكد' : 'قيد الانتظار'}
 `; */
+if(booking.ticketToken!=null){
 const qrValue = `${environment.uiApiUrl}#ticket/${booking.ticketToken}`;
+console.log(booking.ticketToken)
+console.log(qrValue)
   const url = await QRCode.toDataURL(qrValue);
 
-  this.qrCodeDataUrl.set(url);
+  this.qrCodeDataUrl.set(url);}
 }
 moveToHome()
 {
