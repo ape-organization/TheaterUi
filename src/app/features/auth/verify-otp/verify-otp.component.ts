@@ -224,7 +224,7 @@ else{
         next: (res:any) => {
         if(res.name && res.name !== ''){
  response.user.name = result.userName;
-  this.authService.setAuthenticatedUser(res); 
+  this.authService.setAuthenticatedUser(response); 
 /* const updatedResponse = {
   ...response,
   user: {
