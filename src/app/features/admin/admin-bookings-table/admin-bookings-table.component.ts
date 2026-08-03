@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, Output, signal, computed, input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal, computed, input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { AllBookingResponse } from '../../../core/models/api.models';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { BookingService } from '../../../core/services/booking.service';
 
 @Component({
   selector: 'app-admin-bookings-table',
@@ -18,6 +20,15 @@ bookings = input<any[]>([]);
 
   @Output() refresh = new EventEmitter<void>();
   @Output() updateStatus = new EventEmitter<{ bookingId: number; status: 'CONFIRMED' }>();
+
+  private readonly router = inject(Router);
+  private readonly bookingService = inject(BookingService);
+
+  /** Navigate to the ticket details page with the selected booking data */
+  viewTicket(booking: any): void {
+    this.bookingService.setBookingResponse(booking as any);
+    this.router.navigate(['/ticket'], { state: { booking } });
+  }
 
   /** Pending confirmation request (null when dialog is closed) */
   protected readonly pendingConfirm = signal<{ bookingId: number; status: 'CONFIRMED' } | null>(null);

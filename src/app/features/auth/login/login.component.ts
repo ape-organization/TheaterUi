@@ -46,7 +46,6 @@ export class LoginComponent {
       const phone = this.phoneForm.value.phoneNumber ?? '';
       this.authService.login('phone', phone).subscribe({
         next: (res:any) => {
-           
           this.router.navigate(['/auth/verify'], { queryParams: { method: 'phone', contact: phone } });
         },
         error: (res:any) => {

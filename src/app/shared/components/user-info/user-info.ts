@@ -18,11 +18,18 @@ export class UserInfo {
    /** Save user info and close the modal */
   saveUserInfo(): void {
     this.error = false;
-    if (!this.userName.trim() ) {
+    if (!this.userName.trim()  ) {
+    
       this.error = true;
-      this.errorMsg = 'يرجى إدخال الاسم  للمتابعة';
+      this.errorMsg = 'يرجى إدخال الاسم ثلاثي  للمتابعة';
       return;
     }
+      if( this.userName.split(/\s+/).length!==3)
+        {
+            this.error = true;
+      this.errorMsg = 'يرجى إدخال الاسم ثلاثي  للمتابعة';
+      return;
+        }
 this.dialogRef.close({ userName: this.userName });
   }
   

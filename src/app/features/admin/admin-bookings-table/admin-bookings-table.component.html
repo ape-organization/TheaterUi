@@ -54,7 +54,9 @@
                   <span class="no-notes">—</span>
                 }
               </td>
-              <td>{{ booking.user.name || '—' }}</td>
+              <td>
+                <a class="name-link" (click)="viewTicket(booking)">{{ booking.user.name || '—' }}</a>
+              </td>
              
              
               <td>

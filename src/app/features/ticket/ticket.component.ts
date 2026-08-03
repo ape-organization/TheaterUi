@@ -5,6 +5,7 @@ import { BookingService } from '../../core/services/booking.service';
 import { EventService } from '../../core/services/event.service';
 import { UserBooking } from '../../core/models/api.models';
 import QRCode from 'qrcode';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-ticket',
   standalone: true,
@@ -43,7 +44,7 @@ openWhatsApp(): void {
     return;
   }
 
- const qrValue = `
+/*  const qrValue = `
 🎭 تذكرة دخول المسرح
 
 رقم الحجز: ${booking.id}
@@ -56,8 +57,8 @@ ${booking.seats
   .join('، ')}
 
 الحالة: ${booking.status === 'CONFIRMED' ? 'مؤكد' : 'قيد الانتظار'}
-`;
-
+`; */
+const qrValue = `${environment.uiApiUrl}#ticket/${booking.ticketToken}`;
   const url = await QRCode.toDataURL(qrValue);
 
   this.qrCodeDataUrl.set(url);

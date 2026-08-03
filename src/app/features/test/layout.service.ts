@@ -70,11 +70,11 @@ export class LayoutService {
    ,{ label: 'Q', seats: ['Q31', 'Q29', 'Q27', 'Q25', 'Q23', 'Q21', 'Q19','Q17','Q15','Q13','Q11'] }
   ];
   private LeftTopseatRowsLevelThree = [
-    { label: 'R', seats: [ 'R19','R17','R14' ,'R13','R11','R9','R7','R5','R3','R1'] },
+    { label: 'R', seats: [ 'R19','R17','R15' ,'R13','R11','R9','R7','R5','R3','R1'] },
   ];
-
+//'I9','I7','I5' ,'I3','I1','I2','I4','I6','I8'
   private CenterTopseatRowsLevelTwo = [
-    { label: 'I', seats: [ 'I9','I7','I5' ,'I3','I1','I2','I4','I6','I8'] },
+    { label: 'I', seats: [ ] },
     { label: 'J', seats: ['J9','J7', 'J5', 'J3', 'J1','J2', 'J4', 'J6', 'J8'] },
     { label: 'K', seats: ['K9', 'K7', 'K5', 'K3', 'K1','K2', 'K4', 'K6','K8'] },
     { label: 'L', seats: ['L9', 'L7', 'L5', 'L3', 'L1', 'L2','L4', 'L6', 'L8'] },
@@ -82,7 +82,7 @@ export class LayoutService {
     { label: 'N', seats: ['N9', 'N7', 'N5', 'N3'  , 'N1', 'N2','N4', 'N6', 'N8'] },
     { label: 'O', seats: [ 'O9', 'O7', 'O5', 'O3', 'O1','O2' ,'O4','O6','O8'] },
     { label: 'P', seats: [ 'P9', 'P7', 'P5', 'P3', 'P1', 'P2','P4','P6','P8'] }
-   ,{ label: 'Q', seats: [ 'Q9', 'Q7', 'Q5', 'Q3', 'Q1', 'Q2','Q4','Q6','Q8'] }
+   ,{ label: 'Q', seats: [ ] }
   ];
  private CenterTopseatRowsLevelThree = [
   ];
@@ -99,7 +99,7 @@ export class LayoutService {
   ];
 
  private RightTopseatRowsLevelThree = [
-    { label: 'R', seats: [ 'R2','R4','R6','R8','R10' ,'R12','R16','R18','R20'] },
+    { label: 'R', seats: [ 'R2','R4','R6','R8','R10' ,'R12','R14','R16','R18','R20'] },
   ];
 
   /////

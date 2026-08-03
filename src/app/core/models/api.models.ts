@@ -79,7 +79,8 @@ export interface 	ReceriveSeatRequest
 }
 export interface 	ReceriveSeat
 {
-  
+      "ticketToken":string,
+
   "id": number,
   "status": string,
   "expiresAt": string,
@@ -89,7 +90,7 @@ export interface 	ReceriveSeat
 "assignedTo":string,
 
   "seats": Seat[],
-  "user":UserInfo
+  "user":User
 
 }
 export interface SeatRecerived
@@ -174,6 +175,7 @@ export interface AllBookingResponse {
     "status": string,
     "expiresAt": string,
     "createdAt": string,
+    "ticketToken":string,
       "notes": string,
     "paymentLink": string,
     "confirmedBy":string,

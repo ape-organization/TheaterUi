@@ -1,0 +1,129 @@
+<section class="ticket-page">
+  <div class="ticket-container">
+
+    <!-- Ticket Card -->
+    <div class="ticket-card" *ngIf="booking()">
+
+      <!-- Ticket Header (gradient banner) -->
+      <div class="ticket-header">
+        <div style="display: flex;justify-content: center;">
+ <div class="header-logo">
+          <img src="../../../assets/images/logo.png"
+          alt="شعار المشروع" class="logo-image" onerror="this.style.display='none'" />
+        </div>
+        </div>
+       
+
+        <div class="status-badge"
+             [class.status-pending]="booking()?.status === 'PENDING'"
+             [class.status-confirmed]="booking()?.status === 'CONFIRMED'">
+          <span class="status-dot"></span>
+          {{ booking()?.status === 'PENDING' ? 'معلق' : 'مؤكد' }}
+        </div>
+      </div>
+
+      <!-- Ticket Body -->
+      <div class="ticket-body">
+
+        <!-- Booking ID -->
+        <div class="booking-id-section">
+          <span class="booking-id-label">رقم الحجز</span>
+          <span class="booking-id-value">#{{ booking()?.id }}</span>
+        </div>
+
+        <!-- User Details Section -->
+        <div class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>بيانات المستخدم</span>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <span class="info-label">الاسم</span>
+              <span class="info-value">{{ booking()?.user?.name || 'غير محدد' }}</span>
+            </div>
+          </div>
+
+          <div class="info-card" *ngIf="booking()?.user?.phone">
+            <div class="info-icon">
+             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+     stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 16.92v3a2 2 0 0 1-2.18 2
+           19.79 19.79 0 0 1-8.63-3.07
+           19.5 19.5 0 0 1-6-6
+           19.79 19.79 0 0 1-3.07-8.67
+           A2 2 0 0 1 4.11 2h3
+           a2 2 0 0 1 2 1.72"/>
+</svg>
+            </div>
+            <div class="info-content">
+              <span class="info-label">رقم الهاتف</span>
+              <span class="info-value">{{ booking()?.user?.phone }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seats Section -->
+        <div class="seats-section">
+          <div class="seats-section-header">
+            <span class="seats-title">المقاعد المحجوزة</span>
+<span class="seats-count">{{ seats.length || 0 }}</span>
+          </div>
+          <div class="seats-chips">
+            <span class="seat-chip" *ngFor="let seat of seats">
+              {{ seat }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="note-section" *ngIf="booking()?.notes">
+          <div class="note-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            <span class="note-title">ملاحظة</span>
+          </div>
+          <p class="note-text">{{ booking()?.notes }}</p>
+        </div>
+
+      
+
+      </div>
+
+    
+
+   
+
+    
+
+    </div>
+
+    <!-- No Booking State -->
+    <div class="no-booking" *ngIf="!booking()">
+      <div class="no-booking-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M7 7h10v10H7z"/>
+        </svg>
+      </div>
+      <h3>لا توجد بيانات تذكرة</h3>
+      <p>لم يتم العثور على أي بيانات تذكرة. يرجى المحاولة مرة أخرى.</p>
+    </div>
+
+  </div>
+</section>

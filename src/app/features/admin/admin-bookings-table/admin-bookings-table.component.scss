@@ -225,6 +225,22 @@
   white-space: nowrap;
 }
 
+/* ─── Name Link (clickable to view ticket) ─── */
+.name-link {
+  display: inline-block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--clr-accent);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.name-link:hover {
+  color: var(--clr-gold);
+  text-decoration: underline;
+}
+
 .date-cell {
   font-size: 0.8rem;
   color: var(--clr-text-muted);

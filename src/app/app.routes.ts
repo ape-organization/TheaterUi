@@ -5,6 +5,11 @@ import { supervisorGuard } from './core/guards/supervisor.guard';
 import { logGuard } from './core/guards/log.guard';
 
 export const routes: Routes = [
+  
+  {
+    path: 'ticket/:token',
+    loadComponent: () => import('./features/ticket-details/ticket-details.component').then((m) => m.TicketDetailsComponent)
+  },
   {
     path: 'auth',
     children: [
@@ -41,15 +46,10 @@ export const routes: Routes = [
   },
   {
     path: 'ticket',
-    canActivate: [authGuard],
+        canActivate: [authGuard],
+
     loadComponent: () => import('./features/ticket/ticket.component').then((m) => m.TicketComponent)
-  }
- /*  ,
-  {
-    path: 'ticket/:id',
-    canActivate: [authGuard],
-    loadComponent: () => import('./features/ticket/ticket.component').then((m) => m.TicketComponent)
-  } */,
+  },
   {
     path: 'my-reservations',
     canActivate: [authGuard],

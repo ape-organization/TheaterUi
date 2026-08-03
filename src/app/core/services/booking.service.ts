@@ -32,10 +32,10 @@ export class BookingService {
   }
 
   /** Fetch a single reservation by its ID */
-  getBookingById(id: number): Observable<UserBooking> {
+  getBookingByToken(token: string): Observable<any> {
     this.isLoading.set(true);
 
-    return this.http.get<UserBooking>(`${environment.apiUrl}/bookings/${id}`).pipe(
+    return this.http.get<any>(`${environment.apiUrl}/public/ticket/${token}`).pipe(
       finalize(() => this.isLoading.set(false))
     );
   }

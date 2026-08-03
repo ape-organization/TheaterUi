@@ -45,7 +45,7 @@
     <div class="ticket-card" *ngIf="booking()">
 
       <!-- Ticket Header (gradient banner) -->
-      <div class="ticket-header">
+      <div class="ticket-header" style="background-color: aqua;">
         <div style="display: flex;justify-content: center;">
 
           <div class="header-logo">
@@ -77,16 +77,18 @@
       <!-- Ticket Body -->
       <div class="ticket-body">
 
-        <div style="display: flex;justify-content: space-between;">
+       <!--  <div style="display: flex;justify-content: space-between;
+       "> -->
 
         <!-- Booking ID -->
-        <div class="booking-id-section">
-          <span class="booking-id-label">رقم الحجز</span>
-          <span class="booking-id-value">#{{ booking()?.id }}</span>
-        </div>
+       
 
         <!-- Info Grid -->
         <div class="info-grid">
+           <div class="info-card" >
+          <span class="booking-id-label">رقم الحجز</span>
+          <span class="booking-id-value">#{{ booking()?.id }}</span>
+        </div>
           <div class="info-card">
             <div class="info-icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -100,20 +102,10 @@
             </div>
           </div>
 
-          <div class="info-card" *ngIf="booking()?.user?.church">
-            <div class="info-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/>
-              </svg>
-            </div>
-            <div class="info-content">
-              <span class="info-label">الكنيسة</span>
-              <span class="info-value">{{ booking()?.user?.church }}</span>
-            </div>
-          </div>
+        
         </div>
-        </div>
-
+<!--         </div>
+ -->
         <!-- Seats Section -->
         <div class="seats-section">
           <div class="seats-section-header">
