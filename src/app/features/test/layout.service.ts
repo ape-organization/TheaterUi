@@ -30,7 +30,7 @@ export class LayoutService {
   private LeftTopseatRowsLevelOne = [
     { label: 'A', seats: ['A21', 'A19', 'A17', 'A15', 'A13', 'A11'] },
     { label: 'B', seats: ['B23', 'B21', 'B19', 'B17', 'B15', 'B13', 'B11'] },
-    { label: 'C', seats: ['C25', 'C23', 'C21', 'C19', 'C17', 'C15', 'C13', 'C11'] },
+    { label: 'C', seats: [ 'C23', 'C21', 'C19', 'C17', 'C15', 'C13', 'C11'] },
     { label: 'D', seats: ['D25', 'D23', 'D21', 'D19', 'D17', 'D15', 'D13', 'D11'] },
     { label: 'E', seats: ['E25', 'E23', 'E21', 'E19', 'E17', 'E15', 'E13', 'E11'] },
     { label: 'F', seats: ['F27','F25', 'F23', 'F21', 'F19', 'F17', 'F15', 'F13', 'F11'] },
@@ -70,7 +70,7 @@ export class LayoutService {
    ,{ label: 'Q', seats: ['Q31', 'Q29', 'Q27', 'Q25', 'Q23', 'Q21', 'Q19','Q17','Q15','Q13','Q11'] }
   ];
   private LeftTopseatRowsLevelThree = [
-    { label: 'R', seats: [ 'R19','R17','R15' ,'R13','R11','R9','R7','R5','R3','R1'] },
+    { label: 'R', seats: [ 'R23','R21','R19','R17','R15' ,'R13','R11','R9','R7','R5','R3','R1'] },
   ];
 //'I9','I7','I5' ,'I3','I1','I2','I4','I6','I8'
   private CenterTopseatRowsLevelTwo = [
@@ -99,7 +99,7 @@ export class LayoutService {
   ];
 
  private RightTopseatRowsLevelThree = [
-    { label: 'R', seats: [ 'R2','R4','R6','R8','R10' ,'R12','R14','R16','R18','R20'] },
+    { label: 'R', seats: [ 'R2','R4','R6','R8','R10' ,'R12','R14','R16','R18','R20','R22','R24'] },
   ];
 
   /////

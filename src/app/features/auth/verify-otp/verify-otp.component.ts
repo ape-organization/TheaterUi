@@ -120,15 +120,16 @@ resetFlag=signal(false)
 
     this.authService.verifyOtp(this.method, this.contact, otp).subscribe({
       next: async (response) => {
-                          this.authService.setAuthenticatedUser(response);
 
         if(response.firstLogin)
-        {
+        {            this.authService.setUserToken(response);
+
            this.getUserInfo(response);
 
         }
         else
         {
+                          this.authService.setAuthenticatedUser(response);
 
               if (response.user.role === 'ADMIN') {
           this.router.navigate(['/admin']);
@@ -222,17 +223,16 @@ else{
    this.authService.saveUserName(result.userName).subscribe({
         next: (res:any) => {
         if(res.name && res.name !== ''){
-/* response.user.name = result.userName;
-
-  this.authService.setAuthenticatedUser(response); */
-const updatedResponse = {
+ response.user.name = result.userName;
+  this.authService.setAuthenticatedUser(res); 
+/* const updatedResponse = {
   ...response,
   user: {
     ...response.user,
     name: result.userName
   }
 };
-  this.authService.setAuthenticatedUser(updatedResponse); 
+  this.authService.setAuthenticatedUser(updatedResponse);  */
 
          if (response.user.role === 'ADMIN') {
           this.router.navigate(['/admin']);

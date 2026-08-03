@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../core/services/admin.service';
+import { BookingService } from '../../../core/services/booking.service';
 import { AllBookingResponse } from '../../../core/models/api.models';
 import { AdminStatsComponent } from '../admin-stats/admin-stats.component';
 import { AdminBookingsTableComponent } from '../admin-bookings-table/admin-bookings-table.component';
@@ -20,6 +21,7 @@ export class AdminComponent implements OnInit {
   CONFIRMED: 1
 };
   private readonly adminService = inject(AdminService);
+  private readonly bookingService = inject(BookingService);
    
 
  // bookings: AllBookingResponse[] = [];
@@ -91,12 +93,14 @@ this.bookings.set(
      this.adminService.updateReservationStatus(bookingId, status).subscribe({
       next: (res:any) => {
         if(res){
+      // Update the booking response signal so the ticket details page shows the new data
+      this.bookingService.setBookingResponse(res);
       
   this.bookings.update(bookings =>
   bookings
     .map(booking =>
       booking.id === bookingId
-        ? { ...booking, status }
+        ? { ...booking, ...res, status: res.status || status }
         : booking
     )
     .sort((a, b) => {
@@ -120,6 +124,6 @@ this.bookings.set(
       }
     }); 
 
- 
+  
   }
 }

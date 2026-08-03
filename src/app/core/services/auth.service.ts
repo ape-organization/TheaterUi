@@ -88,7 +88,11 @@ export class AuthService {
     localStorage.setItem('name', user.user.name);
     localStorage.setItem('user', JSON.stringify(user));
   }
-
+ setUserToken(user: AuthResponse): void {
+  
+    localStorage.setItem('token', user.token);
+   
+  }
   logout(): void {
     this.currentUser.set(null);
     this.isAuthenticated.set(false);

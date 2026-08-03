@@ -24,7 +24,7 @@ export class UserInfo {
       this.errorMsg = 'يرجى إدخال الاسم ثلاثي  للمتابعة';
       return;
     }
-      if( this.userName.split(/\s+/).length!==3)
+      if( this.userName.split(/\s+/).length<3)
         {
             this.error = true;
       this.errorMsg = 'يرجى إدخال الاسم ثلاثي  للمتابعة';
