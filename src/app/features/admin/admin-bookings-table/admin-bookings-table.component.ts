@@ -72,6 +72,12 @@ protected readonly paginatedBookings = computed(() => {
     this.currentPage.set(page);
   }
 
+  /** Open a WhatsApp chat for the given phone number (prepends "2" to the number) */
+  openWhatsApp(phone: string): void {
+    const number = '2' + phone;
+    window.open(`https://wa.me/${number}`, '_blank');
+  }
+
   getStatusClass(status: string): string {
     switch (status) {
       case 'confirmed': return 'status-confirmed';

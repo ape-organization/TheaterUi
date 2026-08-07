@@ -333,6 +333,36 @@
   color: var(--clr-text-muted);
 }
 
+/* ─── WhatsApp ─── */
+.whatsapp-cell {
+  min-width: 50px;
+  text-align: center;
+}
+
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  cursor: pointer;
+  transition: all var(--transition);
+  padding: 0;
+}
+
+.whatsapp-btn:hover {
+  background: #1ebe5d;
+  transform: scale(1.1);
+}
+
+.whatsapp-icon {
+  display: block;
+}
+
 /* ─── Confirmation Dialog ─── */
 .confirm-overlay {
   position: fixed;
