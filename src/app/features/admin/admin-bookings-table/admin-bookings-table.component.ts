@@ -39,11 +39,59 @@ bookings = input<any[]>([]);
   /** Current page (1-based) */
   protected readonly currentPage = signal(1);
 
+  /** Filter for pending bookings by expiration status */
+  protected readonly pendingExpiryFilter = signal<'all' | 'expired' | 'non-expired'>('all');
+
+  /** Filter for booking status (pending / confirmed) */
+  protected readonly statusFilter = signal<'all' | 'pending' | 'confirmed'>('all');
+
+  /** Bookings after applying both filters */
+  protected readonly filteredBookings = computed(() => {
+    const expiry = this.pendingExpiryFilter();
+    const status = this.statusFilter();
+
+    return this.bookings().filter(booking => {
+      // --- Expiration filter (only applies to PENDING bookings) ---
+      if (expiry === 'expired') {
+        if (booking.status !== 'PENDING' || !booking.isExpired) return false;
+      } else if (expiry === 'non-expired') {
+        if (booking.status !== 'PENDING' || booking.isExpired) return false;
+      }
+
+      // --- Status filter ---
+      if (status === 'pending' && booking.status !== 'PENDING') return false;
+      if (status === 'confirmed' && booking.status !== 'CONFIRMED') return false;
+
+      return true;
+    });
+  });
+
   /** Bookings for the current page only */
-protected readonly paginatedBookings = computed(() => {
-  const start = (this.currentPage() - 1) * this.pageSize;
-  return this.bookings().slice(start, start + this.pageSize);
-});
+  protected readonly paginatedBookings = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize;
+    return this.filteredBookings().slice(start, start + this.pageSize);
+  });
+
+  /** Change the pending-expiry filter and reset to first page */
+  onPendingExpiryFilterChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value as 'all' | 'expired' | 'non-expired';
+    this.pendingExpiryFilter.set(value);
+    this.currentPage.set(1);
+  }
+
+  /** Change the status filter and reset to first page */
+  onStatusFilterChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value as 'all' | 'pending' | 'confirmed';
+    this.statusFilter.set(value);
+    this.currentPage.set(1);
+  }
+
+  /** Reset both filters to "all" */
+  resetFilters(): void {
+    this.pendingExpiryFilter.set('all');
+    this.statusFilter.set('all');
+    this.currentPage.set(1);
+  }
 
   onRefresh(): void {
     this.refresh.emit();
