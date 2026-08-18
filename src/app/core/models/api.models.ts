@@ -88,7 +88,7 @@ export interface 	ReceriveSeat
   "notes":string,
 "paymentLink":string,
 "assignedTo":string,
-
+"consumedSeats":Seat[],
   "seats": Seat[],
   "user":User
 
@@ -260,6 +260,7 @@ export interface UserBooking {
   status: string;
   expiresAt: string;
   createdAt: string;
+  consumedSeats:Seat[],
   seats: Seat[];
   user: UserInfo;
   eventTitle?: string;

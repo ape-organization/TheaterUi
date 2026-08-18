@@ -19,7 +19,15 @@ export class AdminService {
       finalize(() => this.isLoading.set(false))
     );
   }
+consumeSeats(id:any,seats:any): Observable<any> {
+    this.isLoading.set(true);
 
+    return this.http.post<any>(`${environment.apiUrl}/admin/reservations/${id}/consume-seats`
+      ,seats
+    ).pipe(
+      finalize(() => this.isLoading.set(false))
+    );
+  }
   updateReservationStatus(id: any, status: 'CONFIRMED' ): Observable<any> {
     this.isLoading.set(true);
 

@@ -81,9 +81,20 @@
 <span class="seats-count">{{ seats.length || 0 }}</span>
           </div>
           <div class="seats-chips">
-            <span class="seat-chip" *ngFor="let seat of seats">
+          <!--   <span class="seat-chip" *ngFor="let seat of seats"
+            [class.consumed-seat]="isSeatConsumed(seat)"
+            (click)="consumeButton(seat)"
+            >
               {{ seat }}
-            </span>
+            </span> -->
+            <span
+  class="seat-chip"
+  *ngFor="let seat of seats"
+  [class.consumed-seat]="isSeatConsumed(seat)"
+  (click)="consumeButton(seat)"
+>
+  {{ displaySeatLabel(seat.label) }}
+</span>
           </div>
         </div>
 

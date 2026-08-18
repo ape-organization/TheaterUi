@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../core/services/booking.service';
 import { ReceriveSeat } from '../../core/models/api.models';
 import QRCode from 'qrcode';
+import { AdminService } from '../../core/services/admin.service';
 
 @Component({
   selector: 'app-ticket-details',
@@ -18,11 +19,12 @@ export class TicketDetailsComponent implements OnInit {
   protected readonly isLoading = signal(false);
   protected readonly error = signal(false);
 
-  seats: string[] = [];
-
+  seats: any[] = [];
+consumedSeats: any[] = []
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly bookingService = inject(BookingService);
+    private readonly adminService = inject(AdminService);
 
   private readonly hallNames: Record<string, string> = {
     STAGE: 'الصالة',
@@ -30,6 +32,61 @@ export class TicketDetailsComponent implements OnInit {
   };
 
   token = '';
+consumeButton(seat: any): void {
+
+  if (this.isSeatConsumed(seat)) {
+    return;
+  }
+
+  const bookingId = this.booking()?.id;
+
+  if (!bookingId) {
+    return;
+  }
+
+  const body = {
+    seatLabels: [seat.label]
+  };
+
+  this.adminService
+    .consumeSeats(bookingId, body)
+    .subscribe({
+
+      next: () => {
+
+        const currentBooking = this.booking();
+
+        if (!currentBooking) {
+          return;
+        }
+
+        this.booking.set({
+          ...currentBooking,
+          consumedSeats: [
+            ...(currentBooking.consumedSeats ?? []),
+            seat
+          ]
+        });
+
+      },
+
+      error: (error) => {
+        console.error('Consume seat failed:', error);
+      }
+
+    });
+}
+/* isSeatConsumed(seatLabel: string): boolean {
+  return this.consumedSeats.includes(seatLabel);
+} */
+isSeatConsumed(seat: any): boolean {
+
+  return (this.booking()?.consumedSeats ?? []).some(
+    consumedSeat =>
+      consumedSeat.id === seat.id
+  );
+
+}
   ngOnInit(): void {
         this.route.paramMap.subscribe(params => {
       this.token = params.get('token') ?? '';
@@ -45,7 +102,6 @@ export class TicketDetailsComponent implements OnInit {
     this.bookingService.getBookingByToken(this.token).subscribe({
       next: (data) => {
 const stateBooking = data as ReceriveSeat | undefined;
-
     if (stateBooking) {
       this.booking.set(stateBooking);
       this.processSeats();
@@ -77,7 +133,11 @@ const stateBooking = data as ReceriveSeat | undefined;
     if (!booking?.seats) {
       return;
     }
-    this.seats = booking.seats.map(seat => this.displaySeatLabel(seat.label));
+   /*  this.seats = booking.seats.map(seat => this.displaySeatLabel(seat.label));
+        this.consumedSeats = booking.consumedSeats.map(seat => this.displaySeatLabel(seat.label)); */
+this.seats = booking.seats ?? [];
+
+this.consumedSeats = booking.consumedSeats ?? [];
   }
 
 

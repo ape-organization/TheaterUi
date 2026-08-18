@@ -6,6 +6,7 @@ import { EventService } from '../../core/services/event.service';
 import { UserBooking } from '../../core/models/api.models';
 import QRCode from 'qrcode';
 import { environment } from '../../../environments/environment';
+import { AdminService } from '../../core/services/admin.service';
 @Component({
   selector: 'app-ticket',
   standalone: true,
@@ -19,6 +20,7 @@ export class TicketComponent implements OnInit {
   protected readonly event = inject(EventService).selectedEvent;
 
   private readonly bookingService = inject(BookingService);
+
   private readonly eventService = inject(EventService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -29,6 +31,7 @@ export class TicketComponent implements OnInit {
 
  ticket = history.state.user;;
 seats:any=''
+consumedSeats:any=''
 openWhatsApp(): void {
   const url = this.booking()?.paymentLink; // or your WhatsApp link
   window.open(url, '_blank');
@@ -59,7 +62,6 @@ ${booking.seats
 الحالة: ${booking.status === 'CONFIRMED' ? 'مؤكد' : 'قيد الانتظار'}
 `; */
 const qrValue = `${environment.uiApiUrl}#ticket/${booking.ticketToken}`;
-
   const url = await QRCode.toDataURL(qrValue);
 
   this.qrCodeDataUrl.set(url);}
@@ -107,7 +109,6 @@ displaySeatLabel(label: string): string {
   } */
 private loadBooking(): void {
   const booking = this.booking();
-
   if (!booking?.seats) {
     return;
   }
@@ -115,5 +116,16 @@ private loadBooking(): void {
   this.seats = booking.seats.map((seat: any) =>
     this.displaySeatLabel(seat.label)
   );
+   this.consumedSeats = booking.consumedSeats.map((seat: any) =>
+    this.displaySeatLabel(seat.label)
+  );
 }
+
+isSeatConsumed(seatLabel: string): boolean {
+  var t=this.consumedSeats.includes(seatLabel);
+  return t;
+
+}
+
       }
+

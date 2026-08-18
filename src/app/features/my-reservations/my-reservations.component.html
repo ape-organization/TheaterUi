@@ -113,7 +113,14 @@
                 <div class="reservation-seats">
                   <span class="seats-label">المقاعد ({{ getSeatsCount(booking) }})</span>
                   <div class="seats-chips">
-                    <span class="seat-chip" *ngFor="let seat of booking.seats; let i = index"
+                    <span class="seat-chip" *ngFor="let seat of booking.seats; 
+                    let i = index"
+              [class.consumed-seat]="
+    isSeatConsumed(
+      booking,
+      displaySeatLabel(seat.label)
+    )
+  "
                          >
                       <!-- {{ seat.label }} -->
 {{ displaySeatLabel(seat.label) }}

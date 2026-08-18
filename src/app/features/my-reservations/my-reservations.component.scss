@@ -203,6 +203,7 @@
 }
 
 /* ─── Reservation Card ─── */
+
 .reservation-card {
   background: var(--clr-bg-auth-card);
   border: 1px solid rgba(107, 78, 58, 0.08);
@@ -534,4 +535,19 @@
   .empty-state {
     padding: 2rem 1rem;
   }
+}
+
+
+
+
+.seat-chip.consumed-seat:hover {
+  background: #b91c1c !important;
+  color: #ffffff !important;
+}
+.seat-chip.consumed-seat {
+  background: #dc2626 !important;
+  color: white !important;
+  border-color: #dc2626 !important;
+  text-decoration: line-through;
+  opacity: 0.9;
 }

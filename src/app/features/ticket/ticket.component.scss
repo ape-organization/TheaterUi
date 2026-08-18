@@ -679,3 +679,17 @@ border-color: var(--clr-success);
     height: 90px;
   }
 }
+
+
+
+.seat-chip.consumed-seat:hover {
+  background: #b91c1c !important;
+  color: #ffffff !important;
+}
+.seat-chip.consumed-seat {
+  background: #dc2626 !important;
+  color: white !important;
+  border-color: #dc2626 !important;
+  text-decoration: line-through;
+  opacity: 0.9;
+}

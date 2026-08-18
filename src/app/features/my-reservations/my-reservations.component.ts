@@ -84,6 +84,21 @@ console.log("here")
   clearBookings(): void {
   this.bookingService.bookings.set(null);
 }
+isSeatConsumed(
+  booking: UserBooking,
+  seatLabel: string
+): boolean {
+
+  if (!booking.consumedSeats) {
+    return false;
+  }
+
+  return booking.consumedSeats.some(
+    (seat: any) =>
+      this.displaySeatLabel(seat.label) === seatLabel
+  );
+}
+
 loadBookings(): void {
   this.errorMsg.set(null);
 
