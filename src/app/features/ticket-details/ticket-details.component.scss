@@ -1,575 +1,1398 @@
-/* ─── Ticket Page Layout ─── */
+/* =========================================================
+   Ticket Page
+   ========================================================= */
+
 .ticket-page {
+
   min-height: calc(100vh - 64px);
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   padding: 2rem 1rem;
+
   background: var(--clr-bg-primary);
+
 }
+
+
+/* =========================================================
+   Container
+   ========================================================= */
 
 .ticket-container {
+
   position: relative;
+
   z-index: 1;
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   gap: 1.5rem;
+
   width: 100%;
+
   max-width: 480px;
+
   animation: slideUp 0.6s ease-out;
+
 }
 
-/* ─── Ticket Card ─── */
+
+/* =========================================================
+   Ticket Card
+   ========================================================= */
+
 .ticket-card {
+
   width: 100%;
+
   background: var(--clr-bg-auth-card);
+
   border: 2px solid rgba(107, 78, 58, 0.08);
+
   border-radius: var(--radius-xl);
+
   overflow: hidden;
+
   box-shadow: var(--shadow-lg);
-  animation: scaleIn 0.5s ease-out 0.2s both;
+
+  animation:
+    scaleIn 0.5s ease-out 0.2s both;
+
 }
 
-/* ─── Ticket Header (gradient banner) ─── */
+
+/* =========================================================
+   Ticket Header
+   ========================================================= */
+
 .ticket-header {
-  background: linear-gradient(135deg, #8B6914 0%, #c7952b 100%);
+
+  position: relative;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8B6914 0%,
+      #c7952b 100%
+    );
+
+  padding: 0.75rem;
+
 }
+
+
+.header-logo-wrapper {
+
+  display: flex;
+
+  justify-content: center;
+
+}
+
 
 .header-logo {
+
   flex-shrink: 0;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   width: 56px;
-  align-self: stretch;
+
   border-radius: var(--radius-md);
+
   backdrop-filter: blur(8px);
+
   -webkit-backdrop-filter: blur(8px);
+
   padding: 0.35rem;
+
 }
+
 
 .logo-image {
+
   height: 90px;
+
   max-height: none;
+
 }
 
-/* ─── Status Badge ─── */
+
+/* =========================================================
+   Status Badge
+   ========================================================= */
+
 .status-badge {
+
   position: absolute;
+
   top: 1rem;
+
   left: 1rem;
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 0.35rem;
+
   padding: 0.3rem 0.85rem;
+
   border-radius: var(--radius-full);
+
   font-size: 0.75rem;
+
   font-weight: 700;
+
   letter-spacing: 0.03em;
+
   border: 1px solid;
+
   backdrop-filter: blur(8px);
+
   -webkit-backdrop-filter: blur(8px);
+
 }
+
 
 .status-dot {
+
   width: 8px;
+
   height: 8px;
+
   border-radius: 50%;
+
   background: currentColor;
-  animation: pulse 2s ease-in-out infinite;
+
+  animation:
+    pulse 2s ease-in-out infinite;
+
 }
+
 
 .status-pending {
-  background: rgba(199, 149, 43, 0.25);
+
+  background:
+    rgba(199, 149, 43, 0.25);
+
   color: #ffd97a;
-  border-color: rgba(255, 217, 122, 0.4);
+
+  border-color:
+    rgba(255, 217, 122, 0.4);
+
 }
+
 
 .status-confirmed {
-  background: rgba(45, 122, 74, 0.25);
+
+  background:
+    rgba(45, 122, 74, 0.25);
+
   color: #6ddc8a;
-  border-color: rgba(109, 220, 138, 0.4);
+
+  border-color:
+    rgba(109, 220, 138, 0.4);
+
 }
 
-/* ─── Ticket Body ─── */
+
+/* =========================================================
+   Ticket Body
+   ========================================================= */
+
 .ticket-body {
+
   padding: 1.5rem 1.5rem 1.25rem;
+
 }
 
-/* Booking ID */
+
+/* =========================================================
+   Booking ID
+   ========================================================= */
+
 .booking-id-section {
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   padding: 0.75rem 1rem;
+
   margin-bottom: 1.25rem;
-  background: rgba(139, 105, 20, 0.06);
-  border: 1px solid rgba(139, 105, 20, 0.1);
+
+  background:
+    rgba(139, 105, 20, 0.06);
+
+  border:
+    1px solid rgba(139, 105, 20, 0.1);
+
   border-radius: var(--radius-md);
+
 }
+
 
 .booking-id-label {
+
   font-size: 0.75rem;
+
   text-transform: uppercase;
+
   letter-spacing: 0.06em;
+
   color: var(--clr-text-secondary);
+
   font-weight: 600;
+
 }
+
 
 .booking-id-value {
-  font-family: 'Courier New', monospace;
+
+  font-family:
+    'Courier New',
+    monospace;
+
   font-size: 1.1rem;
+
   font-weight: 800;
+
   padding: 0 8px;
+
   color: var(--clr-accent);
+
   letter-spacing: 0.02em;
+
 }
 
-/* ─── Section Title ─── */
+
+/* =========================================================
+   Section Title
+   ========================================================= */
+
 .section-title {
+
   display: flex;
+
   align-items: center;
+
   gap: 0.5rem;
+
   margin-bottom: 0.75rem;
+
   font-size: 0.9rem;
+
   font-weight: 700;
+
   color: var(--clr-brown);
+
 }
 
-/* Info Grid */
+
+/* =========================================================
+   Info Grid
+   ========================================================= */
+
 .info-grid {
+
   display: grid;
+
   grid-template-columns: 1fr 1fr;
+
   gap: 0.75rem;
+
   margin-bottom: 1.25rem;
+
 }
+
 
 .info-card {
+
   display: flex;
+
   align-items: center;
+
   gap: 0.65rem;
+
   padding: 0.85rem;
-  background: rgba(107, 78, 58, 0.04);
-  border: 1px solid rgba(107, 78, 58, 0.08);
+
+  background:
+    rgba(107, 78, 58, 0.04);
+
+  border:
+    1px solid rgba(107, 78, 58, 0.08);
+
   border-radius: var(--radius-md);
+
   transition: all var(--transition);
+
 }
+
 
 .info-card:hover {
-  background: rgba(107, 78, 58, 0.06);
-  border-color: rgba(107, 78, 58, 0.12);
+
+  background:
+    rgba(107, 78, 58, 0.06);
+
+  border-color:
+    rgba(107, 78, 58, 0.12);
+
 }
+
 
 .info-icon {
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   width: 36px;
+
   height: 36px;
+
   flex-shrink: 0;
+
   border-radius: var(--radius-sm);
+
   background: var(--clr-gold-subtle);
+
   color: var(--clr-gold);
+
 }
+
 
 .info-content {
+
   display: flex;
+
   flex-direction: column;
+
   gap: 0.1rem;
+
   min-width: 0;
+
 }
+
 
 .info-label {
+
   font-size: 0.68rem;
+
   text-transform: uppercase;
+
   letter-spacing: 0.05em;
+
   color: var(--clr-text-muted);
+
   font-weight: 600;
+
 }
+
 
 .info-value {
+
   font-size: 0.9rem;
+
   font-weight: 700;
+
   color: var(--clr-text-primary);
+
   overflow: hidden;
+
   text-overflow: ellipsis;
+
   white-space: nowrap;
+
 }
 
-/* Seats Section */
+
+/* =========================================================
+   Seats Section
+   ========================================================= */
+
 .seats-section {
+
   padding: 1rem;
-  background: rgba(107, 78, 58, 0.04);
-  border: 1px solid rgba(107, 78, 58, 0.08);
+
+  background:
+    rgba(107, 78, 58, 0.04);
+
+  border:
+    1px solid rgba(107, 78, 58, 0.08);
+
   border-radius: var(--radius-md);
+
 }
+
 
 .seats-section-header {
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 0.5rem;
+
   margin-bottom: 0.75rem;
+
   color: var(--clr-brown);
+
 }
+
 
 .seats-title {
+
   font-size: 0.85rem;
+
   font-weight: 700;
+
   color: var(--clr-text-primary);
+
 }
+
 
 .seats-count {
+
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
   min-width: 24px;
+
   height: 24px;
+
   padding: 0 0.5rem;
-  background: var(--clr-gold-subtle);
+
+  background:
+    var(--clr-gold-subtle);
+
   color: var(--clr-gold);
+
   border-radius: var(--radius-full);
+
   font-size: 0.75rem;
+
   font-weight: 800;
+
 }
+
+
+/* =========================================================
+   Seat Legend
+   ========================================================= */
+
+.seat-legend {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 0.8rem;
+
+  margin-bottom: 0.9rem;
+
+}
+
+
+.legend-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.35rem;
+
+  color: var(--clr-text-secondary);
+
+  font-size: 0.68rem;
+
+  font-weight: 600;
+
+}
+
+
+.legend-dot {
+
+  width: 9px;
+
+  height: 9px;
+
+  border-radius: 50%;
+
+  display: inline-block;
+
+}
+
+
+.legend-dot.normal {
+
+  background: #c7952b;
+
+}
+
+
+.legend-dot.selected {
+
+  background: #f59e0b;
+
+  box-shadow:
+    0 0 0 2px rgba(245, 158, 11, 0.2);
+
+}
+
+
+.legend-dot.consumed {
+
+  background: #dc2626;
+
+}
+
+
+/* =========================================================
+   Seats Chips
+   ========================================================= */
 
 .seats-chips {
+
   display: flex;
+
   flex-wrap: wrap;
+
   gap: 0.4rem;
+
 }
+
+
+/* =========================================================
+   Regular Seat
+   ========================================================= */
 
 .seat-chip {
+
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
   min-width: 40px;
+
   height: 30px;
+
   padding: 0 0.65rem;
-  background: linear-gradient(135deg, rgba(199, 149, 43, 0.12), rgba(139, 105, 20, 0.08));
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(199, 149, 43, 0.12),
+      rgba(139, 105, 20, 0.08)
+    );
+
   color: var(--clr-gold);
-  border: 1px solid rgba(199, 149, 43, 0.2);
+
+  border:
+    1px solid rgba(199, 149, 43, 0.2);
+
   border-radius: var(--radius-sm);
+
   font-size: 0.8rem;
+
   font-weight: 700;
+
   cursor: pointer;
+
   transition: all var(--transition);
+
+  user-select: none;
+
 }
+
 
 .seat-chip:hover {
-  background: linear-gradient(135deg, rgba(199, 149, 43, 0.18), rgba(139, 105, 20, 0.12));
-  border-color: rgba(199, 149, 43, 0.35);
-  transform: translateY(-1px);
-}
 
-/* ─── Note Section ─── */
-.note-section {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: rgba(107, 78, 58, 0.04);
-  border: 1px solid rgba(107, 78, 58, 0.08);
-  border-radius: var(--radius-md);
-}
+  background:
+    linear-gradient(
+      135deg,
+      rgba(199, 149, 43, 0.18),
+      rgba(139, 105, 20, 0.12)
+    );
 
-.note-header {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 0.5rem;
-  color: var(--clr-brown);
-}
+  border-color:
+    rgba(199, 149, 43, 0.35);
 
-.note-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--clr-text-primary);
-}
+  transform:
+    translateY(-1px);
 
-.note-text {
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: var(--clr-text-secondary);
-  white-space: pre-wrap;
-  word-break: break-word;
-  margin: 0;
-}
-
-/* ─── Assigned To Small Note ─── */
-.assigned-note {
-  margin-top: 0.5rem;
-  padding: 0.6rem 0.75rem;
-  background: rgba(199, 149, 43, 0.06);
-  border: 1px dashed rgba(199, 149, 43, 0.25);
-  border-radius: var(--radius-sm);
-
-  .note-header {
-    margin-bottom: 0.25rem;
-    color: var(--clr-gold);
-  }
-
-  .note-title {
-    font-size: 0.72rem;
-    color: var(--clr-gold);
-  }
-
-  .note-text {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--clr-text-primary);
-  }
-}
-
-/* ─── Perforated Tear Line ─── */
-.ticket-tear {
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 0 1.5rem;
-  height: 2px;
-}
-
-.tear-line {
-  margin-bottom: 2px;
-  flex: 1;
-  height: 2px;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(107, 78, 58, 0.12),
-    rgba(107, 78, 58, 0.12) 6px,
-    transparent 6px,
-    transparent 12px
-  );
-}
-
-.tear-hole {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--clr-bg-primary);
-  border: 2px solid rgba(107, 78, 58, 0.08);
-  z-index: 1;
-}
-
-.tear-hole.left {
-  left: -12px;
-}
-
-.tear-hole.right {
-  right: -12px;
-}
-
-/* ─── Ticket Stub ─── */
-.ticket-stub {
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* QR Section */
-.qr-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.qr-frame {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1px;
-  background: transparent;
-  border: 1px solid rgba(107, 78, 58, 0.1);
-  border-radius: var(--radius-md);
-  box-shadow: 0 4px 16px rgba(107, 78, 58, 0.1);
-}
-
-.qr-image {
-  display: block;
-  width: 110px;
-  height: 110px;
-  object-fit: contain;
-  background: transparent;
-}
-
-/* Payment Notice */
-.payment-notice {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  width: 100%;
-  padding: 1rem;
-  background: linear-gradient(135deg, rgba(199, 149, 43, 0.08), rgba(199, 149, 43, 0.04));
-  border: 1px solid rgba(199, 149, 43, 0.2);
-  border-radius: var(--radius-md);
-}
-
-.notice-icon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-sm);
-  background: rgba(199, 149, 43, 0.15);
-  color: var(--clr-warning);
-}
-
-.notice-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.notice-title {
-  font-size: 0.9rem;
-  color: var(--clr-text-primary);
-  font-weight: 700;
-}
-
-.notice-text {
-  font-size: 0.82rem;
-  line-height: 1.6;
-  color: var(--clr-text-secondary);
-}
-
-/* ─── Ticket Actions ─── */
-.ticket-actions {
-  padding: 0 1.5rem 1.5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.ticket-btn {
-  width: 100%;
-  max-width: 240px;
-  justify-content: center;
-}
-
-.whatsapp-btn {
-  width: 100%;
-  max-width: 400px;
-  justify-content: center;
-  margin-bottom: 5px;
-  color: var(--clr-success);
-  border-color: var(--clr-success);
-}
-
-/* ─── No Booking State ─── */
-.no-booking {
-  text-align: center;
-  padding: 2.5rem 2rem;
-  background: var(--clr-bg-auth-card);
-  border: 1px solid rgba(107, 78, 58, 0.08);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
-  animation: scaleIn 0.5s ease-out 0.2s both;
-}
-
-.no-booking-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 1rem;
-  border-radius: var(--radius-full);
-  background: rgba(107, 78, 58, 0.06);
-  color: var(--clr-text-muted);
-}
-
-.no-booking h3 {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--clr-text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.no-booking p {
-  font-size: 0.9rem;
-  color: var(--clr-text-secondary);
-  margin-bottom: 1.5rem;
-  max-width: 320px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* ─── Responsive ─── */
-@media (max-width: 768px) {
-  .ticket-page {
-    padding: 1.5rem 0.75rem;
-  }
-
-  .ticket-container {
-    max-width: 100%;
-    gap: 1rem;
-  }
-
-  .ticket-header,
-  .ticket-body,
-  .ticket-stub,
-  .ticket-actions {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .seats-chips {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .ticket-page {
-    padding: 1rem 0.5rem;
-  }
-
-  .header-logo {
-    width: 68px;
-    height: 68px;
-  }
-
-  .logo-image {
-    height: 75px;
-    max-height: none;
-  }
-
-  .status-badge {
-    top: 0.75rem;
-    left: 0.75rem;
-    font-size: 0.7rem;
-    padding: 0.25rem 0.7rem;
-  }
-
-  .booking-id-value {
-    font-size: 1rem;
-  }
-
-  .qr-image {
-    width: 90px;
-    height: 90px;
-  }
 }
 
 
+/* =========================================================
+   Selected Seat
+   ========================================================= */
+
+.seat-chip.selected-seat {
+
+  background:
+    linear-gradient(
+      135deg,
+      #f59e0b,
+      #d97706
+    ) !important;
+
+  color: #ffffff !important;
+
+  border-color:
+    #f59e0b !important;
+
+  box-shadow:
+    0 4px 12px
+    rgba(245, 158, 11, 0.35);
+
+  transform:
+    translateY(-2px);
+
+  font-weight: 800;
+
+}
+
+
+.seat-chip.selected-seat:hover {
+
+  background:
+    linear-gradient(
+      135deg,
+      #d97706,
+      #b45309
+    ) !important;
+
+  color: #ffffff !important;
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+/* =========================================================
+   Consumed Seat
+   ========================================================= */
+
+.seat-chip.consumed-seat {
+
+  background: #dc2626 !important;
+
+  color: #ffffff !important;
+
+  border-color: #dc2626 !important;
+
+  text-decoration: line-through;
+
+  opacity: 0.9;
+
+  cursor: not-allowed;
+
+}
 
 
 .seat-chip.consumed-seat:hover {
+
   background: #b91c1c !important;
+
   color: #ffffff !important;
+
+  border-color: #b91c1c !important;
+
+  transform: none;
+
 }
-.seat-chip.consumed-seat {
-  background: #dc2626 !important;
-  color: white !important;
-  border-color: #dc2626 !important;
-  text-decoration: line-through;
-  opacity: 0.9;
+
+
+/* =========================================================
+   No Seats
+   ========================================================= */
+
+.no-seats {
+
+  text-align: center;
+
+  padding: 1rem 0;
+
+  color: var(--clr-text-muted);
+
+  font-size: 0.8rem;
+
+}
+
+
+/* =========================================================
+   Consume Action
+   ========================================================= */
+
+.consume-action {
+
+  margin-top: 1rem;
+
+  display: flex;
+
+  justify-content: center;
+
+  width: 100%;
+
+}
+
+
+.confirm-consume-btn {
+
+  width: 100%;
+
+  padding: 0.8rem 1rem;
+
+  border: none;
+
+  border-radius: var(--radius-md);
+
+  background:
+    linear-gradient(
+      135deg,
+      #8B6914,
+      #c7952b
+    );
+
+  color: white;
+
+  font-size: 0.9rem;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  box-shadow:
+    0 4px 12px
+    rgba(139, 105, 20, 0.2);
+
+}
+
+
+.confirm-consume-btn:hover:not(:disabled) {
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 6px 16px
+    rgba(139, 105, 20, 0.3);
+
+}
+
+
+.confirm-consume-btn:active:not(:disabled) {
+
+  transform:
+    translateY(0);
+
+}
+
+
+.confirm-consume-btn:disabled {
+
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+}
+
+
+/* =========================================================
+   Note
+   ========================================================= */
+
+.note-section {
+
+  margin-top: 1rem;
+
+  padding: 1rem;
+
+  background:
+    rgba(107, 78, 58, 0.04);
+
+  border:
+    1px solid rgba(107, 78, 58, 0.08);
+
+  border-radius: var(--radius-md);
+
+}
+
+
+.note-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.4rem;
+
+  margin-bottom: 0.5rem;
+
+  color: var(--clr-brown);
+
+}
+
+
+.note-title {
+
+  font-size: 0.85rem;
+
+  font-weight: 700;
+
+  color: var(--clr-text-primary);
+
+}
+
+
+.note-text {
+
+  font-size: 0.85rem;
+
+  line-height: 1.6;
+
+  color: var(--clr-text-secondary);
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+
+  margin: 0;
+
+}
+
+
+/* =========================================================
+   Confirmation Overlay
+   ========================================================= */
+
+.confirm-overlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 1rem;
+
+  background:
+    rgba(0, 0, 0, 0.55);
+
+  backdrop-filter: blur(4px);
+
+  -webkit-backdrop-filter: blur(4px);
+
+  animation:
+    fadeIn 0.2s ease-out;
+
+}
+
+
+/* =========================================================
+   Confirmation Dialog
+   ========================================================= */
+
+.confirm-dialog {
+
+  width: 100%;
+
+  max-width: 400px;
+
+  padding: 1.5rem;
+
+  background:
+    var(--clr-bg-auth-card);
+
+  border:
+    1px solid rgba(107, 78, 58, 0.1);
+
+  border-radius: var(--radius-xl);
+
+  box-shadow:
+    0 20px 50px
+    rgba(0, 0, 0, 0.25);
+
+  text-align: center;
+
+  animation:
+    dialogIn 0.25s ease-out;
+
+}
+
+
+.confirm-icon {
+
+  width: 60px;
+
+  height: 60px;
+
+  margin: 0 auto 1rem;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(199, 149, 43, 0.12);
+
+  color:
+    var(--clr-gold);
+
+}
+
+
+.confirm-dialog h3 {
+
+  margin: 0 0 0.5rem;
+
+  color:
+    var(--clr-text-primary);
+
+  font-size: 1.1rem;
+
+  font-weight: 800;
+
+}
+
+
+.confirm-dialog p {
+
+  margin: 0 0 1rem;
+
+  color:
+    var(--clr-text-secondary);
+
+  font-size: 0.85rem;
+
+  line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   Selected Seats In Dialog
+   ========================================================= */
+
+.selected-dialog-seats {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+
+  gap: 0.4rem;
+
+  margin-bottom: 1.25rem;
+
+  padding: 0.75rem;
+
+  background:
+    rgba(107, 78, 58, 0.04);
+
+  border-radius: var(--radius-md);
+
+}
+
+
+.dialog-seat {
+
+  padding: 0.35rem 0.65rem;
+
+  border-radius: var(--radius-sm);
+
+  background:
+    rgba(245, 158, 11, 0.12);
+
+  border:
+    1px solid rgba(245, 158, 11, 0.25);
+
+  color:
+    #b45309;
+
+  font-size: 0.75rem;
+
+  font-weight: 800;
+
+}
+
+
+/* =========================================================
+   Dialog Actions
+   ========================================================= */
+
+.confirm-actions {
+
+  display: flex;
+
+  gap: 0.75rem;
+
+  width: 100%;
+
+}
+
+
+.confirm-actions button {
+
+  flex: 1;
+
+  padding: 0.75rem 1rem;
+
+  border-radius: var(--radius-md);
+
+  font-size: 0.85rem;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+}
+
+
+.cancel-btn {
+
+  background: transparent;
+
+  color:
+    var(--clr-text-secondary);
+
+  border:
+    1px solid rgba(107, 78, 58, 0.15);
+
+}
+
+
+.cancel-btn:hover:not(:disabled) {
+
+  background:
+    rgba(107, 78, 58, 0.05);
+
+}
+
+
+.confirm-btn {
+
+  background: #dc2626;
+
+  color: white;
+
+  border:
+    1px solid #dc2626;
+
+}
+
+
+.confirm-btn:hover:not(:disabled) {
+
+  background: #b91c1c;
+
+  border-color: #b91c1c;
+
+}
+
+
+.confirm-actions button:disabled {
+
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+}
+
+
+/* =========================================================
+   No Booking
+   ========================================================= */
+
+.no-booking {
+
+  text-align: center;
+
+  padding: 2.5rem 2rem;
+
+  background:
+    var(--clr-bg-auth-card);
+
+  border:
+    1px solid rgba(107, 78, 58, 0.08);
+
+  border-radius: var(--radius-xl);
+
+  box-shadow:
+    var(--shadow-lg);
+
+  animation:
+    scaleIn 0.5s ease-out 0.2s both;
+
+}
+
+
+.no-booking-icon {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 80px;
+
+  height: 80px;
+
+  margin: 0 auto 1rem;
+
+  border-radius: var(--radius-full);
+
+  background:
+    rgba(107, 78, 58, 0.06);
+
+  color:
+    var(--clr-text-muted);
+
+}
+
+
+.no-booking h3 {
+
+  font-family:
+    var(--font-display);
+
+  font-size: 1.3rem;
+
+  font-weight: 700;
+
+  color:
+    var(--clr-text-primary);
+
+  margin-bottom: 0.5rem;
+
+}
+
+
+.no-booking p {
+
+  font-size: 0.9rem;
+
+  color:
+    var(--clr-text-secondary);
+
+  margin-bottom: 1.5rem;
+
+  max-width: 320px;
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+}
+
+
+/* =========================================================
+   Animations
+   ========================================================= */
+
+@keyframes fadeIn {
+
+  from {
+
+    opacity: 0;
+
+  }
+
+  to {
+
+    opacity: 1;
+
+  }
+
+}
+
+
+@keyframes dialogIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(10px)
+      scale(0.96);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .ticket-page {
+
+    padding:
+      1.5rem 0.75rem;
+
+  }
+
+
+  .ticket-container {
+
+    max-width: 100%;
+
+    gap: 1rem;
+
+  }
+
+
+  .ticket-body {
+
+    padding-left: 1rem;
+
+    padding-right: 1rem;
+
+  }
+
+
+  .info-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .seats-chips {
+
+    justify-content: center;
+
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .ticket-page {
+
+    padding:
+      1rem 0.5rem;
+
+  }
+
+
+  .header-logo {
+
+    width: 68px;
+
+    height: 68px;
+
+  }
+
+
+  .logo-image {
+
+    height: 75px;
+
+    max-height: none;
+
+  }
+
+
+  .status-badge {
+
+    top: 0.75rem;
+
+    left: 0.75rem;
+
+    font-size: 0.7rem;
+
+    padding:
+      0.25rem 0.7rem;
+
+  }
+
+
+  .booking-id-value {
+
+    font-size: 1rem;
+
+  }
+
+
+  .confirm-dialog {
+
+    padding: 1.25rem;
+
+  }
+
+
+  .confirm-actions {
+
+    flex-direction: column;
+
+  }
+
+
+  .confirm-actions button {
+
+    width: 100%;
+
+  }
+
 }

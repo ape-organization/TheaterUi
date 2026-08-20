@@ -1,140 +1,640 @@
 <section class="ticket-page">
+
   <div class="ticket-container">
 
+
+    <!-- ================================================= -->
     <!-- Ticket Card -->
-    <div class="ticket-card" *ngIf="booking()">
+    <!-- ================================================= -->
 
-      <!-- Ticket Header (gradient banner) -->
+    <div
+      class="ticket-card"
+      *ngIf="booking()"
+    >
+
+
+      <!-- =============================================== -->
+      <!-- Ticket Header -->
+      <!-- =============================================== -->
+
       <div class="ticket-header">
-        <div style="display: flex;justify-content: center;">
- <div class="header-logo">
-          <img src="../../../assets/images/logo.png"
-          alt="شعار المشروع" class="logo-image" onerror="this.style.display='none'" />
-        </div>
-        </div>
-       
 
-        <div class="status-badge"
-             [class.status-pending]="booking()?.status === 'PENDING'"
-             [class.status-confirmed]="booking()?.status === 'CONFIRMED'">
-          <span class="status-dot"></span>
-          {{ booking()?.status === 'PENDING' ? 'معلق' : 'مؤكد' }}
+        <div class="header-logo-wrapper">
+
+          <div class="header-logo">
+
+            <img
+              src="../../../assets/images/logo.png"
+              alt="شعار المشروع"
+              class="logo-image"
+              onerror="this.style.display='none'"
+            />
+
+          </div>
+
         </div>
+
+
+        <!-- Status -->
+
+        <div
+          class="status-badge"
+
+          [class.status-pending]="
+            booking()?.status === 'PENDING'
+          "
+
+          [class.status-confirmed]="
+            booking()?.status === 'CONFIRMED'
+          "
+        >
+
+          <span class="status-dot"></span>
+
+          {{
+            booking()?.status === 'PENDING'
+              ? 'معلق'
+              : 'مؤكد'
+          }}
+
+        </div>
+
       </div>
 
+
+      <!-- =============================================== -->
       <!-- Ticket Body -->
+      <!-- =============================================== -->
+
       <div class="ticket-body">
 
+
+        <!-- ============================================= -->
         <!-- Booking ID -->
+        <!-- ============================================= -->
+
         <div class="booking-id-section">
-          <span class="booking-id-label">رقم الحجز</span>
-          <span class="booking-id-value">#{{ booking()?.id }}</span>
+
+          <span class="booking-id-label">
+            رقم الحجز
+          </span>
+
+          <span class="booking-id-value">
+            #{{ booking()?.id }}
+          </span>
+
         </div>
 
-        <!-- User Details Section -->
+
+        <!-- ============================================= -->
+        <!-- User Details -->
+        <!-- ============================================= -->
+
         <div class="section-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
+
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+
+            <path
+              d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+            />
+
+            <circle
+              cx="12"
+              cy="7"
+              r="4"
+            />
+
           </svg>
-          <span>بيانات المستخدم</span>
+
+          <span>
+            بيانات المستخدم
+          </span>
+
         </div>
+
 
         <div class="info-grid">
+
+
+          <!-- Name -->
+
           <div class="info-card">
+
             <div class="info-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
+
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+
+                <path
+                  d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                />
+
+                <circle
+                  cx="12"
+                  cy="7"
+                  r="4"
+                />
+
               </svg>
+
             </div>
+
             <div class="info-content">
-              <span class="info-label">الاسم</span>
-              <span class="info-value">{{ booking()?.user?.name || 'غير محدد' }}</span>
+
+              <span class="info-label">
+                الاسم
+              </span>
+
+              <span class="info-value">
+
+                {{
+                  booking()?.user?.name ||
+                  'غير محدد'
+                }}
+
+              </span>
+
             </div>
+
           </div>
 
-          <div class="info-card" *ngIf="booking()?.user?.phone">
+
+          <!-- Phone -->
+
+          <div
+            class="info-card"
+            *ngIf="booking()?.user?.phone"
+          >
+
             <div class="info-icon">
-             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-     stroke="currentColor" stroke-width="2"
-     stroke-linecap="round" stroke-linejoin="round">
-  <path d="M22 16.92v3a2 2 0 0 1-2.18 2
-           19.79 19.79 0 0 1-8.63-3.07
-           19.5 19.5 0 0 1-6-6
-           19.79 19.79 0 0 1-3.07-8.67
-           A2 2 0 0 1 4.11 2h3
-           a2 2 0 0 1 2 1.72"/>
-</svg>
+
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2
+                  19.79 19.79 0 0 1-8.63-3.07
+                  19.5 19.5 0 0 1-6-6
+                  19.79 19.79 0 0 1-3.07-8.67
+                  A2 2 0 0 1 4.11 2h3
+                  a2 2 0 0 1 2 1.72"
+                />
+
+              </svg>
+
             </div>
+
             <div class="info-content">
-              <span class="info-label">رقم الهاتف</span>
-              <span class="info-value">{{ booking()?.user?.phone }}</span>
+
+              <span class="info-label">
+                رقم الهاتف
+              </span>
+
+              <span class="info-value">
+                {{ booking()?.user?.phone }}
+              </span>
+
             </div>
+
           </div>
+
         </div>
 
+
+        <!-- ============================================= -->
         <!-- Seats Section -->
+        <!-- ============================================= -->
+
         <div class="seats-section">
+
+
+          <!-- Header -->
+
           <div class="seats-section-header">
-            <span class="seats-title">المقاعد المحجوزة</span>
-<span class="seats-count">{{ seats.length || 0 }}</span>
+
+            <span class="seats-title">
+              المقاعد المحجوزة
+            </span>
+
+            <span class="seats-count">
+              {{ seats.length || 0 }}
+            </span>
+
           </div>
+
+
+          <!-- Seat Legend -->
+
+          <div class="seat-legend">
+
+            <div class="legend-item">
+
+              <span class="legend-dot normal"></span>
+
+              <span>
+                متاح
+              </span>
+
+            </div>
+
+
+            <div class="legend-item">
+
+              <span class="legend-dot selected"></span>
+
+              <span>
+                محدد
+              </span>
+
+            </div>
+
+
+            <div class="legend-item">
+
+              <span class="legend-dot consumed"></span>
+
+              <span>
+                مستهلك
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- Seats -->
+
           <div class="seats-chips">
-          <!--   <span class="seat-chip" *ngFor="let seat of seats"
-            [class.consumed-seat]="isSeatConsumed(seat)"
-            (click)="consumeButton(seat)"
-            >
-              {{ seat }}
-            </span> -->
+
             <span
-  class="seat-chip"
-  *ngFor="let seat of seats"
-  [class.consumed-seat]="isSeatConsumed(seat)"
-  (click)="consumeButton(seat)"
->
-  {{ displaySeatLabel(seat.label) }}
-</span>
+              class="seat-chip"
+
+              *ngFor="let seat of seats"
+
+              [class.consumed-seat]="
+                isSeatConsumed(seat)
+              "
+
+              [class.selected-seat]="
+                isSeatSelected(seat)
+              "
+
+              (click)="
+                toggleSeatSelection(seat)
+              "
+            >
+
+              {{ displaySeatLabel(seat.label) }}
+
+            </span>
+
           </div>
+
+
+          <!-- No seats -->
+
+          <div
+            class="no-seats"
+            *ngIf="seats.length === 0"
+          >
+
+            لا توجد مقاعد محجوزة
+
+          </div>
+
+
+          <!-- =========================================== -->
+          <!-- Confirm Consume Button -->
+          <!-- =========================================== -->
+
+          <div
+            class="consume-action"
+            *ngIf="selectedSeats.length > 0"
+          >
+
+            <button
+              type="button"
+
+              class="confirm-consume-btn"
+
+              (click)="
+                openConsumeConfirmation()
+              "
+
+              [disabled]="isLoading()"
+            >
+
+              <span
+                *ngIf="!isLoading()"
+              >
+
+                تأكيد استهلاك
+                {{ selectedSeats.length }}
+                {{
+                  selectedSeats.length === 1
+                    ? 'مقعد'
+                    : 'مقاعد'
+                }}
+
+              </span>
+
+
+              <span
+                *ngIf="isLoading()"
+              >
+
+                جاري التأكيد...
+
+              </span>
+
+            </button>
+
+          </div>
+
         </div>
 
-        <!-- Notes Section -->
-        <div class="note-section" *ngIf="booking()?.notes">
+
+        <!-- ============================================= -->
+        <!-- Notes -->
+        <!-- ============================================= -->
+
+        <div
+          class="note-section"
+          *ngIf="booking()?.notes"
+        >
+
           <div class="note-header">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
+
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16
+                a2 2 0 0 0 2 2h12
+                a2 2 0 0 0 2-2V8z"
+              />
+
+              <polyline
+                points="14 2 14 8 20 8"
+              />
+
+              <line
+                x1="16"
+                y1="13"
+                x2="8"
+                y2="13"
+              />
+
+              <line
+                x1="16"
+                y1="17"
+                x2="8"
+                y2="17"
+              />
+
             </svg>
-            <span class="note-title">ملاحظة</span>
+
+            <span class="note-title">
+              ملاحظة
+            </span>
+
           </div>
-          <p class="note-text">{{ booking()?.notes }}</p>
+
+          <p class="note-text">
+            {{ booking()?.notes }}
+          </p>
+
         </div>
 
-      
 
       </div>
-
-    
-
-   
-
-    
 
     </div>
 
-    <!-- No Booking State -->
-    <div class="no-booking" *ngIf="!booking()">
+
+    <!-- ================================================= -->
+    <!-- No Booking -->
+    <!-- ================================================= -->
+
+    <div
+      class="no-booking"
+      *ngIf="!booking()"
+    >
+
       <div class="no-booking-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <path d="M7 7h10v10H7z"/>
+
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+
+          <rect
+            x="3"
+            y="3"
+            width="18"
+            height="18"
+            rx="2"
+          />
+
+          <path d="M7 7h10v10H7z" />
+
         </svg>
+
       </div>
-      <h3>لا توجد بيانات تذكرة</h3>
-      <p>لم يتم العثور على أي بيانات تذكرة. يرجى المحاولة مرة أخرى.</p>
+
+
+      <h3>
+        لا توجد بيانات تذكرة
+      </h3>
+
+
+      <p>
+        لم يتم العثور على أي بيانات تذكرة.
+        يرجى المحاولة مرة أخرى.
+      </p>
+
     </div>
 
   </div>
+
+
+  <!-- ================================================= -->
+  <!-- Confirmation Dialog -->
+  <!-- ================================================= -->
+
+  <div
+    class="confirm-overlay"
+
+    *ngIf="showConfirmDialog"
+
+    (click)="cancelConsume()"
+  >
+
+    <div
+      class="confirm-dialog"
+
+      (click)="$event.stopPropagation()"
+    >
+
+
+      <!-- Icon -->
+
+      <div class="confirm-icon">
+
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+
+          <path d="M12 9v4" />
+
+          <path d="M12 17h.01" />
+
+          <path
+            d="M10.3 3.3L2.7 17
+            a2 2 0 0 0 1.7 3h15.2
+            a2 2 0 0 0 1.7-3L13.7 3.3
+            a2 2 0 0 0-3.4 0z"
+          />
+
+        </svg>
+
+      </div>
+
+
+      <!-- Title -->
+
+      <h3>
+        تأكيد استهلاك المقاعد
+      </h3>
+
+
+      <!-- Description -->
+
+      <p>
+        هل أنت متأكد من استهلاك المقاعد المحددة؟
+      </p>
+
+
+      <!-- Selected Seats -->
+
+      <div class="selected-dialog-seats">
+
+        <span
+          class="dialog-seat"
+
+          *ngFor="let seat of selectedSeats"
+        >
+
+          {{ displaySeatLabel(seat.label) }}
+
+        </span>
+
+      </div>
+
+
+      <!-- Buttons -->
+
+      <div class="confirm-actions">
+
+
+        <!-- Cancel -->
+
+        <button
+          type="button"
+
+          class="cancel-btn"
+
+          (click)="cancelConsume()"
+
+          [disabled]="isLoading()"
+        >
+
+          إلغاء
+
+        </button>
+
+
+        <!-- Confirm -->
+
+        <button
+          type="button"
+
+          class="confirm-btn"
+
+          (click)="confirmConsume()"
+
+          [disabled]="isLoading()"
+        >
+
+          <span
+            *ngIf="!isLoading()"
+          >
+
+            تأكيد
+
+          </span>
+
+
+          <span
+            *ngIf="isLoading()"
+          >
+
+            جاري التنفيذ...
+
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
